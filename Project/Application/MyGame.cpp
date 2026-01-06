@@ -1,9 +1,16 @@
 #include "MyGame.h"
 #include <EngineSystem.h>
 #include "WinApp/WinApp.h"
+
+// Subsystems
+#include "Application/Utility/KeyBindConfig.h"
+
+// Scene
 #include "Scene/TestScene/TestScene.h"
 #include "Scene/ParticleTestScene/ParticleTestScene.h"
-
+#include "Application/Scene/TitleScene.h"
+#include "Application/Scene/GameScene.h"
+#include "Application/Scene/ReleaseScene.h"
 
 MyGame::~MyGame() = default;
 
@@ -16,12 +23,18 @@ void MyGame::Initialize()
 	sceneManager_ = std::make_unique<SceneManager>();
 	sceneManager_->Initialize(GetEngineSystem());
 
+    // サブシステムの初期化
+    KeyBindConfig::Instance().Initialize(GetEngineSystem());
+
 	// 全シーンを登録（アプリ層で実装）
 	sceneManager_->RegisterScene<TestScene>("TestScene");
 	sceneManager_->RegisterScene<ParticleTestScene>("ParticleTestScene");
+    sceneManager_->RegisterScene<TitleScene>("TitleScene");
+    sceneManager_->RegisterScene<GameScene>("GameScene");
+    sceneManager_->RegisterScene<ReleaseScene>("ReleaseScene");
 
 	// 初期シーンを設定（トランジション無し）
-	sceneManager_->SetInitialScene("TestScene");
+	sceneManager_->SetInitialScene("TitleScene");
 
 	// ===== コンソールログ出力とシーンマネージャーの設定 =====
 #ifdef _DEBUG

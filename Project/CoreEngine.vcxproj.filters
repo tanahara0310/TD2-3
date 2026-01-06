@@ -267,6 +267,10 @@
     <ClCompile Include="Engine\Graphics\Model\Animation\AnimationBlender.cpp" />
     <ClCompile Include="Engine\Camera\CameraShake.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\PrimitivePlane.cpp" />
+    <ClCompile Include="Application\Scene\TitleScene.cpp" />
+    <ClCompile Include="Application\Scene\ReleaseScene.cpp" />
+    <ClCompile Include="Application\Scene\GameScene.cpp" />
+    <ClCompile Include="Application\Utility\KeyBindConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -699,6 +703,10 @@
     <ClInclude Include="Engine\Graphics\Model\Animation\AnimationBlender.h" />
     <ClInclude Include="Engine\Camera\CameraShake.h" />
     <ClInclude Include="Engine\Graphics\Primitive\PrimitivePlane.h" />
+    <ClInclude Include="Application\Scene\TitleScene.h" />
+    <ClInclude Include="Application\Scene\GameScene.h" />
+    <ClInclude Include="Application\Scene\ReleaseScene.h" />
+    <ClInclude Include="Application\Utility\KeyBindConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

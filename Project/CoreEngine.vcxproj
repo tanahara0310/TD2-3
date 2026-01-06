@@ -164,25 +164,6 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application\AL3\AI\Action\BossActionManager.cpp" />
-    <ClCompile Include="Application\AL3\AI\Action\BossActions.cpp" />
-    <ClCompile Include="Application\AL3\AI\BehaviorTree\BehaviorTreeNodes.cpp" />
-    <ClCompile Include="Application\AL3\AI\BossAI.cpp" />
-    <ClCompile Include="Application\AL3\Camera\GameCameraController.cpp" />
-    <ClCompile Include="Application\AL3\Debug\BossAIDebugUI.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\BossBulletObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\BossObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\BulletObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\CircleShadowObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\FloorObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\JumpAttackHitbox.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\PlayerObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\ReticleObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\SkydomeObject.cpp" />
-    <ClCompile Include="Application\AL3\GameObject\WallObject.cpp" />
-    <ClCompile Include="Application\AL3\Manager\GamePlayManager.cpp" />
-    <ClCompile Include="Application\AL3\Manager\GameUIManager.cpp" />
-    <ClCompile Include="Application\AL3\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Engine\Camera\Camera2D.cpp" />
     <ClCompile Include="Engine\Camera\CameraManager.cpp" />
     <ClCompile Include="Engine\Camera\CameraShake.cpp" />
@@ -232,9 +213,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Particle\ParticlePresetManager.cpp" />
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="Engine\Scene\ParticleTestScene\ParticleTestScene.cpp" />
-    <ClCompile Include="Application\AL3\Scene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Engine\Scene\SceneTransition.cpp" />
-    <ClCompile Include="Application\AL3\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="Engine\TestGameObject\AnimatedCubeObject.cpp" />
     <ClCompile Include="Engine\TestGameObject\FenceObject.cpp" />
     <ClCompile Include="Engine\TestGameObject\SkeletonModelObject.cpp" />
@@ -360,27 +339,6 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Utility\Debug\ImGui\SceneViewport.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application\AL3\AI\Action\BossAction.h" />
-    <ClInclude Include="Application\AL3\AI\Action\BossActionManager.h" />
-    <ClInclude Include="Application\AL3\AI\Action\BossActions.h" />
-    <ClInclude Include="Application\AL3\AI\BehaviorTree\BehaviorNode.h" />
-    <ClInclude Include="Application\AL3\AI\BehaviorTree\BehaviorTreeNodes.h" />
-    <ClInclude Include="Application\AL3\AI\BehaviorTree\CompositeNode.h" />
-    <ClInclude Include="Application\AL3\AI\BossAI.h" />
-    <ClInclude Include="Application\AL3\Camera\GameCameraController.h" />
-    <ClInclude Include="Application\AL3\Debug\BossAIDebugUI.h" />
-    <ClInclude Include="Application\AL3\GameObject\BossBulletObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\BossObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\BulletObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\CircleShadowObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\FloorObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\JumpAttackHitbox.h" />
-    <ClInclude Include="Application\AL3\GameObject\PlayerObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\ReticleObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\SkydomeObject.h" />
-    <ClInclude Include="Application\AL3\GameObject\WallObject.h" />
-    <ClInclude Include="Application\AL3\Manager\GamePlayManager.h" />
-    <ClInclude Include="Application\AL3\Manager\GameUIManager.h" />
     <ClInclude Include="Engine\Camera\Camera2D.h" />
     <ClInclude Include="Engine\Camera\CameraManager.h" />
     <ClInclude Include="Engine\Camera\CameraShake.h" />
@@ -448,11 +406,8 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Engine\Particle\Modules\ShapeModule.h" />
     <ClInclude Include="Engine\Particle\ParticlePresetManager.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
-    <ClInclude Include="Application\AL3\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Engine\Scene\ParticleTestScene\ParticleTestScene.h" />
-    <ClInclude Include="Application\AL3\Scene\ResultScene\ResultScene.h" />
     <ClInclude Include="Engine\Scene\SceneTransition.h" />
-    <ClInclude Include="Application\AL3\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="Engine\TestGameObject\AnimatedCubeObject.h" />
     <ClInclude Include="Engine\TestGameObject\FenceObject.h" />
     <ClInclude Include="Engine\TestGameObject\SkeletonModelObject.h" />
@@ -668,7 +623,6 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\BulletHitParticle_Implementation.md" />
-    <None Include="docs\GridRenderer_Usage_Guide.md" />
     <None Include="docs\LineRenderer_Refactoring.md" />
     <None Include="docs\Logger_Usage.md" />
     <None Include="docs\ParticleMemoryLeak_Fix.md" />

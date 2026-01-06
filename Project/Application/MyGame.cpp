@@ -3,9 +3,7 @@
 #include "WinApp/WinApp.h"
 #include "Scene/TestScene/TestScene.h"
 #include "Scene/ParticleTestScene/ParticleTestScene.h"
-#include "Application/AL3/Scene/TitleScene/TitleScene.h"
-#include "Application/AL3/Scene/GameScene/GameScene.h"
-#include "Application/AL3/Scene/ResultScene/ResultScene.h"
+
 
 MyGame::~MyGame() = default;
 
@@ -21,12 +19,9 @@ void MyGame::Initialize()
 	// 全シーンを登録（アプリ層で実装）
 	sceneManager_->RegisterScene<TestScene>("TestScene");
 	sceneManager_->RegisterScene<ParticleTestScene>("ParticleTestScene");
-	sceneManager_->RegisterScene<TitleScene>("TitleScene");
-	sceneManager_->RegisterScene<GameScene>("GameScene");
-	sceneManager_->RegisterScene<ResultScene>("ResultScene");
 
 	// 初期シーンを設定（トランジション無し）
-	sceneManager_->SetInitialScene("TitleScene");
+	sceneManager_->SetInitialScene("TestScene");
 
 	// ===== コンソールログ出力とシーンマネージャーの設定 =====
 #ifdef _DEBUG

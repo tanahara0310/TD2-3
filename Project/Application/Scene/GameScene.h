@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene/BaseScene.h"
+
 class GameScene : public BaseScene {
 public:
     /// @brief 初期化
@@ -10,4 +11,5 @@ public:
     void Draw() override;
     /// @brief 解放
     void Finalize() override;
+
 };

@@ -271,6 +271,9 @@
     <ClCompile Include="Application\Scene\ReleaseScene.cpp" />
     <ClCompile Include="Application\Scene\GameScene.cpp" />
     <ClCompile Include="Application\Utility\KeyBindConfig.cpp" />
+    <ClCompile Include="Application\SceneObjects\Player\Player.cpp" />
+    <ClCompile Include="Application\Utility\Command\SceneCommandExecutor.cpp" />
+    <ClCompile Include="Application\Utility\Command\SceneChangeCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -707,6 +710,12 @@
     <ClInclude Include="Application\Scene\GameScene.h" />
     <ClInclude Include="Application\Scene\ReleaseScene.h" />
     <ClInclude Include="Application\Utility\KeyBindConfig.h" />
+    <ClInclude Include="Application\SceneObjects\Player\Player.h" />
+    <ClInclude Include="Application\SceneObjects\Player\IPlayerCommand.h" />
+    <ClInclude Include="Application\Utility\Command\ISceneCommand.h" />
+    <ClInclude Include="Application\Utility\Command\SceneCommandExecutor.h" />
+    <ClInclude Include="Application\Utility\Command\SceneChangeCommand.h" />
+    <ClInclude Include="Application\Utility\Command\SceneAllCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

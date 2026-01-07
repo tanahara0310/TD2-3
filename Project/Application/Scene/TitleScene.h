@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene/BaseScene.h"
+#include "Application/Utility/Command/SceneCommandExecutor.h"
+
 class TitleScene : public BaseScene {
 public:
     /// @brief 初期化
@@ -10,4 +12,7 @@ public:
     void Draw() override;
     /// @brief 解放
     void Finalize() override;
+
+private:
+    SceneCommandExecutor frameStartCommandExecutor_;
 };

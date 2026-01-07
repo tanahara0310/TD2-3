@@ -1,4 +1,5 @@
 #include "ReleaseScene.h"
+#include "Scene/SceneManager.h"
 
 void ReleaseScene::Initialize(EngineSystem* engine) {
     BaseScene::Initialize(engine);

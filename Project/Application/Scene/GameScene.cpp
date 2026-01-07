@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "Scene/SceneManager.h"
 
 void GameScene::Initialize(EngineSystem* engine) {
     BaseScene::Initialize(engine);

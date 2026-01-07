@@ -31,7 +31,7 @@ public:
 	bool IsPress(const std::string& actionName);
 	bool IsTrigger(const std::string& actionName);
 	bool IsRelease(const std::string& actionName);
-	float noControllTimer_ = 0.0f;
+	float noControlTimer_ = 0.0f;
 
 private:
 	std::unordered_map<std::string, InputDevice> keyBinds_;

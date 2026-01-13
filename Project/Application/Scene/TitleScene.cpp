@@ -14,7 +14,7 @@ void TitleScene::Update() {
     frameStartCommandExecutor_.ExecuteCommand();
 
     if (KeyBindConfig::Instance().IsTrigger("Start")) {
-        frameStartCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>(sceneManager_, "GameScene"));
+        frameStartCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("GameScene", sceneManager_));
     }
 
     BaseScene::Update();

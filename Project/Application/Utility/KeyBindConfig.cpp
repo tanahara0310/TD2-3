@@ -5,6 +5,7 @@
 
 #include "EngineSystem/EngineSystem.h"
 #include "Input/InputManager.h"
+#include "Input/GamepadInput.h"
 
 KeyBindConfig::KeyBindConfig() {
     keyBinds_["Start"].keyboardKeys.push_back(DIK_RETURN);
@@ -20,8 +21,8 @@ KeyBindConfig::KeyBindConfig() {
 	keyBinds_["Menu"].keyboardKeys.push_back(DIK_ESCAPE);
 	keyBinds_["Menu"].keyboardKeys.push_back(DIK_E);
 
-    keyBinds_["Start"].keyboardKeys.push_back(XINPUT_GAMEPAD_A);
-    keyBinds_["Start"].keyboardKeys.push_back(XINPUT_GAMEPAD_B);
+    keyBinds_["Start"].controllerButtons.push_back(XINPUT_GAMEPAD_A);
+    keyBinds_["Start"].controllerButtons.push_back(XINPUT_GAMEPAD_B);
 	keyBinds_["MoveLeft"].controllerButtons.push_back(XINPUT_GAMEPAD_DPAD_LEFT);
 	keyBinds_["MoveRight"].controllerButtons.push_back(XINPUT_GAMEPAD_DPAD_RIGHT);
 	keyBinds_["MoveForward"].controllerButtons.push_back(XINPUT_GAMEPAD_DPAD_UP);

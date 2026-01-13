@@ -274,6 +274,12 @@
     <ClCompile Include="Application\SceneObjects\Player\Player.cpp" />
     <ClCompile Include="Application\Utility\Command\SceneCommandExecutor.cpp" />
     <ClCompile Include="Application\Utility\Command\SceneChangeCommand.cpp" />
+    <ClCompile Include="Application\SceneObjects\CameraController\CameraController.cpp" />
+    <ClCompile Include="Application\Utility\MatsumotoUtility.cpp" />
+    <ClCompile Include="Application\SceneObjects\CameraController\FollowCamera.cpp" />
+    <ClCompile Include="Application\SceneObjects\Map\MapTile.cpp" />
+    <ClCompile Include="Application\SceneObjects\BeatController\BeatController.cpp" />
+    <ClCompile Include="Application\SceneObjects\Map\MapManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -716,6 +722,15 @@
     <ClInclude Include="Application\Utility\Command\SceneCommandExecutor.h" />
     <ClInclude Include="Application\Utility\Command\SceneChangeCommand.h" />
     <ClInclude Include="Application\Utility\Command\SceneAllCommand.h" />
+    <ClInclude Include="Application\SceneObjects\CameraController\CameraController.h" />
+    <ClInclude Include="Application\Utility\MatsumotoUtility.h" />
+    <ClInclude Include="Application\SceneObjects\CameraController\ICameraWork.h" />
+    <ClInclude Include="Application\SceneObjects\CameraController\FollowCamera.h" />
+    <ClInclude Include="Application\SceneObjects\CameraController\AllCameraWork.h" />
+    <ClInclude Include="Application\SceneObjects\Map\GridMap.h" />
+    <ClInclude Include="Application\SceneObjects\Map\MapTile.h" />
+    <ClInclude Include="Application\SceneObjects\BeatController\BeatController.h" />
+    <ClInclude Include="Application\SceneObjects\Map\MapManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

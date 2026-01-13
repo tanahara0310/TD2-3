@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <stdint.h>
 
 class EngineSystem;
 class InputManager;

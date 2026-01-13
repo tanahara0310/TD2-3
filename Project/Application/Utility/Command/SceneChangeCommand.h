@@ -7,7 +7,7 @@ class SceneManager;
 class SceneChangeCommand : public ISceneCommand {
 public:
     SceneChangeCommand() = delete;
-    explicit SceneChangeCommand(const std::string& sceneName, class SceneManager* sceneManager);
+    explicit SceneChangeCommand(const std::string& sceneName, SceneManager* sceneManager);
     void Execute() override;
     void Undo() override {
         // シーン変更のUndoは実装しない

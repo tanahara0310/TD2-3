@@ -166,8 +166,12 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
   <ItemGroup>
     <ClCompile Include="Application\SceneObjects\BeatController\BeatScheduler.cpp" />
     <ClCompile Include="Application\SceneObjects\BeatController\Measure.cpp" />
+    <ClCompile Include="Application\SceneObjects\BulletObject\BulletModel.cpp" />
+    <ClCompile Include="Application\SceneObjects\BulletObject\BulletObjectContainer.cpp" />
     <ClCompile Include="Application\SceneObjects\CameraController\CameraController.cpp" />
     <ClCompile Include="Application\SceneObjects\CameraController\FollowCamera.cpp" />
+    <ClCompile Include="Application\SceneObjects\Companion\Companion.cpp" />
+    <ClCompile Include="Application\SceneObjects\Companion\RhythmSpawnCompanion.cpp" />
     <ClCompile Include="Application\SceneObjects\Map\MapManager.cpp" />
     <ClCompile Include="Application\SceneObjects\Map\MapTile.cpp" />
     <ClCompile Include="Application\SceneObjects\Player\Player.cpp" />
@@ -357,10 +361,14 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
   <ItemGroup>
     <ClInclude Include="Application\SceneObjects\BeatController\BeatScheduler.h" />
     <ClInclude Include="Application\SceneObjects\BeatController\Measure.h" />
+    <ClInclude Include="Application\SceneObjects\BulletObject\BulletModel.h" />
+    <ClInclude Include="Application\SceneObjects\BulletObject\BulletObjectContainer.h" />
     <ClInclude Include="Application\SceneObjects\CameraController\AllCameraWork.h" />
     <ClInclude Include="Application\SceneObjects\CameraController\CameraController.h" />
     <ClInclude Include="Application\SceneObjects\CameraController\FollowCamera.h" />
     <ClInclude Include="Application\SceneObjects\CameraController\ICameraWork.h" />
+    <ClInclude Include="Application\SceneObjects\Companion\Companion.h" />
+    <ClInclude Include="Application\SceneObjects\Companion\RhythmSpawnCompanion.h" />
     <ClInclude Include="Application\SceneObjects\Map\GridMap.h" />
     <ClInclude Include="Application\SceneObjects\Map\MapManager.h" />
     <ClInclude Include="Application\SceneObjects\Map\MapTile.h" />

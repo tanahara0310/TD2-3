@@ -283,6 +283,10 @@
     <ClCompile Include="Application\SceneObjects\BeatController\BeatScheduler.cpp" />
     <ClCompile Include="Application\SceneObjects\Ui\BeatUi.cpp" />
     <ClCompile Include="Application\SceneObjects\RhythmController\RhythmTrigger.cpp" />
+    <ClCompile Include="Application\SceneObjects\BulletObject\BulletModel.cpp" />
+    <ClCompile Include="Application\SceneObjects\BulletObject\BulletObjectContainer.cpp" />
+    <ClCompile Include="Application\SceneObjects\Companion\Companion.cpp" />
+    <ClCompile Include="Application\SceneObjects\Companion\RhythmSpawnCompanion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -738,6 +742,10 @@
     <ClInclude Include="Application\Utility\RingBuffer.h" />
     <ClInclude Include="Application\SceneObjects\Ui\BeatUi.h" />
     <ClInclude Include="Application\SceneObjects\RhythmController\RhythmTrigger.h" />
+    <ClInclude Include="Application\SceneObjects\BulletObject\BulletModel.h" />
+    <ClInclude Include="Application\SceneObjects\BulletObject\BulletObjectContainer.h" />
+    <ClInclude Include="Application\SceneObjects\Companion\Companion.h" />
+    <ClInclude Include="Application\SceneObjects\Companion\RhythmSpawnCompanion.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

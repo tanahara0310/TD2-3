@@ -19,8 +19,10 @@
 
 // ゲームオブジェクト
 class Player;
+#include "Application/SceneObjects/BulletObject/BulletObjectContainer.h"
 // システム
 class MapManager;
+class RhythmSpawnCompanion;
 #include "Application/SceneObjects/CameraController/CameraController.h"
 #include "Application/SceneObjects/Map/MapManager.h"
 #include "Application/SceneObjects/BeatController/BeatScheduler.h"
@@ -46,12 +48,16 @@ private:
     CameraController cameraController_;
     // ゲームオブジェクト
     Player* player_;
+    std::map<std::string, std::unique_ptr<BulletObjectContainer>> bulletObjectContainers_;
+
     // システム
     MapManager* mapManager_;
     BeatScheduler beatScheduler_;
     std::unique_ptr<RhythmTrigger> rhythmTrigger_;
+    std::unique_ptr<RhythmSpawnCompanion> rhythmSpawnCompanion_;
     // UI
     std::unique_ptr<BeatUi> beatUi_;
+
     // スプライトたち
     std::map<std::string, std::vector<SpriteObject*>> spriteObjects_;
 };

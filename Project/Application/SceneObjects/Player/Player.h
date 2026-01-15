@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/ObjectCommon/GameObject.h"
-
 #include <externals/nlohmann/single_include/nlohmann/json.hpp>
 
 class Player final : public GameObject {
@@ -15,6 +14,7 @@ public:
 #endif
 
     Vector3& GetTransform();
+    Vector3* GetPosPtr() { return &transform_.translate; }
 
 private:
     nlohmann::json config_;

@@ -30,6 +30,17 @@ public:
    /// @brief 解放（共通処理 + 派生クラスの解放）
    virtual void Finalize() override;
 
+   /// @brief GameObjectを生成して登録
+   /// @tparam T GameObjectの派生クラス
+   /// @tparam Args コンストラクタ引数の型
+   /// @param args コンストラクタ引数
+   /// @return 生成されたオブジェクトへのポインタ
+   template<typename T, typename... Args>
+   T* CreateObject(Args&&... args) {
+       auto obj = std::make_unique<T>(std::forward<Args>(args)...);
+       return gameObjectManager_.AddObject(std::move(obj));
+   }
+
 private:
 
    /// @brief カメラのセットアップ
@@ -58,17 +69,6 @@ protected:
 #endif
 
    // === 派生クラス用ヘルパーメソッド ===
-
-   /// @brief GameObjectを生成して登録
-   /// @tparam T GameObjectの派生クラス
-   /// @tparam Args コンストラクタ引数の型
-   /// @param args コンストラクタ引数
-   /// @return 生成されたオブジェクトへのポインタ
-   template<typename T, typename... Args>
-   T* CreateObject(Args&&... args) {
-       auto obj = std::make_unique<T>(std::forward<Args>(args)...);
-       return gameObjectManager_.AddObject(std::move(obj));
-   }
 
    /// @brief シーンのBGMを登録し、トランジション時の自動フェードを有効化
    /// @param bgm BGMのSoundResourceポインタ（現在のSetVolume()で設定した音量が使用されます）

@@ -2,7 +2,10 @@
 #include "Scene/SceneManager.h"
 
 #include "Application/SceneObjects/Player/Player.h"
+#include "Application/SceneObjects/Companion/Companion.h"
 #include "Application/SceneObjects/CameraController/AllCameraWork.h"
+
+#include "Application/SceneObjects/Companion/RhythmSpawnCompanion.h"
 
 #include "Application/SceneObjects/Ui/BeatUi.h"
 
@@ -19,11 +22,23 @@ GameScene::GameScene() {
 
     // プレイヤーオブジェクトの作成
     player_ = CreateObject<Player>();
+    // 弾オブジェクトコンテナの作成
+    bulletObjectContainers_.clear();
+    // コンパニオンの作成10体
+    bulletObjectContainers_["Companion"] = std::make_unique<BulletObjectContainer>(10);
+    bulletObjectContainers_["Companion"]->ApplyToScene<Companion>(
+        this, "ApplicationAssets/Model/Box1x1.obj", "Texture/white1x1.png",1.0f,player_->GetPosPtr());
+
     // システムオブジェクトの作成
     mapManager_ = CreateObject<MapManager>();
     defaultCameraPos_ = { 0.0f, 15.0f, -15.0f };
     // リズムトリガーの作成
     rhythmTrigger_ = std::make_unique<RhythmTrigger>(beatScheduler_);
+    // リズムに合わせてコンパニオンをスポーンするシステムの作成
+    rhythmSpawnCompanion_ = std::make_unique<RhythmSpawnCompanion>(
+        *(rhythmTrigger_.get()),
+        *player_,
+        *(bulletObjectContainers_["Companion"].get()));
 
     // UIオブジェクトの作成
     beatUi_ = std::make_unique<BeatUi>(
@@ -39,6 +54,10 @@ void GameScene::Initialize(EngineSystem* engine) {
     //* SceneObjects *//
     // プレイヤーの初期化
     player_->Initialize();
+    for (auto& [name, container] : bulletObjectContainers_) {
+        container->Initialize();
+    }
+    //bulletObjectContainers_["Companion"]->Spawn({ 2.0f,0.0f,0.0f }, { 0.0f,0.0f,0.0f }, { 0.5f,0.5f,0.5f });
 
     //* AppSystems *//
     // マップの初期化（10x10）
@@ -50,6 +69,8 @@ void GameScene::Initialize(EngineSystem* engine) {
     beatScheduler_.Initialize(4);
     // リズムトリガーの初期化
     rhythmTrigger_->Initialize();
+    // リズムに合わせてコンパニオンをスポーンするシステムの初期化
+    rhythmSpawnCompanion_->Initialize();
 
     //* SceneUi *//
     // UIの初期化
@@ -57,10 +78,14 @@ void GameScene::Initialize(EngineSystem* engine) {
 }
 
 void GameScene::Update() {
-    
+    for (auto& [name, container] : bulletObjectContainers_) {
+        container->Update();
+    }
+
     cameraController_.Update();
     beatScheduler_.Update();
     rhythmTrigger_->Update();
+    rhythmSpawnCompanion_->Update();
 
     beatUi_->Update();
     BaseScene::Update();

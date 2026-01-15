@@ -27,27 +27,30 @@ void BeatScheduler::Update() {
         return;
     }
 
-    // 小節の経過時間を計算
     float elapsedTime = std::chrono::duration<float>(std::chrono::steady_clock::now() - measureStartTime_).count();
-    
-    // 小節の時間を超えたら次の小節へ移動
+
     if (elapsedTime >= measureDuration_) {
-        // 小節のスタート時間を更新
         measureStartTime_ = std::chrono::steady_clock::now();
-        // 次の小節へ移動
+
+        int beatsPerMeasure;
+        float nextDuration;
+
         if (measureQueue_.empty()) {
-            // キューが空なら同じ拍数で新しい小節を追加
-            Measure newMeasure(measures_.GetBufferPointer()[currentMeasureIndex_].GetBeatsPerMeasure());
-            measures_.Push(newMeasure);
+            // 現在の小節の拍数を取得
+            beatsPerMeasure = measures_.GetBufferPointer()[currentMeasureIndex_].GetBeatsPerMeasure();
+            // デフォルトの小節長を計算（BPM維持したい場合はここで計算式を入れる）
+            nextDuration = measureDuration_;
         } else {
-            // キューから拍数と時間を取得して新しい小節を追加
-            auto [beatsPerMeasure, duration] = measureQueue_.front();
+            auto [queuedBeats, queuedDuration] = measureQueue_.front();
             measureQueue_.pop();
-            Measure newMeasure(beatsPerMeasure);
-            measures_.Push(newMeasure);
-            measureDuration_ = duration;
+            beatsPerMeasure = queuedBeats;
+            nextDuration = queuedDuration;
         }
-        // 現在の小節インデックスを更新
+
+        Measure newMeasure(beatsPerMeasure);
+        measures_.Push(newMeasure);
+        measureDuration_ = nextDuration; // 必ず新しい小節の長さを設定
+
         currentMeasureIndex_ = measures_.GetHeadIndex();
     }
 }
@@ -87,6 +90,34 @@ float BeatScheduler::GetCurrentMeasurePosition() const {
         float elapsedTime = std::chrono::duration<float>(pauseStartTime_ - measureStartTime_).count();
         return elapsedTime / measureDuration_;
     }
+}
+
+bool BeatScheduler::IsPlaying() const {
+    return isPlaying_;
+}
+
+float BeatScheduler::GetCurrentMeasureDuration() const {
+    return measureDuration_;
+}
+
+float BeatScheduler::GetCurrentBPM() const {
+    // BPM = 60 / (小節の長さ / 小節あたりの拍数)
+    if (measureDuration_ <= 0.0f || GetCurrentMeasure().GetBeatsPerMeasure() <= 0.0f) {
+        return 0.0f;
+    }
+    return 60.0f / (measureDuration_ / GetCurrentMeasure().GetBeatsPerMeasure());
+}
+
+rsize_t BeatScheduler::GetCurrentMeasureIndex() const {
+    return currentMeasureIndex_;
+}
+
+size_t BeatScheduler::GetMeasureQueueSize() const {
+    return measureQueue_.size();
+}
+
+const std::queue<std::pair<int, float>>& BeatScheduler::GetMeasureQueue() const {
+    return measureQueue_;
 }
 
 void BeatScheduler::EnqueueMeasure(int beatsPerMeasure, float duration) {

@@ -13,8 +13,10 @@
 #include "Engine/Graphics/Model/Model.h"
 
 class Player;
+class MapManager;
 #include "Application/SceneObjects/CameraController/CameraController.h"
 #include "Application/SceneObjects/Map/MapManager.h"
+#include "Application/SceneObjects/BeatController/BeatScheduler.h"
 
 class GameScene : public BaseScene {
 public:
@@ -33,5 +35,6 @@ private:
     Vector3 defaultCameraPos_;
     CameraController cameraController_;
     Player* player_;
-    class MapManager* mapManager_;
+    MapManager* mapManager_;
+    BeatScheduler beatScheduler_;
 };

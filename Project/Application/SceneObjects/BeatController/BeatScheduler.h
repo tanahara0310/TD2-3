@@ -31,6 +31,19 @@ public:
     /// @brief 現在の小節の位置を0.0～1.0の範囲で取得
     float GetCurrentMeasurePosition() const;
 
+    /// @brief 再生中かどうかを取得
+    bool IsPlaying() const;
+    /// @brief 現在の小節時間を取得
+    float GetCurrentMeasureDuration() const;
+    /// @brief 現在のBPMを取得
+    float GetCurrentBPM() const;
+    /// @brief 現在の小節インデックスを取得
+    rsize_t GetCurrentMeasureIndex() const;
+    /// @brief 現在のキューの長さを取得
+    size_t GetMeasureQueueSize() const;
+    /// @brief キューを取得
+    const std::queue<std::pair<int, float>>& GetMeasureQueue() const;
+
 private:
     // 設定情報
     nlohmann::json config_;

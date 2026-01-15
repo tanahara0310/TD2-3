@@ -172,6 +172,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObjects\Map\MapManager.cpp" />
     <ClCompile Include="Application\SceneObjects\Map\MapTile.cpp" />
     <ClCompile Include="Application\SceneObjects\Player\Player.cpp" />
+    <ClCompile Include="Application\SceneObjects\Ui\BeatUi.cpp" />
     <ClCompile Include="Application\Scene\GameScene.cpp" />
     <ClCompile Include="Application\Scene\ReleaseScene.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
@@ -366,6 +367,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObjects\Map\MapTile.h" />
     <ClInclude Include="Application\SceneObjects\Player\IPlayerCommand.h" />
     <ClInclude Include="Application\SceneObjects\Player\Player.h" />
+    <ClInclude Include="Application\SceneObjects\Ui\BeatUi.h" />
     <ClInclude Include="Application\Scene\GameScene.h" />
     <ClInclude Include="Application\Scene\ReleaseScene.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />

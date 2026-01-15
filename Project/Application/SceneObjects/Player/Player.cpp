@@ -41,45 +41,31 @@ void Player::Update() {
         return;
     }
 
-    if (isMoving_) {
-        // 移動処理
-        moveTimer_ += 1.0f / 60.0f; // 固定フレームレート仮定
-        float t = moveTimer_ / moveDuration_;
-        if (t >= 1.0f) {
-            t = 1.0f;
-            isMoving_ = false;
-            transform_.translate = targetPos_;
-        } else {
-            // 線形補間
-            transform_.translate = startPos_ + (targetPos_ - startPos_) * t;
-        }
-    } else {
-        // 入力処理（移動）
-        Vector2 moveDir = { 0.0f, 0.0f };
-        KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
-        
-        // 4方向いずれかの入力があれば移動開始（同時押しはX優先などの優先順位をつける）
-        if (keyBindConfig.IsTrigger("MoveRight")) {
-            moveDir.x = 1.0f;
-        } else if (keyBindConfig.IsTrigger("MoveLeft")) {
-            moveDir.x = -1.0f;
-        } else if (keyBindConfig.IsTrigger("MoveForward")) {
-            moveDir.y = 1.0f;
-        } else if (keyBindConfig.IsTrigger("MoveBack")) {
-            moveDir.y = -1.0f;
-        }
+    // 入力処理（移動）
+    Vector2 moveDir = { 0.0f, 0.0f };
+    KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
 
-        if (moveDir.x != 0.0f || moveDir.y != 0.0f) {
-            startPos_ = transform_.translate;
-            targetPos_ = startPos_;
-            // グリッドサイズ 1.0f で移動
-            targetPos_.x += moveDir.x * 1.0f;
-            targetPos_.z += moveDir.y * 1.0f;
-
-            isMoving_ = true;
-            moveTimer_ = 0.0f;
-        }
+    // 4方向いずれかの入力があれば移動開始（同時押しはX優先などの優先順位をつける）
+    if (keyBindConfig.IsPress("MoveRight")) {
+        moveDir.x = 1.0f;
     }
+    if (keyBindConfig.IsPress("MoveLeft")) {
+        moveDir.x = -1.0f;
+    }
+    if (keyBindConfig.IsPress("MoveForward")) {
+        moveDir.y = 1.0f;
+    }
+    if (keyBindConfig.IsPress("MoveBack")) {
+        moveDir.y = -1.0f;
+    }
+    // 正規化
+    moveDir = moveDir.Normalize();
+
+    // 移動速度の取得
+    float speed = config_["Speed"].get<float>();
+    // 移動処理
+    transform_.translate.x += moveDir.x * speed;
+    transform_.translate.z += moveDir.y * speed;
 
     // トランスフォームの更新
     transform_.TransferMatrix();

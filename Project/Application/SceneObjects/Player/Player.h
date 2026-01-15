@@ -18,11 +18,4 @@ public:
 
 private:
     nlohmann::json config_;
-
-    // Grid movement state
-    bool isMoving_ = false;
-    Vector3 startPos_;
-    Vector3 targetPos_;
-    float moveTimer_ = 0.0f;
-    float moveDuration_ = 0.2f; // Time to move one grid unit
 };

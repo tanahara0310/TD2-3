@@ -280,6 +280,8 @@
     <ClCompile Include="Application\SceneObjects\Map\MapTile.cpp" />
     <ClCompile Include="Application\SceneObjects\BeatController\BeatController.cpp" />
     <ClCompile Include="Application\SceneObjects\Map\MapManager.cpp" />
+    <ClCompile Include="Application\SceneObjects\BeatController\Measure.cpp" />
+    <ClCompile Include="Application\SceneObjects\BeatController\BeatScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -731,6 +733,9 @@
     <ClInclude Include="Application\SceneObjects\Map\MapTile.h" />
     <ClInclude Include="Application\SceneObjects\BeatController\BeatController.h" />
     <ClInclude Include="Application\SceneObjects\Map\MapManager.h" />
+    <ClInclude Include="Application\SceneObjects\BeatController\Measure.h" />
+    <ClInclude Include="Application\SceneObjects\BeatController\BeatScheduler.h" />
+    <ClInclude Include="Application\Utility\RingBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

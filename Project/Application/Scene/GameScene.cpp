@@ -4,30 +4,65 @@
 #include "Application/SceneObjects/Player/Player.h"
 #include "Application/SceneObjects/CameraController/AllCameraWork.h"
 
+#include "Application/SceneObjects/Ui/BeatUi.h"
+
 #include<imgui.h>
 
 GameScene::GameScene() {
+    // このシーンで使うスプライトオブジェクトの作成
+    spriteObjects_.clear();
+    spriteObjects_["BeatUi"].push_back(CreateObject<SpriteObject>());
+    spriteObjects_["MeasureBar"].push_back(CreateObject<SpriteObject>());
+    for (int i = 0; i < 16; ++i) {
+        spriteObjects_["Note"].push_back(CreateObject<SpriteObject>());
+    }
+
+    // プレイヤーオブジェクトの作成
     player_ = CreateObject<Player>();
+    // システムオブジェクトの作成
     mapManager_ = CreateObject<MapManager>();
     defaultCameraPos_ = { 0.0f, 15.0f, -15.0f };
+    // リズムトリガーの作成
+    rhythmTrigger_ = std::make_unique<RhythmTrigger>(beatScheduler_);
+
+    // UIオブジェクトの作成
+    beatUi_ = std::make_unique<BeatUi>(
+        *(spriteObjects_["BeatUi"].back()),
+        *(spriteObjects_["MeasureBar"].back()),
+        spriteObjects_["Note"],
+        beatScheduler_,
+        *(rhythmTrigger_.get()));
 }
 
 void GameScene::Initialize(EngineSystem* engine) {
     BaseScene::Initialize(engine);
+    //* SceneObjects *//
+    // プレイヤーの初期化
+    player_->Initialize();
 
+    //* AppSystems *//
     // マップの初期化（10x10）
     mapManager_->Initialize(10, 10);
-
     // カメラコントローラーの初期化
     cameraController_.Initialize();
     cameraController_.SetCameraWork<FollowCamera>(*(cameraManager_.get()), player_->GetTransform(), defaultCameraPos_, 0.1f);
     // ビートスケジューラーの初期化（4拍子）
     beatScheduler_.Initialize(4);
+    // リズムトリガーの初期化
+    rhythmTrigger_->Initialize();
+
+    //* SceneUi *//
+    // UIの初期化
+    beatUi_->Initialize();
 }
 
 void GameScene::Update() {
+    
     cameraController_.Update();
     beatScheduler_.Update();
+    rhythmTrigger_->Update();
+
+    beatUi_->Update();
     BaseScene::Update();
 }
 

@@ -278,11 +278,11 @@
     <ClCompile Include="Application\Utility\MatsumotoUtility.cpp" />
     <ClCompile Include="Application\SceneObjects\CameraController\FollowCamera.cpp" />
     <ClCompile Include="Application\SceneObjects\Map\MapTile.cpp" />
-    <ClCompile Include="Application\SceneObjects\BeatController\BeatController.cpp" />
     <ClCompile Include="Application\SceneObjects\Map\MapManager.cpp" />
     <ClCompile Include="Application\SceneObjects\BeatController\Measure.cpp" />
     <ClCompile Include="Application\SceneObjects\BeatController\BeatScheduler.cpp" />
     <ClCompile Include="Application\SceneObjects\Ui\BeatUi.cpp" />
+    <ClCompile Include="Application\SceneObjects\RhythmController\RhythmTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -732,12 +732,12 @@
     <ClInclude Include="Application\SceneObjects\CameraController\AllCameraWork.h" />
     <ClInclude Include="Application\SceneObjects\Map\GridMap.h" />
     <ClInclude Include="Application\SceneObjects\Map\MapTile.h" />
-    <ClInclude Include="Application\SceneObjects\BeatController\BeatController.h" />
     <ClInclude Include="Application\SceneObjects\Map\MapManager.h" />
     <ClInclude Include="Application\SceneObjects\BeatController\Measure.h" />
     <ClInclude Include="Application\SceneObjects\BeatController\BeatScheduler.h" />
     <ClInclude Include="Application\Utility\RingBuffer.h" />
     <ClInclude Include="Application\SceneObjects\Ui\BeatUi.h" />
+    <ClInclude Include="Application\SceneObjects\RhythmController\RhythmTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

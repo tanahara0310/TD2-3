@@ -1,5 +1,10 @@
 #include "Measure.h"
 
+Measure::Measure() {
+    beatsPerMeasure_ = 4; // デフォルトは4拍子
+    RecalculateBeatPositions();
+}
+
 Measure::Measure(int beatsPerMeasure) :
     beatsPerMeasure_(beatsPerMeasure){
     RecalculateBeatPositions();

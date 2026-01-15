@@ -4,6 +4,8 @@
 /// @brief 一小節に含まれる拍子の位置を0.0～1.0の範囲で管理するクラス
 class Measure final{
 public:
+    /// @brief デフォルトコンストラクタ、4拍子で初期化
+    Measure();
     /// @brief 一小節に含まれる拍数で初期化、等間隔に拍を配置する
     explicit Measure(int beatsPerMeasure);
     ~Measure() = default;

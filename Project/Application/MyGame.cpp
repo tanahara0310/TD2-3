@@ -44,6 +44,8 @@ void MyGame::Initialize()
 		gameDebugUI->SetSceneManager(sceneManager_.get());
 	}
 #endif
+
+    KeyBindConfig::Instance().Initialize(GetEngineSystem());
 }
 
 void MyGame::Finalize()

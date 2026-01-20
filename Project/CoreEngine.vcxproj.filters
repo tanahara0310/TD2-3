@@ -275,7 +275,14 @@
     <ClCompile Include="Application\Scene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
-    <ClCompile Include="Engine\Graphics\Line\LineManager.cpp" />
+    <ClCompile Include="Application\SceneObject\CameraController\CameraController.cpp" />
+    <ClCompile Include="Application\SceneObject\CameraController\FollowCamera.cpp" />
+    <ClCompile Include="Application\Utility\KeyBindConfig.cpp" />
+    <ClCompile Include="Application\Utility\MatsumotoUtility.cpp" />
+    <ClCompile Include="Application\Utility\Command\SceneChangeCommand.cpp" />
+    <ClCompile Include="Application\Utility\Command\SceneCommandExecutor.cpp" />
+    <ClCompile Include="Application\Utility\BulletObject\BulletModel.cpp" />
+    <ClCompile Include="Application\Utility\BulletObject\BulletObjectContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -715,7 +722,19 @@
     <ClInclude Include="Application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="Application\Scene\ResultScene\ResultScene.h" />
     <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
-    <ClInclude Include="Engine\Graphics\Line\LineManager.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\AllCameraWork.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\CameraController.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\FollowCamera.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\ICameraWork.h" />
+    <ClInclude Include="Application\Utility\KeyBindConfig.h" />
+    <ClInclude Include="Application\Utility\MatsumotoUtility.h" />
+    <ClInclude Include="Application\Utility\RingBuffer.h" />
+    <ClInclude Include="Application\Utility\Command\ISceneCommand.h" />
+    <ClInclude Include="Application\Utility\Command\SceneAllCommand.h" />
+    <ClInclude Include="Application\Utility\Command\SceneChangeCommand.h" />
+    <ClInclude Include="Application\Utility\Command\SceneCommandExecutor.h" />
+    <ClInclude Include="Application\Utility\BulletObject\BulletObjectContainer.h" />
+    <ClInclude Include="Application\Utility\BulletObject\BulletModel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

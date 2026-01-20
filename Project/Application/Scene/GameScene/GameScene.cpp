@@ -4,6 +4,8 @@
 #include "Engine/Graphics/Render/RenderManager.h"
 #include "Engine/Graphics/TextureManager.h"
 
+#include "Application/Utility/KeyBindConfig.h"
+
 namespace CoreEngine
 {
 void GameScene::Initialize(EngineSystem* engine)
@@ -23,7 +25,8 @@ void GameScene::Initialize(EngineSystem* engine)
 
 void GameScene::OnUpdate()
 {
-	// ゲームシーンの更新処理
+    // 入力処理更新
+    KeyBindConfig::Instance().Update();
 }
 
 void GameScene::Draw()

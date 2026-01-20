@@ -1,8 +1,11 @@
-#include "CommandManager.h"
+﻿#include "CommandManager.h"
 #include "Engine/Utility/Logger/Logger.h"
 
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void CommandManager::Initialize(ID3D12Device* device)
 {
 	device_ = device;
@@ -127,4 +130,5 @@ void CommandManager::CreateFenceToEvent()
 	for (UINT i = 0; i < kFrameCount; ++i) {
 		fenceValues_[i] = 0;
 	}
+}
 }

@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "IInputDevice.h"
 #include <Xinput.h>
 
 /// @brief ゲームパッドのボタンを表す列挙型
+
+namespace CoreEngine
+{
 enum class GamepadButton {
 
     A = XINPUT_GAMEPAD_A, // Aボタン
@@ -86,3 +89,4 @@ private: // メンバ変数
     XINPUT_STATE prevState_ {}; // 前フレームの状態
     bool isConnected_ = false; // 接続状態
 };
+}

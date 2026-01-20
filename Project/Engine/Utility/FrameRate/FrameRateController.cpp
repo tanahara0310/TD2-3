@@ -1,6 +1,9 @@
-#include "FrameRateController.h"
+﻿#include "FrameRateController.h"
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void FrameRateController::Initialize()
 {
     // 時刻の初期化
@@ -99,4 +102,5 @@ void FrameRateController::UpdateFPSCalculation()
 
     // 最終的な表示値も目標FPSでクランプ（表示上の安定性向上）
     currentFPS_ = std::min(currentFPS_, kTargetFPS);
+}
 }

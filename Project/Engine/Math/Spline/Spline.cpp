@@ -3,8 +3,11 @@
 #include <algorithm>
 #include <cmath>
 
+namespace CoreEngine
+{
+
 // 新しい数学ライブラリを使用
-using namespace MathCore;
+using namespace CoreEngine::MathCore;
 
 Spline::Spline(SplineType type)
     : splineType_(type)
@@ -356,4 +359,5 @@ void Spline::GetSegmentInfo(float t, int& segmentIndex, float& localT) const
         segmentIndex = static_cast<int>(numSegments) - 1;
         localT = 1.0f;
     }
+}
 }

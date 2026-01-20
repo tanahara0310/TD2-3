@@ -1,8 +1,11 @@
-#include "SizeModule.h"
+﻿#include "SizeModule.h"
 #include "../ParticleSystem.h"
 #include <algorithm>
 
 // コンストラクタでデフォルトパラメータを設定
+
+namespace CoreEngine
+{
 SizeModule::SizeModule() {
     sizeData_.endSize = 0.0f;
     sizeData_.sizeOverLifetime = true;
@@ -153,4 +156,5 @@ float SizeModule::ApplyRandomness(float baseSize, float randomness)
     float randomFactor = 1.0f + random_.GetFloat(-randomness, randomness);
     
     return baseSize * randomFactor;
+}
 }

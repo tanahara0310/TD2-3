@@ -1,8 +1,11 @@
-#include "Animator.h"
+﻿#include "Animator.h"
 #include "AnimationUtils.h"
 #include <Math/MathCore.h>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 Animator::Animator(const Animation& animation, bool looping)
     : animation_(&animation)
     , animationTime_(0.0f)
@@ -56,4 +59,5 @@ Matrix4x4 Animator::GetNodeLocalMatrix(const std::string& nodeName) const {
         Mat::Multiply(Mat::Scale(scale), Quat::MakeRotateMatrix(rotate)),
         Mat::Translation(translate)
     );
+}
 }

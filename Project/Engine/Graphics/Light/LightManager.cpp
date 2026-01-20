@@ -1,4 +1,4 @@
-#include "LightManager.h"
+﻿#include "LightManager.h"
 
 #include "LightData.h"
 #include "MathCore.h"
@@ -10,6 +10,9 @@
 #include <imgui.h>
 #endif
 
+
+namespace CoreEngine
+{
 void LightManager::Initialize(ID3D12Device* device, ResourceFactory* resourceFactory, DescriptorManager* descriptorManager)
 {
     // デバイスとファクトリを保存
@@ -374,4 +377,5 @@ void LightManager::ClearAllLights()
     directionalLights_.clear();
     pointLights_.clear();
     spotLights_.clear();
+}
 }

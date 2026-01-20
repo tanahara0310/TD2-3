@@ -6,10 +6,14 @@
 #include <deque>
 #include <chrono>
 
+/// @brief コンソールメッセージのログレベル
+
+namespace CoreEngine
+{
+
 // 前方宣言
 class EngineSystem;
 
-/// @brief コンソールメッセージのログレベル
 enum class ConsoleLogLevel {
     Info,       // 情報
     Warning,    // 警告
@@ -128,3 +132,4 @@ private:
     /// @brief システム状態を表示
     void ShowSystemStatus();
 };
+}

@@ -1,8 +1,11 @@
-#include "RadialBlur.h"
+﻿#include "RadialBlur.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void RadialBlur::Initialize(DirectXCommon* dxCommon)
 {
     PostEffectBase::Initialize(dxCommon);
@@ -133,4 +136,5 @@ void RadialBlur::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

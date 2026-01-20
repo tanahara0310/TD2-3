@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 #include "Skeleton.h"
 #include "Engine/Graphics/Model/Animation/Animation.h"
 #include "Engine/Graphics/Model/Animation/IAnimationController.h"
 
 /// @brief スケルトンアニメーションコントローラー
 /// スケルトン（ボーン）アニメーションを制御する
+
+namespace CoreEngine
+{
 class SkeletonAnimator : public IAnimationController {
 public:
     /// @brief コンストラクタ
@@ -60,3 +63,4 @@ private:
     // ループ再生フラグ
     bool isLooping_;
 };
+}

@@ -1,4 +1,4 @@
-#include "PostEffectPresetManager.h"
+﻿#include "PostEffectPresetManager.h"
 #include "PostEffectManager.h"
 #include "Effect/Blur.h"
 #include "Effect/RadialBlur.h"
@@ -8,6 +8,7 @@
 #include "Effect/Shockwave.h"
 #include "Effect/RasterScroll.h"
 #include "Effect/FadeEffect.h"
+#include "Effect/Bloom.h"
 #include <filesystem>
 #include <iostream>
 
@@ -15,6 +16,9 @@
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #endif
 
+
+namespace CoreEngine
+{
 bool PostEffectPresetManager::SavePreset(const PostEffectManager* postEffectManager, const std::string& filePath)
 {
     json presetData;
@@ -32,6 +36,7 @@ bool PostEffectPresetManager::SavePreset(const PostEffectManager* postEffectMana
     enabledStates["Invert"] = postEffectManager->IsEffectEnabled("Invert");
     enabledStates["RasterScroll"] = postEffectManager->IsEffectEnabled("RasterScroll");
     enabledStates["FadeEffect"] = postEffectManager->IsEffectEnabled("FadeEffect");
+    enabledStates["Bloom"] = postEffectManager->IsEffectEnabled("Bloom");
     presetData["enabledStates"] = enabledStates;
 
     // Blurのパラメータ保存
@@ -134,6 +139,17 @@ bool PostEffectPresetManager::SavePreset(const PostEffectManager* postEffectMana
         presetData["fadeEffect"] = fadeJson;
     }
 
+    // Bloomのパラメータ保存
+    if (auto* bloom = const_cast<PostEffectManager*>(postEffectManager)->GetEffect<Bloom>("Bloom")) {
+        auto params = bloom->GetParams();
+        json bloomJson;
+        bloomJson["threshold"] = params.threshold;
+        bloomJson["intensity"] = params.intensity;
+        bloomJson["blurRadius"] = params.blurRadius;
+        bloomJson["softKnee"] = params.softKnee;
+        presetData["bloom"] = bloomJson;
+    }
+
     presetData["version"] = "1.0";
 
     bool success = JsonManager::GetInstance().SaveJson(filePath, presetData);
@@ -177,6 +193,7 @@ bool PostEffectPresetManager::LoadPreset(PostEffectManager* postEffectManager, c
         postEffectManager->SetEffectEnabled("Invert", JsonManager::SafeGet(enabledStates, "Invert", false));
         postEffectManager->SetEffectEnabled("RasterScroll", JsonManager::SafeGet(enabledStates, "RasterScroll", false));
         postEffectManager->SetEffectEnabled("FadeEffect", JsonManager::SafeGet(enabledStates, "FadeEffect", true));
+        postEffectManager->SetEffectEnabled("Bloom", JsonManager::SafeGet(enabledStates, "Bloom", false));
     }
 
     // Blurのパラメータ読み込み
@@ -320,6 +337,19 @@ bool PostEffectPresetManager::LoadPreset(PostEffectManager* postEffectManager, c
             fadeEffect->SetGlitchIntensity(JsonManager::SafeGet(fadeJson, "glitchIntensity", 0.5f));
             fadeEffect->SetPortalSize(JsonManager::SafeGet(fadeJson, "portalSize", 0.3f));
             fadeEffect->SetColorShift(JsonManager::SafeGet(fadeJson, "colorShift", 0.0f));
+        }
+    }
+
+    // Bloomのパラメータ読み込み
+    if (presetData.contains("bloom")) {
+        auto bloomJson = presetData["bloom"];
+        if (auto* bloom = postEffectManager->GetEffect<Bloom>("Bloom")) {
+            Bloom::BloomParams params;
+            params.threshold = JsonManager::SafeGet(bloomJson, "threshold", 1.0f);
+            params.intensity = JsonManager::SafeGet(bloomJson, "intensity", 1.0f);
+            params.blurRadius = JsonManager::SafeGet(bloomJson, "blurRadius", 1.0f);
+            params.softKnee = JsonManager::SafeGet(bloomJson, "softKnee", 1.0f);
+            bloom->SetParams(params);
         }
     }
 
@@ -552,4 +582,5 @@ bool PostEffectPresetManager::SaveCurrentPreset(PostEffectManager* postEffectMan
     }
 
     return SavePreset(postEffectManager, currentPresetPath_);
+}
 }

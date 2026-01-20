@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #include <vector>
@@ -7,6 +7,9 @@
 #include "Engine/Utility/Logger/Logger.h"
 
 // RootSignatureの管理クラス
+
+namespace CoreEngine
+{
 class RootSignatureManager {
 public:
     /// @brief ルートパラメータの種類
@@ -176,3 +179,4 @@ private:
     /// @brief ルートディスクリプタを追加する内部実装
     void AddRootDescriptor(D3D12_ROOT_PARAMETER_TYPE type, const RootDescriptorConfig& config);
 };
+}

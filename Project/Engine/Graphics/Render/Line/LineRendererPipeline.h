@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/Graphics/Render/IRenderer.h"
 #include "Engine/Graphics/PipelineStateManager.h"
@@ -17,6 +17,9 @@
 class ICamera;
 
 // Line用 Root Parameter インデックス定数
+
+namespace CoreEngine
+{
 namespace LineRendererRootParam {
     static constexpr UINT kWVP = 0;  // WVP行列用CBV (b0, VS)
 }
@@ -113,3 +116,4 @@ private:
     // バッチング用
     std::vector<Line> lineBatch_;
 };
+}

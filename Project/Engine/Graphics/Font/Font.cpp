@@ -1,9 +1,12 @@
-#include "Font.h"
+﻿#include "Font.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Common/Core/DescriptorManager.h"
 #include "Engine/Utility/Logger/Logger.h"
 #include <vector>
 
+
+namespace CoreEngine
+{
 Font::~Font() {
     if (face_) {
         FT_Done_Face(face_);
@@ -194,4 +197,5 @@ bool Font::CreateGlyphTexture(const FT_Bitmap& bitmap, Glyph* glyph) {
     glyph->uploadBuffer = uploadBuffer;  // uploadBufferを保持してコマンド完了まで維持
 
     return true;
+}
 }

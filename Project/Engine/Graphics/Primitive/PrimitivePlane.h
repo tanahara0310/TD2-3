@@ -6,11 +6,16 @@
 #include "MathCore.h"
 
 // 前方宣言
-class DirectXCommon;
-class ResourceFactory;
+namespace CoreEngine {
+    class DirectXCommon;
+    class ResourceFactory;
+}
 
 /// @brief プリミティブな平面ジオメトリ
 /// @details 頂点を直接指定して描画する平面（丸影などに使用）
+
+namespace CoreEngine
+{
 class PrimitivePlane {
 public:
     /// @brief 頂点データ構造体
@@ -28,7 +33,7 @@ public:
     /// @param resourceFactory リソースファクトリ
     /// @param width 幅
     /// @param height 高さ（奥行き方向）
-    void Initialize(DirectXCommon* dxCommon, ResourceFactory* resourceFactory, 
+    void Initialize(CoreEngine::DirectXCommon* dxCommon, CoreEngine::ResourceFactory* resourceFactory, 
                     float width = 1.0f, float height = 1.0f);
 
     /// @brief 頂点バッファビューを取得
@@ -52,8 +57,8 @@ private:
     /// @brief バッファを作成
     void CreateBuffers();
 
-    DirectXCommon* dxCommon_ = nullptr;
-    ResourceFactory* resourceFactory_ = nullptr;
+    CoreEngine::DirectXCommon* dxCommon_ = nullptr;
+    CoreEngine::ResourceFactory* resourceFactory_ = nullptr;
 
     // 頂点バッファ
     Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer_;
@@ -72,3 +77,4 @@ private:
     float currentWidth_ = 1.0f;
     float currentHeight_ = 1.0f;
 };
+}

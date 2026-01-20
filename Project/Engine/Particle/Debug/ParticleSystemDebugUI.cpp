@@ -6,6 +6,9 @@
 #include "Engine/Graphics/Model/ModelResource.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 
+
+namespace CoreEngine
+{
 bool ParticleSystemDebugUI::ShowImGui(ParticleSystem* particleSystem) {
 	if (!particleSystem) return false;
 
@@ -176,6 +179,8 @@ void ParticleSystemDebugUI::ShowStatistics(ParticleSystem* particleSystem) {
 	if (ImGui::Button("統計リセット")) {
 		particleSystem->ResetStatistics();
 	}
+}
+
 }
 
 #endif // _DEBUG

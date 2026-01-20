@@ -1,5 +1,8 @@
-#include "CrashDump.h"
+﻿#include "CrashDump.h"
 
+
+namespace CoreEngine
+{
 void CrashDump::Register()
 
 { // SHE(構造化例外)のコールバック関数を登録
@@ -28,4 +31,5 @@ LONG WINAPI CrashDump::HandleException(EXCEPTION_POINTERS* exception)
 
     // 他に関連づけられているSEH例外ハンドラがあれば実行。通常はプロセスを終了
     return EXCEPTION_EXECUTE_HANDLER;
+}
 }

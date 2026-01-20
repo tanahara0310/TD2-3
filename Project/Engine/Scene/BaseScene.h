@@ -6,29 +6,43 @@
 #include "Engine/Audio/SoundManager.h"
 #include <memory>
 
-class EngineSystem;
-class CameraManager;
-class DirectXCommon;
-class RenderManager;
-class GridRenderer;
+// 前方宣言
+namespace CoreEngine {
+    class EngineSystem;
+    class CameraManager;
+    class DirectXCommon;
+    class RenderManager;
+    class GridRenderer;
+}
 
 /// @brief シーンの基底クラス（共通処理を実装）
+
+namespace CoreEngine
+{
 class BaseScene : public IScene {
 public:
 
    virtual ~BaseScene() = default;
 
    /// @brief 初期化（共通処理 + 派生クラスの初期化）
-   virtual void Initialize(EngineSystem* engine) override;
+   virtual void Initialize(CoreEngine::EngineSystem* engine) override;
 
    /// @brief 更新（共通処理 + 派生クラスの更新）
-   virtual void Update() override;
+   /// @note このメソッドはfinalです。派生クラスはOnUpdate()をオーバーライドしてください
+   virtual void Update() override final;
 
    /// @brief 描画処理（共通処理 + 派生クラスの描画）
    virtual void Draw() override;
 
    /// @brief 解放（共通処理 + 派生クラスの解放）
    virtual void Finalize() override;
+
+protected:
+   /// @brief 派生クラスでオーバーライドする更新処理（GameObjectの更新前）
+   virtual void OnUpdate() {}
+
+   /// @brief 派生クラスでオーバーライドする後処理（GameObjectの更新後、クリーンアップ前）
+   virtual void OnLateUpdate() {}
 
 private:
 
@@ -72,10 +86,11 @@ protected:
 
    /// @brief シーンのBGMを登録し、トランジション時の自動フェードを有効化
    /// @param bgm BGMのSoundResourceポインタ（現在のSetVolume()で設定した音量が使用されます）
-   void RegisterSceneBGM(Sound* bgm);
+   void RegisterSceneBGM(std::unique_ptr<SoundManager::SoundResource>* bgm);
 
 private:
    // BGM管理用
-   Sound* sceneBGM_ = nullptr;
+   std::unique_ptr<SoundManager::SoundResource>* sceneBGM_ = nullptr;
    float baseBGMVolume_ = 1.0f;
 };
+}

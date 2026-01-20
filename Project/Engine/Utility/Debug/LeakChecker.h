@@ -1,5 +1,8 @@
-#pragma once
+﻿#pragma once
 
+
+namespace CoreEngine
+{
 class LeakChecker {
 public:
     // スコープ終了時にリークチェックが実行される
@@ -7,3 +10,4 @@ public:
 
 private: // メンバ変数
 };
+}

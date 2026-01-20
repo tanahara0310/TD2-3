@@ -9,12 +9,17 @@
 #include <memory>
 
 // 前方宣言
-class IDrawable;
-class GameObject;
-class ICamera;
-class CameraManager;
+namespace CoreEngine {
+    class IDrawable;
+    class GameObject;
+    class ICamera;
+    class CameraManager;
+}
 
 /// @brief レンダリング全体を自動管理するマネージャー
+
+namespace CoreEngine
+{
 class RenderManager {
 public:
     /// @brief 初期化
@@ -33,11 +38,13 @@ public:
     
     /// @brief カメラマネージャーを設定
     /// @param cameraManager カメラマネージャー
-    void SetCameraManager(CameraManager* cameraManager);
+    void SetCameraManager(CoreEngine::CameraManager* cameraManager);
+    
+    
     
     /// @brief カメラを設定（従来の互換性維持版）
     /// @param camera カメラオブジェクト
-    void SetCamera(const ICamera* camera);
+    void SetCamera(const CoreEngine::ICamera* camera);
     
     /// @brief コマンドリストを設定（フレームごとに1回）
     /// @param cmdList コマンドリスト
@@ -45,7 +52,7 @@ public:
     
     /// @brief 描画対象オブジェクトをキューに追加
     /// @param obj 描画するGameObject
-    void AddDrawable(GameObject* obj);
+    void AddDrawable(CoreEngine::GameObject* obj);
     
     /// @brief キューに登録された全オブジェクトを描画
     void DrawAll();
@@ -55,7 +62,7 @@ public:
     
 private:
     struct DrawCommand {
-        GameObject* object;
+        CoreEngine::GameObject* object;
         RenderPassType passType;
         BlendMode blendMode;
     };
@@ -65,8 +72,8 @@ private:
     
     // フレームごとに設定されるコンテキスト
     ID3D12GraphicsCommandList* cmdList_ = nullptr;
-    CameraManager* cameraManager_ = nullptr;
-    const ICamera* camera_ = nullptr; // 従来の互換性維持用
+    CoreEngine::CameraManager* cameraManager_ = nullptr;
+    const CoreEngine::ICamera* camera_ = nullptr; // 従来の互換性維持用
     
     /// @brief 描画パスごとにソート
     void SortDrawQueue();
@@ -74,5 +81,6 @@ private:
     /// @brief 描画パスタイプに応じた適切なカメラを取得
     /// @param passType 描画パスタイプ
     /// @return カメラポインタ
-    const ICamera* GetCameraForPass(RenderPassType passType);
+    const CoreEngine::ICamera* GetCameraForPass(RenderPassType passType);
 };
+}

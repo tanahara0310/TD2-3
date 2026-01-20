@@ -3,9 +3,10 @@
 #include "Engine/Camera/ICamera.h"
 #include "MathCore.h"
 
-using namespace MathCore;
 
-void LineDrawable::Initialize(LineRendererPipeline* rendererPipeline) {
+namespace CoreEngine
+{
+void LineDrawable::Initialize(CoreEngine::LineRendererPipeline* rendererPipeline) {
     rendererPipeline_ = rendererPipeline;
     lines_.clear();
 }
@@ -14,7 +15,7 @@ void LineDrawable::Update() {
     // ライン管理クラスなので、特に更新処理はない
 }
 
-void LineDrawable::Draw(const ICamera* camera) {
+void LineDrawable::Draw(const CoreEngine::ICamera* camera) {
     if (!camera || !rendererPipeline_ || lines_.empty()) {
         return;
     }
@@ -34,4 +35,5 @@ void LineDrawable::AddLines(const std::vector<Line>& lines) {
 
 void LineDrawable::Clear() {
     lines_.clear();
+}
 }

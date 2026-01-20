@@ -1,7 +1,10 @@
-#include "Sepia.h"
+﻿#include "Sepia.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void Sepia::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
@@ -155,4 +158,5 @@ void Sepia::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
+
+namespace CoreEngine
+{
 class RasterScroll : public PostEffectBase {
 public:
     /// @brief ラスタースクロールパラメータ構造体
@@ -59,3 +62,4 @@ private:
     // アニメーション用内部変数
     float accumulatedTime_ = 0.0f;
 };
+}

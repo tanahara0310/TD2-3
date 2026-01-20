@@ -1,4 +1,4 @@
-#include "ModelManager.h"
+﻿#include "ModelManager.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/TextureManager.h"
 #include "Animation/AnimationLoader.h"
@@ -9,6 +9,9 @@
 #include <filesystem>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void ModelManager::Initialize(DirectXCommon* dxCommon, ResourceFactory* factory)
 {
 	assert(dxCommon && factory);
@@ -274,4 +277,5 @@ std::string ModelManager::ResolveFilePath(const std::string& filePath) const
 
 	// それ以外の場合はbasePath_を前に追加
 	return basePath_ + filePath;
+}
 }

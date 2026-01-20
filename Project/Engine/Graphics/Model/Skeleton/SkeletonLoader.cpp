@@ -1,6 +1,9 @@
-#include "SkeletonLoader.h"
+﻿#include "SkeletonLoader.h"
 #include "Engine/Math/MathCore.h"
 
+
+namespace CoreEngine
+{
 Skeleton SkeletonLoader::CreateSkeleton(const Node& rootNode) {
 	Skeleton skeleton;
 
@@ -54,4 +57,5 @@ int32_t SkeletonLoader::CreateJoint(const Node& node, const std::optional<int32_
 
 	// 自身のIndexを返す
 	return joint.index;
+}
 }

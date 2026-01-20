@@ -1,7 +1,10 @@
-#pragma once
+﻿#pragma once
 
 #include "../PostEffectBase.h"
 
+
+namespace CoreEngine
+{
 class Invert : public PostEffectBase {
 public:
     /// @brief ImGuiでパラメータを調整
@@ -14,3 +17,4 @@ protected:
         return pixelShaderPath;
     }
 };
+}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "MathCore.h"
 #include <d3d12.h>
@@ -6,6 +6,9 @@
 #include <string>
 
 // 定数バッファ用データ
+
+namespace CoreEngine
+{
 struct ConstantBufferDataWorldTransform {
     Matrix4x4 matWorld; // ワールド変換行列
 };
@@ -112,3 +115,4 @@ private:
     // 回転モード
     RotationMode rotationMode_ = RotationMode::Euler;
 };
+}

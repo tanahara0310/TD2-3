@@ -1,8 +1,11 @@
-#include "WinApp.h"
+﻿#include "WinApp.h"
 
 #pragma comment(lib, "winmm.lib")
 
 // 静的メンバの初期化
+
+namespace CoreEngine
+{
 WinApp* WinApp::instance_ = nullptr;
 
 void WinApp::Initialize(int32_t width, int32_t height, const wchar_t* title)
@@ -140,4 +143,5 @@ void WinApp::CloseAppWindow()
 	CloseWindow(hwnd_);
 	UnregisterClass(wc_.lpszClassName, wc_.hInstance);
 	instance_ = nullptr; // インスタンスポインタをクリア
+}
 }

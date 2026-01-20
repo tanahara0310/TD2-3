@@ -6,8 +6,10 @@
 #include "Engine/Particle/Modules/VelocityModule.h"
 #include "Engine/Particle/Modules/RotationModule.h"
 
-using namespace MathCore;
 
+
+namespace CoreEngine
+{
 void ParticleEmitter::Initialize(
 	MainModule* mainModule,
 	EmissionModule* emissionModule,
@@ -66,7 +68,7 @@ Particle ParticleEmitter::CreateParticle(const EulerTransform& emitterTransform)
 
 		// 正規化された方向ベクトルに速度の大きさを掛ける
 			 // （VelocityModuleが既に正規化済みのため、直接スカラー倍）
-		particle.velocity = Vector::Multiply(startSpeed, particle.velocity);
+		particle.velocity = CoreEngine::MathCore::Vector::Multiply(startSpeed, particle.velocity);
 	}
 
 	// === 回転速度の設定 ===
@@ -76,4 +78,5 @@ Particle ParticleEmitter::CreateParticle(const EulerTransform& emitterTransform)
 	}
 
 	return particle;
+}
 }

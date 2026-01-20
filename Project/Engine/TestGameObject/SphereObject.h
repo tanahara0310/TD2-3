@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/ObjectCommon/GameObject.h"
 
 /// @brief Sphereモデルオブジェクト
+
+namespace CoreEngine
+{
 class SphereObject : public GameObject {
 public:
     /// @brief 初期化処理
@@ -28,3 +31,4 @@ public:
     /// @brief モデルを取得
     Model* GetModel() { return model_.get(); }
 };
+}

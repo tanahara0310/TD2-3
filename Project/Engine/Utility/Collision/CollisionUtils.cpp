@@ -3,8 +3,10 @@
 #include <cmath>
 #include <limits>
 
-using namespace MathCore;
+namespace CoreEngine
+{
 
+using namespace CoreEngine::MathCore;
 namespace CollisionUtils {
 
     //================================================
@@ -392,3 +394,4 @@ namespace CollisionUtils {
     }
 
 } // namespace CollisionUtils
+}

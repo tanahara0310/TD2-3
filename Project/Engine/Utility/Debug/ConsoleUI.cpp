@@ -1,4 +1,4 @@
-#include "ConsoleUI.h"
+﻿#include "ConsoleUI.h"
 #include "Engine/EngineSystem/EngineSystem.h"
 
 // コンポーネントのインクルード
@@ -8,6 +8,9 @@
 #include <sstream>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void ConsoleUI::Initialize()
 {
     // 初期メッセージを追加
@@ -358,4 +361,5 @@ void ConsoleUI::ShowSystemStatus()
            particleSystem ? ConsoleLogLevel::Info : ConsoleLogLevel::Error);
     
     AddLog("エンジンシステム: 正常稼働中", ConsoleLogLevel::Info);
+}
 }

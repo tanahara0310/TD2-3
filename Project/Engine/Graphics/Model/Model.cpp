@@ -1,4 +1,4 @@
-#include "Model.h"
+﻿#include "Model.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Camera/ICamera.h"
@@ -11,6 +11,9 @@
 
 #include <cassert>
 
+
+namespace CoreEngine
+{
 namespace {
 	DirectXCommon* sDxCommon_ = nullptr;
 	ResourceFactory* sResourceFactory_ = nullptr;
@@ -314,4 +317,5 @@ bool Model::SwitchAnimationWithBlend(const std::string& animationName, float ble
 	Logger::GetInstance().Log("Animation blending is only supported for SkeletonAnimator", 
 		LogLevel::WARNING, LogCategory::Graphics);
 	return false;
+}
 }

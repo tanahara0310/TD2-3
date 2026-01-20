@@ -1,4 +1,4 @@
-#include "GamepadInput.h"
+﻿#include "GamepadInput.h"
 #include <algorithm> // clamp を使うなら必要
 #include <cassert>
 #include <corecrt_math.h>
@@ -6,6 +6,9 @@
 #pragma comment(lib, "XInput.lib")
 
 // 内部ヘルパー
+
+namespace CoreEngine
+{
 static float NormalizeStickValue(SHORT value, float deadZone)
 {
 
@@ -148,4 +151,5 @@ float GamepadInput::GetRightTrigger() const
 	// XInputのトリガー値は0〜255の範囲
 	const float MAX_TRIGGER_VALUE = 255.0f;
 	return static_cast<float>(state_.Gamepad.bRightTrigger) / MAX_TRIGGER_VALUE;
+}
 }

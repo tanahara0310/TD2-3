@@ -1,4 +1,4 @@
-#include "DirectXCommon.h"
+﻿#include "DirectXCommon.h"
 #include "WinApp/WinApp.h"
 #include "Engine/Utility/Logger/Logger.h"
 #include <iostream>
@@ -7,6 +7,9 @@
 #pragma comment(lib, "dxgi.lib")
 
 // DirectXの初期化
+
+namespace CoreEngine
+{
 void DirectXCommon::Initialize(WinApp* winApp)
 {
 	// ウィンドウズアプリケーション管理
@@ -56,4 +59,5 @@ void DirectXCommon::OnWindowResize(int32_t width, int32_t height)
 
 	Logger::GetInstance().Log(L"Window Resized: " + std::to_wstring(width) + L"x" + std::to_wstring(height),
 		LogLevel::INFO, LogCategory::Graphics);
+}
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "BaseParticleRenderer.h"
 #include "Engine/Graphics/Structs/VertexData.h"
@@ -9,6 +9,9 @@
 class ParticleSystem;
 
 /// @brief ビルボードパーティクル専用レンダラー
+
+namespace CoreEngine
+{
 class ParticleRenderer : public BaseParticleRenderer {
 public:
     ParticleRenderer() = default;
@@ -41,3 +44,4 @@ private:
     /// @brief 共有頂点バッファの作成
     void CreateSharedVertexBuffer();
 };
+}

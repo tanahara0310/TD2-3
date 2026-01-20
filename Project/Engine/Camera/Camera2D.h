@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -7,6 +7,9 @@
 #include "Camera/ICamera.h"
 
 /// @brief 2D用カメラクラス（正射影、深度なし）
+
+namespace CoreEngine
+{
 class Camera2D : public ICamera {
 public:
 	/// @brief コンストラクタ（スクリーンサイズはWinAppから自動取得）
@@ -85,3 +88,4 @@ private:
 	Matrix4x4 viewMatrix_;                    // ビュー行列
 	Matrix4x4 projectionMatrix_;              // 射影行列（正射影）
 };
+}

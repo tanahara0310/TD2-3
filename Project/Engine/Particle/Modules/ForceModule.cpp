@@ -1,8 +1,11 @@
-#include "ForceModule.h"
+﻿#include "ForceModule.h"
 #include "../ParticleSystem.h" // Particle構造体のために必要
 #include <algorithm>
 
 // コンストラクタでデフォルトパラメータを設定
+
+namespace CoreEngine
+{
 ForceModule::ForceModule() {
     forceData_.gravity = { 0.0f, -9.8f, 0.0f };
     forceData_.wind = { 0.0f, 0.0f, 0.0f };
@@ -80,3 +83,4 @@ bool ForceModule::ShowImGui() {
     return changed;
 }
 #endif
+}

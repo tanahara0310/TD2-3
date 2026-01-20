@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include "Math/Vector/Vector3.h"
 
 /// @brief ライン構造体（汎用的なライン表現）
+
+namespace CoreEngine
+{
 struct Line {
     Vector3 start;   // 開始点
     Vector3 end;     // 終了点
@@ -22,3 +25,4 @@ struct Line {
         : start(s), end(e), color(c), alpha(a) 
     {}
 };
+}

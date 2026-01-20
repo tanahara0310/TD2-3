@@ -4,9 +4,14 @@
 #include "Engine/Graphics/PipelineStateManager.h"
 
 // 前方宣言
-class ICamera;
+namespace CoreEngine {
+    class ICamera;
+}
 
 /// @brief レンダラーの基底インターフェース
+
+namespace CoreEngine
+{
 class IRenderer {
 public:
     virtual ~IRenderer() = default;
@@ -29,5 +34,6 @@ public:
     
     /// @brief カメラを設定
     /// @param camera カメラオブジェクト
-    virtual void SetCamera(const ICamera* camera) = 0;
+    virtual void SetCamera(const CoreEngine::ICamera* camera) = 0;
 };
+}

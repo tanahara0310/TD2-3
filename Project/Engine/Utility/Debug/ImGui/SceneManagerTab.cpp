@@ -1,9 +1,12 @@
-#include "SceneManagerTab.h"
+﻿#include "SceneManagerTab.h"
 #include "Engine/Scene/SceneManager.h"
 
 #include <imgui.h>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void SceneManagerTab::Initialize(SceneManager* sceneManager)
 {
     sceneManager_ = sceneManager;
@@ -236,4 +239,5 @@ void SceneManagerTab::DrawSceneList()
     ImGui::EndChild();
 
     ImGui::Unindent(10.0f);
+}
 }

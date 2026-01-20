@@ -1,4 +1,4 @@
-#include "GameDebugUI.h"
+﻿#include "GameDebugUI.h"
 
 #include "Utility/Debug/ImGui/DockingUI.h"
 #include <EngineSystem.h>
@@ -8,6 +8,9 @@
 #include <Psapi.h>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void GameDebugUI::Initialize(EngineSystem* engine, DockingUI* dockingUI)
 {
 	assert(engine != nullptr);
@@ -429,4 +432,5 @@ void GameDebugUI::RegisterWindowsForDocking()
 
 	// シーンマネージャーを下部右に配置
 	dockingUI_->RegisterWindow(sceneManagerWindow, DockArea::BottomRight);
+}
 }

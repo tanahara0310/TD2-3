@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -7,6 +7,9 @@ struct Particle;
 
 /// @brief パーティクルのノイズモジュール（Unity Noise Module相当）
 /// パーリンノイズによる位置の揺らぎを追加します
+
+namespace CoreEngine
+{
 class NoiseModule : public ParticleModule {
 public:
 	/// @brief ノイズデータ構造体
@@ -74,3 +77,4 @@ private:
 	/// @return グラディエント値
 	float Gradient(int hash, float x, float y, float z);
 };
+}

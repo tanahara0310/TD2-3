@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <wrl.h>
 
 #include <dxcapi.h>
 #pragma comment(lib, "dxcompiler.lib")
 
+
+namespace CoreEngine
+{
 class ShaderCompiler {
 public:
     /// <summary>
@@ -27,3 +30,4 @@ private:
     Microsoft::WRL::ComPtr<IDxcCompiler3> dxcCompiler = nullptr;
     Microsoft::WRL::ComPtr<IDxcIncludeHandler> includeHandler = nullptr;
 };
+}

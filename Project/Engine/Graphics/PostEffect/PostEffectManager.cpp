@@ -1,4 +1,4 @@
-#include "PostEffectManager.h"
+﻿#include "PostEffectManager.h"
 
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Render/Render.h"
@@ -15,6 +15,7 @@
 #include "Effect/Invert.h"
 #include "Effect/RasterScroll.h"
 #include "Effect/FadeEffect.h"
+#include "Effect/Bloom.h"
 #include "PostEffectPresetManager.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
@@ -23,6 +24,9 @@
 // PingPongBuffer実装
 // =============================================================================
 
+
+namespace CoreEngine
+{
 PostEffectManager::PingPongBuffer::PingPongBuffer(DirectXCommon* dxCommon, Render* render)
 	: dxCommon_(dxCommon)
 	, render_(render)
@@ -128,6 +132,7 @@ void PostEffectManager::RegisterAllEffects()
 	RegisterEffect<Sepia>(PostEffectNames::Sepia, false);
 	RegisterEffect<Invert>(PostEffectNames::Invert, false);
 	RegisterEffect<RasterScroll>(PostEffectNames::RasterScroll, false);
+	RegisterEffect<Bloom>(PostEffectNames::Bloom, false);
 }
 
 void PostEffectManager::RegisterEffectInternal(const std::string& name, std::unique_ptr<PostEffectBase> effect)
@@ -305,4 +310,5 @@ void PostEffectManager::DrawImGui()
 D3D12_GPU_DESCRIPTOR_HANDLE PostEffectManager::GetFinalDisplayTextureHandle() const
 {
 	return finalDisplayHandle_;
+}
 }

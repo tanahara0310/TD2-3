@@ -1,9 +1,12 @@
-#include "BaseParticleRenderer.h"
+﻿#include "BaseParticleRenderer.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Camera/ICamera.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void BaseParticleRenderer::Initialize(ID3D12Device* device) {
     device_ = device;
 
@@ -88,4 +91,5 @@ void BaseParticleRenderer::SetupCommonResources(ParticleSystem* particle, D3D12_
     
     // テクスチャを設定（Root Parameter 1）
     cmdList_->SetGraphicsRootDescriptorTable(1, textureHandle);
+}
 }

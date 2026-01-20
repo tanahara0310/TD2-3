@@ -2,8 +2,9 @@
 #include "Engine/Camera/ICamera.h"
 #include <cassert>
 
-using namespace MathCore;
 
+namespace CoreEngine
+{
 void LineRendererPipeline::Initialize(ID3D12Device* device) {
 	// シェーダーコンパイラの初期化
 	shaderCompiler_->Initialize();
@@ -151,7 +152,7 @@ void LineRendererPipeline::DrawLines(ID3D12GraphicsCommandList* cmdList, uint32_
 
 void LineRendererPipeline::SetWVPMatrix(const Matrix4x4& view, const Matrix4x4& proj) {
 	if (wvpData_) {
-		*wvpData_ = Matrix::Multiply(view, proj);
+		*wvpData_ = CoreEngine::MathCore::Matrix::Multiply(view, proj);
 	}
 }
 
@@ -196,4 +197,5 @@ void LineRendererPipeline::FlushBatch() {
 
 void LineRendererPipeline::ClearBatch() {
 	lineBatch_.clear();
+}
 }

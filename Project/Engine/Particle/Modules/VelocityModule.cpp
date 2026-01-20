@@ -1,7 +1,10 @@
 #include "VelocityModule.h"
 #include "../ParticleSystem.h" // Particle構造体のために必要
 
-using namespace MathCore;
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
 
 VelocityModule::VelocityModule() {
 	velocityData_.startSpeed = { 0.0f, 1.0f, 0.0f };
@@ -111,4 +114,5 @@ Vector3 VelocityModule::GenerateRandomDirection() {
 
 	// 正規化（MathCore関数を使用）
 	return Vector::Normalize(direction);
+}
 }

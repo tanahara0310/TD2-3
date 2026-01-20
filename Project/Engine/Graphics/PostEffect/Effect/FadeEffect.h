@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
 /// @brief フェード効果用ポストエフェクトクラス
+
+namespace CoreEngine
+{
 class FadeEffect : public PostEffectBase {
 public:
     /// @brief フェードのタイプ
@@ -107,3 +110,4 @@ private:
     
     float timeAccumulator_ = 0.0f;  // 時間の累積値
 };
+}

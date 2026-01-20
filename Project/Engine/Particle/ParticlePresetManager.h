@@ -5,6 +5,8 @@
 #include "Engine/Utility/JsonManager/JsonManager.h"
 #include "MathCore.h"
 
+namespace CoreEngine
+{
 // 前方宣言
 class ParticleSystem;
 
@@ -47,7 +49,7 @@ public:
 private:
     // UI関連の状態
     char saveFileNameBuffer_[256] = "NewPreset";
-    char directoryPathBuffer_[512] = "Resources/Presets/Particle/";
+    char directoryPathBuffer_[512] = "Assets/Presets/Particle/";
     std::vector<std::string> presetFileList_;
     int selectedPresetIndex_ = -1;
     bool needUpdateFileList_ = true;
@@ -62,3 +64,4 @@ private:
     /// @return 拡張子を除いたファイル名
     std::string GetFileNameWithoutExtension(const std::string& filename);
 };
+}

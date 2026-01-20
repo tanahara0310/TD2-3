@@ -1,4 +1,4 @@
-#include "MainModule.h"
+﻿#include "MainModule.h"
 #include <algorithm>
 #include <cmath>
 
@@ -6,6 +6,9 @@
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #endif
 
+
+namespace CoreEngine
+{
 MainModule::MainModule() {
 	// デフォルト値を設定
 	mainData_.duration = 5.0f;
@@ -209,3 +212,4 @@ bool MainModule::ShowImGui() {
 	return changed;
 }
 #endif
+}

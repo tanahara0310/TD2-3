@@ -8,9 +8,14 @@
 #include <memory>
 
 // 前方宣言
-class LightManager;
+namespace CoreEngine {
+    class LightManager;
+}
 
 // Root Parameter インデックス定数
+
+namespace CoreEngine
+{
 namespace ModelRendererRootParam {
     static constexpr UINT kMaterial = 0;              // b0: Material (PS)
     static constexpr UINT kWVP = 1;                   // b0: TransformationMatrix (VS)
@@ -20,6 +25,7 @@ namespace ModelRendererRootParam {
     static constexpr UINT kDirectionalLights = 5;     // t1: DirectionalLights (PS)
     static constexpr UINT kPointLights = 6;           // t2: PointLights (PS)
     static constexpr UINT kSpotLights = 7;            // t3: SpotLights (PS)
+    static constexpr UINT kEnvironmentMap = 8;        // t4: EnvironmentMap (PS)
 }
 
 /// @brief 通常モデル描画用レンダラー
@@ -34,6 +40,7 @@ public:
     ID3D12RootSignature* GetRootSignature() const { return rootSignatureMg_->GetRootSignature(); }
 
     void SetLightManager(class LightManager* lightManager) { lightManager_ = lightManager; }
+    void SetEnvironmentMap(D3D12_GPU_DESCRIPTOR_HANDLE environmentMapHandle) { environmentMapHandle_ = environmentMapHandle; }
     
 private:
     std::unique_ptr<RootSignatureManager> rootSignatureMg_ = std::make_unique<RootSignatureManager>();
@@ -44,5 +51,7 @@ private:
     BlendMode currentBlendMode_;
     D3D12_GPU_VIRTUAL_ADDRESS cameraCBV_ = 0;
 
-    class LightManager* lightManager_ = nullptr;
+    CoreEngine::LightManager* lightManager_ = nullptr;
+    D3D12_GPU_DESCRIPTOR_HANDLE environmentMapHandle_ = {};
 };
+}

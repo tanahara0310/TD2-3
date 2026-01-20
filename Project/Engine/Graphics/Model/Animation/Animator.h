@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Animation.h"
 #include "IAnimationController.h"
@@ -7,6 +7,9 @@
 
 /// @brief キーフレームアニメーション再生クラス
 /// ノード変形（SRT）のアニメーションを制御する
+
+namespace CoreEngine
+{
 class Animator : public IAnimationController {
 public:
     /// @brief デフォルトコンストラクタ
@@ -57,3 +60,4 @@ private:
     // ループ再生フラグ
     bool isLooping_ = true;
 };
+}

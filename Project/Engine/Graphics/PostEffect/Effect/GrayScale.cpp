@@ -1,6 +1,9 @@
-#include "GrayScale.h"
+﻿#include "GrayScale.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 
+
+namespace CoreEngine
+{
 void GrayScale::DrawImGui()
 {
 #ifdef _DEBUG
@@ -16,4 +19,5 @@ void GrayScale::DrawImGui()
     
     ImGui::PopID();
 #endif // _DEBUG
+}
 }

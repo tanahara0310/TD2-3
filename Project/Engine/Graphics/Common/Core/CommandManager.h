@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -8,6 +8,9 @@
 using namespace Microsoft::WRL;
 
 /// @brief DirectX12コマンド関連の管理クラス
+
+namespace CoreEngine
+{
 class CommandManager {
 public:
 	/// @brief 初期化
@@ -69,3 +72,4 @@ private:
 
 	std::chrono::steady_clock::time_point reference_;
 };
+}

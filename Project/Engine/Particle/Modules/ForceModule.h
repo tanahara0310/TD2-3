@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -7,6 +7,9 @@
 struct Particle;
 
 /// @brief パーティクルの力場モジュール
+
+namespace CoreEngine
+{
 class ForceModule : public ParticleModule {
 public:
     struct ForceData {
@@ -46,3 +49,4 @@ public:
 private:
     ForceData forceData_;
 };
+}

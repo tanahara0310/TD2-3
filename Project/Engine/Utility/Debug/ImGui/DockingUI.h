@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -7,6 +7,9 @@
 #include <unordered_map>
 
 /// @brief ドッキングエリアの定義
+
+namespace CoreEngine
+{
 enum class DockArea {
     LeftTop,        // 左上（エンジン情報など）
     LeftBottom,     // 左下（カメラ情報など）
@@ -51,3 +54,4 @@ private:
     // エリアごとのノードID
     ImGuiID nodeIds_[6] = {0}; // DockAreaの数だけ
 };
+}

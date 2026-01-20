@@ -1,7 +1,10 @@
-#include "RasterScroll.h"
+﻿#include "RasterScroll.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void RasterScroll::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
@@ -204,4 +207,5 @@ void RasterScroll::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

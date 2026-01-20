@@ -15,6 +15,9 @@
 // TODO: MainModule対応のため、Save/Load機能は一時的に無効化
 // 後でMainModuleからデータを取得・設定するように修正する必要があります
 
+
+namespace CoreEngine
+{
 bool ParticlePresetManager::SavePreset(const ParticleSystem* particleSystem, const std::string& filePath)
 {
 	json presetData;
@@ -457,12 +460,12 @@ void ParticlePresetManager::ShowImGui(ParticleSystem* particleSystem)
 					fileName += ".json";
 				}
 
-				std::string fullPath = std::string(directoryPathBuffer_) + fileName;
+			std::string fullPath = std::string(directoryPathBuffer_) + fileName;
 
-				// ディレクトリが存在しない場合は作成
-				JsonManager::GetInstance().CreateDirectory(directoryPathBuffer_);
+			// ディレクトリが存在しない場合は作成
+			JsonManager::GetInstance().CreateJsonDirectory(directoryPathBuffer_);
 
-				if (SavePreset(particleSystem, fullPath)) {
+			if (SavePreset(particleSystem, fullPath)) {
 					ImGui::OpenPopup("保存成功");
 				} else {
 					ImGui::OpenPopup("保存失敗");
@@ -573,4 +576,5 @@ bool ParticlePresetManager::SaveCurrentPreset(ParticleSystem* particleSystem)
 
 	// 現在読み込まれているプリセットファイルに上書き保存
 	return SavePreset(particleSystem, currentPresetPath_);
+}
 }

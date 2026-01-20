@@ -8,6 +8,9 @@
 
 // GameObjectクラスの実装
 
+
+namespace CoreEngine
+{
 namespace {
 	EngineSystem* sEngine = nullptr;
 }
@@ -66,3 +69,4 @@ bool GameObject::DrawImGui() {
 	return changed;
 }
 #endif // _DEBUG
+}

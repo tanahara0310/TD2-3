@@ -1,6 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <cmath>
 
+
+namespace CoreEngine
+{
 struct Vector2 {
 	float x, y;
 
@@ -66,4 +69,5 @@ struct Vector2 {
 // スカラーとベクトルの乗算 (float * Vector2)
 inline Vector2 operator*(float scalar, const Vector2& v) {
 	return { scalar * v.x, scalar * v.y };
+}
 }

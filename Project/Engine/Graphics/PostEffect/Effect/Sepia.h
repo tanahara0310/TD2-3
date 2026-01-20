@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
+
+namespace CoreEngine
+{
 class Sepia : public PostEffectBase {
 public:
     /// @brief セピアパラメータ構造体
@@ -56,3 +59,4 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer_;
     SepiaParams* mappedData_ = nullptr;
 };
+}

@@ -11,10 +11,13 @@
 #include <memory>
 #include <vector>
 
+// Sprite用 Root Parameter インデックス定数
+
+namespace CoreEngine
+{
+
 // 前方宣言
 struct SpriteMaterial;
-
-// Sprite用 Root Parameter インデックス定数
 namespace SpriteRendererRootParam {
     static constexpr UINT kMaterial = 0;     // マテリアル用CBV (b0, PS)
     static constexpr UINT kTransform = 1;    // トランスフォーム用CBV (b1, VS)
@@ -110,3 +113,4 @@ private:
     size_t currentBufferIndex_ = 0;
     UINT currentFrameIndex_ = 0;
 };
+}

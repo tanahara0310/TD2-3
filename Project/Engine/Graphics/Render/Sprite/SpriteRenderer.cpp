@@ -1,9 +1,12 @@
-#include "SpriteRenderer.h"
+﻿#include "SpriteRenderer.h"
 #include "Engine/Camera/ICamera.h"
 #include "Engine/Graphics/Structs/SpriteMaterial.h"
 #include "WinApp/WinApp.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void SpriteRenderer::Initialize(ID3D12Device* device) {
     // 基本的な初期化のみ（定数バッファプールは作らない）
     shaderCompiler_->Initialize();
@@ -56,7 +59,6 @@ void SpriteRenderer::Initialize(ID3D12Device* device) {
     }
     
     pipelineState_ = psoMg_->GetPipelineState(BlendMode::kBlendModeNormal); // スプライトはデフォルトでアルファブレンド
-    currentBlendMode_ = BlendMode::kBlendModeNormal;
 }
 
 void SpriteRenderer::Initialize(DirectXCommon* dxCommon, ResourceFactory* resourceFactory) {
@@ -81,10 +83,14 @@ void SpriteRenderer::Initialize(DirectXCommon* dxCommon, ResourceFactory* resour
         for (size_t i = 0; i < kMaxSpriteCount; ++i) {
             // マテリアル用定数バッファを作成してマップ
             matResources[i] = resourceFactory_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(SpriteMaterial));
+            // 永続マッピング（D3D12_HEAP_TYPE_UPLOADでは推奨される方法）
+            // Microsoft公式: UPLOAD_BUFFERは永続的にマップしたままにするべき
+            // https://learn.microsoft.com/en-us/windows/win32/direct3d12/upload-and-readback-of-resources
             matResources[i]->Map(0, nullptr, reinterpret_cast<void**>(&matData[i]));
             
             // トランスフォーム用定数バッファを作成してマップ
             tfResources[i] = resourceFactory_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(TransformationMatrix));
+            // 永続マッピング（D3D12_HEAP_TYPE_UPLOADでは推奨される方法）
             tfResources[i]->Map(0, nullptr, reinterpret_cast<void**>(&tfData[i]));
         }
     }
@@ -114,9 +120,17 @@ void SpriteRenderer::SetCamera(const ICamera* camera) {
 }
 
 size_t SpriteRenderer::GetAvailableConstantBuffer() {
-    // 循環バッファ方式でインデックスを管理
+    // スプライト数の上限チェック
+    if (currentBufferIndex_ >= kMaxSpriteCount) {
+        #ifdef _DEBUG
+            OutputDebugStringA("ERROR: Sprite count exceeded maximum! Increase kMaxSpriteCount or reduce sprite count.\n");
+        #endif
+        // 上限に達した場合は最後のバッファを再利用（クラッシュ防止）
+        return kMaxSpriteCount - 1;
+    }
+    
     size_t bufferIndex = currentBufferIndex_;
-    currentBufferIndex_ = (currentBufferIndex_ + 1) % kMaxSpriteCount;
+    currentBufferIndex_++;
     return bufferIndex;
 }
 
@@ -158,4 +172,5 @@ Matrix4x4 SpriteRenderer::CalculateWVPMatrix(const Vector3& position, const Vect
             0.0f, 100.0f);
         return MathCore::Matrix::Multiply(worldMatrix, MathCore::Matrix::Multiply(viewMatrix, projectionMatrix));
     }
+}
 }

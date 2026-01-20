@@ -1,7 +1,10 @@
-#include "FenceObject.h"
+﻿#include "FenceObject.h"
 #include <EngineSystem.h>
 #include "Engine/Camera/ICamera.h"
 
+
+namespace CoreEngine
+{
 void FenceObject::Initialize() {
    auto engine = GetEngineSystem();
    // 必須コンポーネントの取得
@@ -40,4 +43,5 @@ void FenceObject::Draw(const ICamera* camera) {
 
    // モデルの描画
    model_->Draw(transform_, camera, texture_.gpuHandle);
+}
 }

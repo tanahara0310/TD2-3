@@ -45,13 +45,14 @@
 // プリセット管理
 #include "ParticlePresetManager.h"
 
-using namespace MathCore;
-
 // 前方宣言
 class ICamera;
 class ModelResource;
 
 // パーティクルのパラメータ
+
+namespace CoreEngine
+{
 struct Particle {
 	EulerTransform transform;
 	Vector3 velocity;
@@ -338,3 +339,4 @@ private:
 	friend class ParticleSystemDebugUI;
 #endif
 };
+}

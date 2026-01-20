@@ -8,6 +8,8 @@
 #include "LightData.h"
 #include "MathCore.h"
 
+namespace CoreEngine
+{
 // 前方宣言
 class ResourceFactory;
 class DescriptorManager;
@@ -123,3 +125,4 @@ private:
     ID3D12Device* device_ = nullptr;
     ResourceFactory* resourceFactory_ = nullptr;
 };
+}

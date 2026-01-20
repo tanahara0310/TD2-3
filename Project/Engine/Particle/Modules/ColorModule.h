@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -8,6 +8,9 @@ struct Particle;
 /// @brief パーティクルの色モジュール
 /// 注意: 初期色の設定はMainModuleで行います
 /// このモジュールは色の変化（グラデーション）のみを担当します
+
+namespace CoreEngine
+{
 class ColorModule : public ParticleModule {
 public:
     struct ColorOverLifetime {
@@ -46,3 +49,4 @@ private:
     /// @return 補間された色
     Vector4 LerpColor(const Vector4& color1, const Vector4& color2, float t);
 };
+}

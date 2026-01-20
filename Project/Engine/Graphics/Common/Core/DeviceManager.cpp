@@ -8,6 +8,10 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
+using namespace Microsoft::WRL;
+
+namespace CoreEngine
+{
 void DeviceManager::Initialize(WinApp* winApp)
 {
     winApp_ = winApp;
@@ -117,4 +121,5 @@ void DeviceManager::InitializeDXGIDevice()
         infoQueue->PushStorageFilter(&filter);
     }
 #endif
+}
 }

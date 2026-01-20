@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -8,6 +8,9 @@
 
 using namespace Microsoft::WRL;
 
+
+namespace CoreEngine
+{
 enum class BlendMode {
     kBlendModeNone, // ブレンドなし
     kBlendModeNormal, // アルファブレンド
@@ -174,3 +177,4 @@ private:
     /// @brief PSOを登録
     void RegisterPipelineState(BlendMode mode, ComPtr<ID3D12PipelineState> pso);
 };
+}

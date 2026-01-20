@@ -2,6 +2,12 @@
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 
+#ifdef _DEBUG
+#include "Engine/Camera/Debug/CameraDebugUI.h"
+#endif
+
+namespace CoreEngine
+{
 void ParticleTestScene::Initialize(EngineSystem* engine)
 {
 	// 基底クラスの初期化（カメラ、ライト、グリッドのセットアップ）
@@ -30,10 +36,10 @@ void ParticleTestScene::Initialize(EngineSystem* engine)
 	particleSystem_->Play();
 }
 
-void ParticleTestScene::Update()
+void ParticleTestScene::OnUpdate()
 {
-	// 基底クラスの更新（カメラ、ライト、ゲームオブジェクトの更新）
-	BaseScene::Update();
+	// パーティクルテストシーン固有の更新処理
+	// 現在は特に処理なし
 }
 
 void ParticleTestScene::Draw()
@@ -46,4 +52,5 @@ void ParticleTestScene::Finalize()
 {
 	// 基底クラスの解放
 	BaseScene::Finalize();
+}
 }

@@ -8,6 +8,9 @@
 #include "Model.h"
 #include "Animation/Animation.h"
 
+namespace CoreEngine
+{
+// 前方宣言
 class DirectXCommon;
 class ResourceFactory;
 
@@ -113,3 +116,4 @@ private:
 	/// @param outFilename 出力：ファイル名
 	void SplitPath(const std::string& filePath, std::string& outDirectory, std::string& outFilename) const;
 };
+}

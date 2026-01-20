@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #include <string>
 #include <wrl.h>
@@ -8,6 +8,9 @@
 #include "Engine/Graphics/RootSignatureManager.h"
 #include "Engine/Graphics/Shader/ShaderCompiler.h"
 
+
+namespace CoreEngine
+{
 class PostEffectBase {
 public:
     virtual ~PostEffectBase() = default;
@@ -44,3 +47,4 @@ protected:
 
     bool enabled_ = true; // デフォルトで有効
 };
+}

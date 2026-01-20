@@ -1,7 +1,10 @@
-#include "Camera2D.h"
+﻿#include "Camera2D.h"
 #include "MathCore.h"
 #include "WinApp/WinApp.h"
 
+
+namespace CoreEngine
+{
 Camera2D::Camera2D() {
 	// WinAppからスクリーンサイズを取得
 	screenWidth_ = static_cast<float>(WinApp::kClientWidth);
@@ -47,4 +50,5 @@ void Camera2D::SetScreenSize(float width, float height) {
 	screenWidth_ = width;
 	screenHeight_ = height;
 	UpdateMatrix();
+}
 }

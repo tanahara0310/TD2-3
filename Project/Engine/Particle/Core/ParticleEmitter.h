@@ -4,6 +4,8 @@
 #include <cstdint>
 #include "MathCore.h"
 
+namespace CoreEngine
+{
 // 前方宣言
 struct Particle;
 struct EulerTransform;
@@ -60,3 +62,4 @@ private:
 	VelocityModule* velocityModule_ = nullptr;
 	RotationModule* rotationModule_ = nullptr;
 };
+}

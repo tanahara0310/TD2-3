@@ -5,6 +5,8 @@
 #include <list>
 #include <cstdint>
 
+namespace CoreEngine
+{
 // 前方宣言
 class ICamera;
 struct Particle;
@@ -66,3 +68,5 @@ private:
 		const Matrix4x4& billboardMatrix
 	);
 };
+
+} // namespace CoreEngine

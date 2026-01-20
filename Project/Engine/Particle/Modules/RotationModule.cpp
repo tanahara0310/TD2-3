@@ -1,9 +1,12 @@
-#include "RotationModule.h"
+﻿#include "RotationModule.h"
 #include "../ParticleSystem.h"
 #include <numbers>
 #include <algorithm>
 
 // コンストラクタでデフォルトパラメータを設定
+
+namespace CoreEngine
+{
 RotationModule::RotationModule() {
     rotationData_.rotationSpeed = { 0.0f, 0.0f, 0.0f };
     rotationData_.rotationSpeedRandomness = { 0.0f, 0.0f, 0.0f };
@@ -252,4 +255,5 @@ float RotationModule::ApplyRandomness(float baseValue, float randomness)
     float randomOffset = random_.GetFloat(-randomness, randomness);
     
     return baseValue + randomOffset;
+}
 }

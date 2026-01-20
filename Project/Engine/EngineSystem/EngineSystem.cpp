@@ -1,4 +1,4 @@
-#include "EngineSystem.h"
+﻿#include "EngineSystem.h"
 
 
 // ユーティリティ
@@ -28,6 +28,9 @@
 
 #include "ObjectCommon/GameObject.h"
 
+
+namespace CoreEngine
+{
 void EngineSystem::Initialize(WinApp* winApp)
 {
 
@@ -382,4 +385,4 @@ void EngineSystem::CreateLightComponents()
 }
 
 #pragma endregion
-
+}

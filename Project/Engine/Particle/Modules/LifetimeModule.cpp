@@ -1,7 +1,10 @@
-#include "LifetimeModule.h"
+﻿#include "LifetimeModule.h"
 #include "../ParticleSystem.h" // Particle構造体のために必要
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void LifetimeModule::ApplyInitialLifetime(Particle& particle) {
     if (!enabled_) {
         particle.lifeTime = lifetimeData_.startLifetime;
@@ -53,3 +56,4 @@ bool LifetimeModule::ShowImGui() {
     return changed;
 }
 #endif
+}

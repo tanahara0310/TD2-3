@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <cfloat>
 
@@ -11,6 +11,9 @@
 #include <imgui.h>
 
 // 簡易バウンディングスフィア(ローカル)
+
+namespace CoreEngine
+{
 struct BoundingSphere {
     Vector3 center; ///< 中心座標
     float radius; ///< 半径
@@ -67,3 +70,4 @@ private: // メンバ関数
     // レイと球の交差判定
     bool RayIntersectsSphere(const Vector3& rayOrigin, const Vector3& rayDir, const BoundingSphere& sphere);
 };
+}

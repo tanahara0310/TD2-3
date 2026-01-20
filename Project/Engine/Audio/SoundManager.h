@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <xaudio2.h>
 #include <mfapi.h>
 #include <mfidl.h>
@@ -19,6 +19,9 @@
 #pragma comment(lib, "mfuuid.lib")
 
 // チャンクヘッダ（WAV用）
+
+namespace CoreEngine
+{
 struct ChunkHeader {
     char id[4]; // チャンクID
     int32_t size; // チャンクサイズ
@@ -40,25 +43,23 @@ struct FormatChunk {
 struct SoundData {
     // 波形フォーマット
     WAVEFORMATEX wfex;
-    // バッファの先頭アドレス
-    BYTE* pBuffer;
+    // バッファ（スマートポインタで自動管理）
+    std::unique_ptr<BYTE[]> pBuffer;
     // バッファのサイズ
     unsigned int bufferSize;
     // ファイル形式（wav, mp3など）
     std::string format;
 
     // 初期化
-    SoundData() : pBuffer(nullptr), bufferSize(0), format("") {
+    SoundData() : bufferSize(0), format("") {
         ZeroMemory(&wfex, sizeof(WAVEFORMATEX));
     }
 
-    // デストラクタ
-    ~SoundData() {
-        if (pBuffer) {
-            delete[] pBuffer;
-            pBuffer = nullptr;
-        }
-    }
+    // デストラクタ（自動的にpBufferが解放される）
+    ~SoundData() = default;
+
+    // バッファの生ポインタを取得（XAudio2に渡すため）
+    BYTE* GetBuffer() const { return pBuffer.get(); }
 };
 
 // サウンドハンドル（管理用）
@@ -98,61 +99,8 @@ public:
     // XAudio2とMedia Foundationの初期化
     bool Initialize();
 
-    // 音声ファイルの読み込み（自動フォーマット判定）
-    SoundHandle LoadSound(const std::string& filename);
-
-    // WAV音声データの読み込み（従来の機能）
-    SoundData LoadWaveFile(const std::string& filename);
-
-    // MP3音声データの読み込み（新機能）
-    SoundData LoadMP3File(const std::string& filename);
-
-    // 音声データの解放
-    void UnloadSound(SoundHandle handle);
-    void UnloadSoundData(SoundData* soundData);
-
-    // 音声再生（ハンドル使用）
-    bool PlaySound(SoundHandle handle, bool loop = false);
-    bool PlaySoundOneShot(SoundHandle handle);
-
-    // 音声制御
-    void StopSound(SoundHandle handle);
-    void StopAllSounds();
-    void PauseSound(SoundHandle handle);
-    void ResumeSound(SoundHandle handle);
-
-    // 音量制御
-    void SetVolume(SoundHandle handle, float volume);
-    float GetVolume(SoundHandle handle) const;
-    void SetMasterVolume(float volume);
-    float GetMasterVolume() const;
-
-    // フェード機能（グローバル更新用）
-    /// @brief 全てのサウンドリソースのフェードを更新
-    /// @param deltaTime デルタタイム（秒）
-    void UpdateAllFades(float deltaTime);
-
-    // 状態取得
-    bool IsPlaying(SoundHandle handle) const;
-    bool IsPaused(SoundHandle handle) const;
-
-    // xAudio2取得
-    IXAudio2* GetXAudio2() { return xAudio2_.Get(); }
-
     // システム終了
     void Shutdown();
-
-    // ===== 新しい便利メソッド =====
-    /// @brief サウンドのロード、再生、管理を一行で行う便利メソッド
-    /// @param filename ファイルパス
-    /// @param loop ループ再生するか
-    /// @param volume 音量 (0.0f ～ 1.0f)
-    /// @return サウンドハンドル
-    SoundHandle PlaySoundFile(const std::string& filename, bool loop = false, float volume = 1.0f);
-
-    /// @brief サウンドの停止と解放を一行で行う便利メソッド
-    /// @param handle サウンドハンドル
-    void StopAndUnload(SoundHandle handle);
 
     /// @brief サウンドハンドルの自動管理クラス
     class SoundResource {
@@ -205,13 +153,13 @@ public:
         SoundHandle handle_;
 
         // フェード関連
-        bool isFading_ = false;
-        bool isFadingIn_ = false;
-        float fadeTimer_ = 0.0f;
-        float fadeDuration_ = 0.0f;
-        float fadeStartVolume_ = 0.0f;
-        float fadeTargetVolume_ = 1.0f;
-        bool stopAfterFade_ = false;
+        bool isFading_;
+        bool isFadingIn_;
+        float fadeTimer_;
+        float fadeDuration_;
+        float fadeStartVolume_;
+        float fadeTargetVolume_;
+        bool stopAfterFade_;
     };
 
     /// @brief サウンドリソースの作成（RAII管理）
@@ -219,15 +167,9 @@ public:
     /// @return 自動管理されるサウンドリソース
     std::unique_ptr<SoundResource> CreateSoundResource(const std::string& filename);
 
-    // ===== 後方互換性のための従来型メソッド =====
-    // 従来の音声データの読み込み（非推奨だが互換性のため残す）
-    SoundData SoundLoadWave(const char* filename);
-
-    // 従来の音声データの解放（非推奨だが互換性のため残す）
-    void SoundUnload(SoundData* soundData);
-
-    // 従来の音声データの再生（非推奨だが互換性のため残す）
-    void SoundPlayWave(const SoundData& soundData);
+    // マスター音量制御
+    void SetMasterVolume(float volume);
+    float GetMasterVolume() const;
 
 private:
     Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
@@ -261,19 +203,39 @@ private:
     /// @return 解決されたフルパス
     std::string ResolveFilePath(const std::string& filePath) const;
 
+    // 音声ファイルの読み込み（自動フォーマット判定）
+    SoundHandle LoadSound(const std::string& filename);
+
+    // 音声データの解放
+    void UnloadSound(SoundHandle handle);
+
+    // 音声再生（ハンドル使用）
+    bool PlaySound(SoundHandle handle, bool loop = false);
+
+    // 音声制御
+    void StopSound(SoundHandle handle);
+    void StopAllSounds();
+    void PauseSound(SoundHandle handle);
+    void ResumeSound(SoundHandle handle);
+
+    // 音量制御
+    void SetVolume(SoundHandle handle, float volume);
+    float GetVolume(SoundHandle handle) const;
+
+    // 状態取得
+    bool IsPlaying(SoundHandle handle) const;
+    bool IsPaused(SoundHandle handle) const;
+
     // Media FoundationでPCMデータを取得
     bool ExtractPCMDataFromFile(const std::string& filename, SoundData& outSoundData);
 
-    // WAVファイル読み込み（従来の実装）
+    // WAVファイル読み込み（内部実装）
     bool LoadWaveFileInternal(const std::string& filename, SoundData& outSoundData);
+
+    // サウンドの停止と解放を一行で行う内部メソッド
+    void StopAndUnload(SoundHandle handle);
+
+    // SoundResourceがprivateメソッドにアクセスできるようにする
+    friend class SoundResource;
 };
-
-// ===== 簡潔な型エイリアス（冗長性解決） =====
-/// @brief 最も簡潔なサウンドリソース型（推奨）
-using Sound = std::unique_ptr<SoundManager::SoundResource>;
-
-/// @brief やや詳細なサウンドリソース型
-using SoundPtr = std::unique_ptr<SoundManager::SoundResource>;
-
-/// @brief 完全に明示的なサウンドリソース型
-using SoundResourcePtr = std::unique_ptr<SoundManager::SoundResource>;
+}

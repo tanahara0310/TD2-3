@@ -5,11 +5,16 @@
 #include <vector>
 
 // Forward declaration
-class RenderManager;
-class ICamera;
+namespace CoreEngine {
+	class RenderManager;
+	class ICamera;
+}
 
 /// @brief すべてのGameObjectを一元管理するマネージャー
 /// @note 更新、描画、削除を自動化し、使用者は登録とDestroyのみを意識する
+
+namespace CoreEngine
+{
 class GameObjectManager {
 public:
 	/// @brief オブジェクトを登録（所有権を移動）
@@ -29,7 +34,7 @@ public:
 
 	/// @brief 全オブジェクトをRenderManagerに登録して描画
 	/// @param renderManager レンダーマネージャー
-	void RegisterAllToRender(RenderManager* renderManager);
+	void RegisterAllToRender(CoreEngine::RenderManager* renderManager);
 
 	/// @brief フレーム終了時に削除マークされたオブジェクトを破棄
 	/// @note 削除キューを使用して安全に破棄（GPU処理完了を考慮）
@@ -58,3 +63,4 @@ private:
 	/// @brief 削除待ちキュー（フレーム終了後に破棄）
 	std::vector<std::unique_ptr<GameObject>> destroyQueue_;
 };
+}

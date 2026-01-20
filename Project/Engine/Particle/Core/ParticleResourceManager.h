@@ -5,6 +5,8 @@
 #include <cstdint>
 #include "MathCore.h"
 
+namespace CoreEngine
+{
 // 前方宣言
 class DirectXCommon;
 class ResourceFactory;
@@ -60,3 +62,5 @@ private:
     D3D12_GPU_DESCRIPTOR_HANDLE srvHandleGPU_ = {};
     ParticleForGPU* instancingData_ = nullptr;
 };
+
+} // namespace CoreEngine

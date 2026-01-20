@@ -1,4 +1,4 @@
-#include "Logger.h"
+﻿#include "Logger.h"
 
 #include <chrono>
 #include <filesystem>
@@ -13,6 +13,9 @@
 // Logger 実装
 //========================================
 
+
+namespace CoreEngine
+{
 Logger& Logger::GetInstance()
 {
 	static Logger instance;
@@ -222,4 +225,4 @@ std::string Logger::ConvertString(const std::wstring& str)
 	WideCharToMultiByte(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), result.data(), sizeNeeded, NULL, NULL);
 	return result;
 }
-
+}

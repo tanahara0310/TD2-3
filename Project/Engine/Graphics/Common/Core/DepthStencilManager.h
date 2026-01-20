@@ -4,8 +4,9 @@
 #include <wrl.h>
 #include <cstdint>
 
-using namespace Microsoft::WRL;
-
+namespace CoreEngine
+{
+// 前方宣言
 class DescriptorManager;
 
 /// @brief 深度ステンシル管理クラス（リソース管理のみ）
@@ -40,7 +41,7 @@ private:
 
 private:
     // 深度ステンシルリソース
-    ComPtr<ID3D12Resource> depthStencilResource_;
+    Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource_;
 
     // DSVハンドル
     D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_{};
@@ -54,3 +55,4 @@ private:
     // 初回初期化フラグ
     bool isInitialized_ = false;
 };
+}

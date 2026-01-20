@@ -1,7 +1,10 @@
-#include "Vignette.h"
+﻿#include "Vignette.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void Vignette::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
@@ -129,4 +132,5 @@ void Vignette::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

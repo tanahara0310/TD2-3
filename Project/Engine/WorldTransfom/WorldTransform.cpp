@@ -7,7 +7,10 @@
 #include <imgui.h>
 #endif
 
-using namespace MathCore;
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
 
 void WorldTransform::Initialize(ID3D12Device* device)
 {
@@ -189,3 +192,4 @@ bool WorldTransform::DrawImGui(const std::string& label)
     return false;
 }
 #endif
+}

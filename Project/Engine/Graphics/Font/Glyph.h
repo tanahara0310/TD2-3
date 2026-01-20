@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #include <wrl.h>
 #include <cstdint>
 
 /// @brief グリフ（文字）のデータ構造
+
+namespace CoreEngine
+{
 struct Glyph {
     /// @brief グリフのテクスチャリソース
     Microsoft::WRL::ComPtr<ID3D12Resource> texture;
@@ -33,3 +36,4 @@ struct Glyph {
     /// @brief 次の文字への移動量（1/64ピクセル単位）
     int32_t advance = 0;
 };
+}

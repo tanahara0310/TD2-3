@@ -1,9 +1,12 @@
-#include "TextRenderer.h"
+﻿#include "TextRenderer.h"
 #include "Engine/Camera/ICamera.h"
 #include "Engine/Graphics/Structs/SpriteMaterial.h"
 #include "WinApp/WinApp.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void TextRenderer::Initialize(ID3D12Device* device) {
     shaderCompiler_->Initialize();
 
@@ -68,6 +71,8 @@ void TextRenderer::Initialize(DirectXCommon* dxCommon, ResourceFactory* resource
         tfData.resize(kMaxGlyphCount);
 
         for (size_t i = 0; i < kMaxGlyphCount; ++i) {
+            // 永続マッピング（D3D12_HEAP_TYPE_UPLOADでは推奨される方法）
+            // Microsoft公式: UPLOAD_BUFFERは永続的にマップしたままにするべき
             matResources[i] = resourceFactory_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(SpriteMaterial));
             matResources[i]->Map(0, nullptr, reinterpret_cast<void**>(&matData[i]));
 
@@ -99,8 +104,17 @@ void TextRenderer::SetCamera(const ICamera* camera) {
 }
 
 size_t TextRenderer::GetAvailableConstantBuffer() {
+    // グリフ数の上限チェック
+    if (currentBufferIndex_ >= kMaxGlyphCount) {
+        #ifdef _DEBUG
+            OutputDebugStringA("ERROR: Glyph count exceeded maximum! Increase kMaxGlyphCount or reduce text length.\n");
+        #endif
+        // 上限に達した場合は最後のバッファを再利用（クラッシュ防止）
+        return kMaxGlyphCount - 1;
+    }
+    
     size_t bufferIndex = currentBufferIndex_;
-    currentBufferIndex_ = (currentBufferIndex_ + 1) % kMaxGlyphCount;
+    currentBufferIndex_++;
     return bufferIndex;
 }
 
@@ -133,4 +147,5 @@ Matrix4x4 TextRenderer::CalculateWVPMatrix(const Vector3& position, const Vector
             0.0f, 100.0f);
         return MathCore::Matrix::Multiply(worldMatrix, MathCore::Matrix::Multiply(viewMatrix, projectionMatrix));
     }
+}
 }

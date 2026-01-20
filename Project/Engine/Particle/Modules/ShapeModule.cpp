@@ -9,6 +9,11 @@
 #include "Engine/Camera/ICamera.h"
 #endif
 
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
+
 ShapeModule::ShapeModule() {
 	shapeData_.shapeType = ShapeType::Point;
 	shapeData_.scale = { 1.0f, 1.0f, 1.0f };
@@ -609,3 +614,4 @@ bool ShapeModule::ShowImGui() {
 	return changed;
 }
 #endif
+}

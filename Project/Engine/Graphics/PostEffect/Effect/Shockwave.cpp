@@ -1,9 +1,12 @@
-#include "Shockwave.h"
+﻿#include "Shockwave.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void Shockwave::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化を呼び出す
@@ -168,4 +171,5 @@ void Shockwave::CreateConstantBuffer()
     
     // 初期データをコピー
     *mappedData_ = params_;
+}
 }

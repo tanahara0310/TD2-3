@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 
 struct Particle;
 
 /// @brief パーティクルのライフタイムモジュール
+
+namespace CoreEngine
+{
 class LifetimeModule : public ParticleModule {
 public:
     struct LifetimeData {
@@ -42,3 +45,4 @@ public:
 private:
     LifetimeData lifetimeData_;
 };
+}

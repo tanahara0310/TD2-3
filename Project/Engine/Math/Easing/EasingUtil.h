@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <numbers>
 
+namespace CoreEngine
+{
 // 前方宣言（依存を最小限にするため）
 struct Vector3;
 
@@ -158,4 +160,5 @@ namespace EasingUtil {
     /// @return タイプの説明文字列
     const char* GetTypeDescription(Type type);
 
+}
 }

@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <format>
 #include <Windows.h>
 
 /// @brief ファイル読み込みエラーをメッセージボックスで表示するユーティリティ
+
+namespace CoreEngine
+{
 namespace FileErrorDialog {
 
     /// @brief テクスチャ読み込みエラーを表示
@@ -129,3 +132,4 @@ namespace FileErrorDialog {
     }
 
 } // namespace FileErrorDialog
+}

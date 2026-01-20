@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Windows.h>
 #include <memory>
 #include <string>
@@ -12,6 +12,9 @@
 #include <spdlog/sinks/msvc_sink.h>
 
 /// @brief ログカテゴリ
+
+namespace CoreEngine
+{
 enum class LogCategory {
 	General,    // 一般
 	Graphics,   // グラフィックス
@@ -102,4 +105,4 @@ private:
   /// @return 作成されたロガー
 	std::shared_ptr<spdlog::logger> CreateLogger(LogCategory category, const std::string& buildTimestamp);
 };
-
+}

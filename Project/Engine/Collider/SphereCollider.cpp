@@ -1,7 +1,10 @@
-#include "SphereCollider.h"
+﻿#include "SphereCollider.h"
 #include "AABBCollider.h"
 #include "Engine/Utility/Collision/CollisionUtils.h"
 
+
+namespace CoreEngine
+{
 SphereCollider::SphereCollider(GameObject* owner, float r) {
    type_ = ColliderType::Sphere;
    owner_ = owner;
@@ -27,4 +30,5 @@ bool SphereCollider::CheckCollision(Collider* other) const {
 
 void SphereCollider::SetRadius(float radius) {
    radius_ = radius;
+}
 }

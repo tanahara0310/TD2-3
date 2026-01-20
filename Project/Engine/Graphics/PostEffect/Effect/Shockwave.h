@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
 /// @brief ショックウェーブポストエフェクトクラス
+
+namespace CoreEngine
+{
 class Shockwave : public PostEffectBase {
 public:
     /// @brief ショックウェーブパラメータ構造体
@@ -65,3 +68,4 @@ private:
     bool isActive_ = false;
     float maxRadius_ = 1.0f; // 最大半径
 };
+}

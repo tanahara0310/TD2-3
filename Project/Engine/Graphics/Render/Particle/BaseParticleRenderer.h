@@ -9,12 +9,17 @@
 #include <memory>
 
 // 前方宣言
-class ParticleSystem;
-class ICamera;
-class ResourceFactory;
+namespace CoreEngine {
+    class ParticleSystem;
+    class ICamera;
+    class ResourceFactory;
+}
 
 /// @brief パーティクルレンダラーの基底クラス
 /// 共通の処理をまとめ、派生クラスで描画方法のみを実装
+
+namespace CoreEngine
+{
 class BaseParticleRenderer : public IRenderer {
 public:
     BaseParticleRenderer() = default;
@@ -34,7 +39,7 @@ public:
 
     /// @brief カメラを設定
     /// @param camera カメラオブジェクト
-    void SetCamera(const ICamera* camera) override;
+    void SetCamera(const CoreEngine::ICamera* camera) override;
 
     /// @brief ResourceFactoryを設定（初期化前に呼び出す必要がある）
     /// @param resourceFactory リソースファクトリ
@@ -42,17 +47,17 @@ public:
 
     /// @brief パーティクルシステムを描画（派生クラスで実装）
     /// @param particle パーティクルシステム
-    virtual void Draw(ParticleSystem* particle) = 0;
+    virtual void Draw(CoreEngine::ParticleSystem* particle) = 0;
 
 protected:
     // ──────────────────────────────────────────────────────────
     // 共通リソース
     // ──────────────────────────────────────────────────────────
     
-    ResourceFactory* resourceFactory_ = nullptr;
+    CoreEngine::ResourceFactory* resourceFactory_ = nullptr;
     ID3D12Device* device_ = nullptr;
     ID3D12GraphicsCommandList* cmdList_ = nullptr;
-    const ICamera* camera_ = nullptr;
+    const CoreEngine::ICamera* camera_ = nullptr;
 
     // パイプラインとシェーダー
     std::unique_ptr<PipelineStateManager> pipelineMg_;
@@ -69,12 +74,12 @@ protected:
     /// @brief 基本的な検証を行う
     /// @param particle パーティクルシステム
     /// @return 描画可能な場合true
-    bool ValidateDrawCall(ParticleSystem* particle) const;
+    bool ValidateDrawCall(CoreEngine::ParticleSystem* particle) const;
 
     /// @brief 共通のリソース設定を行う
     /// @param particle パーティクルシステム
     /// @param textureHandle テクスチャハンドル
-    void SetupCommonResources(ParticleSystem* particle, D3D12_GPU_DESCRIPTOR_HANDLE textureHandle);
+    void SetupCommonResources(CoreEngine::ParticleSystem* particle, D3D12_GPU_DESCRIPTOR_HANDLE textureHandle);
 
     // ──────────────────────────────────────────────────────────
     // 派生クラスで実装すべき純粋仮想関数
@@ -86,3 +91,4 @@ protected:
     /// @brief BeginPassでの追加処理（派生クラスでオーバーライド可能）
     virtual void OnBeginPass() {}
 };
+}

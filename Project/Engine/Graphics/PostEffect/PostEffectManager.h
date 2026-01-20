@@ -10,6 +10,9 @@
 #include "Engine/Graphics/PostEffect/PostEffectNames.h"
 #include "PostEffectPresetManager.h"
 
+namespace CoreEngine
+{
+// 前方宣言
 class DirectXCommon;
 class Render;
 
@@ -85,6 +88,14 @@ public:
     /// @return 最終出力のSRVハンドル
     D3D12_GPU_DESCRIPTOR_HANDLE ExecuteEffectChain(D3D12_GPU_DESCRIPTOR_HANDLE inputSrvHandle);
 
+    /// @brief Bloomエフェクトをマスク付きで実行（テスト用）
+    /// @param inputSrvHandle 入力テクスチャのSRVハンドル
+    /// @param maskSrvHandle マスクテクスチャのSRVハンドル
+    /// @return 最終出力のSRVハンドル
+    D3D12_GPU_DESCRIPTOR_HANDLE ExecuteBloomWithMask(
+        D3D12_GPU_DESCRIPTOR_HANDLE inputSrvHandle,
+        D3D12_GPU_DESCRIPTOR_HANDLE maskSrvHandle);
+
 private:
     /// @brief Ping-Pongバッファ管理用ヘルパークラス
     class PingPongBuffer {
@@ -154,7 +165,8 @@ private:
         PostEffectNames::Sepia, 
         PostEffectNames::Invert, 
         PostEffectNames::GrayScale, 
-        PostEffectNames::Vignette 
+        PostEffectNames::Vignette,
+        PostEffectNames::Bloom
     };
     
     std::unique_ptr<PostEffectPresetManager> presetManager_;
@@ -196,4 +208,5 @@ const T* PostEffectManager::GetEffect(const std::string& name) const
         return dynamic_cast<const T*>(it->second.get());
     }
     return nullptr;
+}
 }

@@ -1,4 +1,4 @@
-#include "ParticleUpdater.h"
+﻿#include "ParticleUpdater.h"
 #include "Engine/Particle/ParticleSystem.h" // Particle構造体のため
 #include "Engine/Particle/Modules/ForceModule.h"
 #include "Engine/Particle/Modules/ColorModule.h"
@@ -6,6 +6,9 @@
 #include "Engine/Particle/Modules/RotationModule.h"
 #include "Engine/Particle/Modules/NoiseModule.h"
 
+
+namespace CoreEngine
+{
 void ParticleUpdater::Initialize(
 	ForceModule* forceModule,
 	ColorModule* colorModule,
@@ -75,4 +78,5 @@ void ParticleUpdater::UpdateSingleParticle(Particle& particle, float deltaTime, 
 	if (noiseModule_ && noiseModule_->IsEnabled()) {
 		noiseModule_->ApplyNoise(particle, deltaTime);
 	}
+}
 }

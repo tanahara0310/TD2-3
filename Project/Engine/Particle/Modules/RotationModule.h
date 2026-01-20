@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -6,6 +6,9 @@
 /// @brief パーティクルの回転制御モジュール
 /// 注意: 初期回転の設定はMainModuleで行います
 /// このモジュールは回転速度と回転の変化のみを担当します
+
+namespace CoreEngine
+{
 class RotationModule : public ParticleModule {
 public:
     struct RotationData {
@@ -101,3 +104,4 @@ private:
     /// @return ランダム性が適用された値
     float ApplyRandomness(float baseValue, float randomness);
 };
+}

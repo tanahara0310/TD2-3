@@ -1,8 +1,11 @@
-#include "AnimationUtils.h"
+﻿#include "AnimationUtils.h"
 #include <Math/MathCore.h>
 #include <cassert>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 namespace AnimationUtils {
 
 namespace {
@@ -89,3 +92,4 @@ Quaternion CalculateQuaternion(const std::vector<Keyframe<Quaternion>>& keyframe
 }
 
 } // namespace AnimationUtils
+}

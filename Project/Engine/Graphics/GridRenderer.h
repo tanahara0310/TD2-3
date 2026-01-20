@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/ObjectCommon/GameObject.h"
 #include "Engine/Graphics/Line/Line.h"
@@ -11,6 +11,9 @@ class ICamera;
 
 /// @brief 無限遠グリッドレンダラー（Unity風）
 /// @details XZ平面に無限に広がるグリッドを描画
+
+namespace CoreEngine
+{
 class GridRenderer : public GameObject {
 public:
     GridRenderer() = default;
@@ -88,3 +91,4 @@ private:
     static constexpr float kMajorAlpha = 1.0f;   // 太いライン透明度（10本ごと）
     static constexpr float kNormalAlpha = 1.0f;  // 通常のライン透明度
 };
+}

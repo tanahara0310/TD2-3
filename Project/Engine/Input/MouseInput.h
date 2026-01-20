@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "IInputDevice.h"
 #include <cstdint>
 #include <dinput.h>
 
+
+namespace CoreEngine
+{
 enum class MouseButton {
     Left = 0, ///< 左ボタン
     Right = 1, ///< 右ボタン
@@ -58,3 +61,4 @@ private:
 
     HWND hwnd_ = nullptr; ///< ウィンドウハンドル
 };
+}

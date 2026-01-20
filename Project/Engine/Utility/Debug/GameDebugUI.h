@@ -3,13 +3,17 @@
 #include "Engine/Utility/Debug/ConsoleUI.h"
 #include "Engine/Utility/Debug/ImGui/SceneManagerTab.h"
 
+/// @brief デバッグ用のUIクラス
+/// エンジンシステムの低レベル情報の表示とデバッグ支援を行う
+
+namespace CoreEngine
+{
+
 class EngineSystem; // 前方宣言
 class DockingUI; // 前方宣言
 class FrameRateController; // 前方宣言
 class SceneManager; // 前方宣言
 
-/// @brief デバッグ用のUIクラス
-/// エンジンシステムの低レベル情報の表示とデバッグ支援を行う
 class GameDebugUI {
 public:
     /// @brief 初期化
@@ -89,4 +93,4 @@ private: // デバッグ用のUIを表示するためのメソッド
     /// @brief ドッキングシステムにウィンドウを登録
     void RegisterWindowsForDocking();
 };
-
+}

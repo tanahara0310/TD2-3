@@ -1,7 +1,10 @@
-#include "SphereObject.h"
+﻿#include "SphereObject.h"
 #include <EngineSystem.h>
 #include "Engine/Camera/ICamera.h"
 
+
+namespace CoreEngine
+{
 void SphereObject::Initialize() {
    // 必須コンポーネントの取得
    auto engine = GetEngineSystem();
@@ -41,4 +44,5 @@ void SphereObject::Draw(const ICamera* camera) {
    
    // モデルの描画
    model_->Draw(transform_, camera, texture_.gpuHandle);
+}
 }

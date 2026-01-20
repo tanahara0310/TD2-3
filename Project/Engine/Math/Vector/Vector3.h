@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 
 /// <summary>
 /// ベクトル構造体
 /// </summary>
+
+namespace CoreEngine
+{
 struct Vector3 {
     float x, y, z;
 
@@ -93,4 +96,5 @@ inline Vector3 operator-(const Vector3& v)
 inline Vector3 operator+(const Vector3& v)
 {
     return v; // 単項プラスは値をそのまま返す
+}
 }

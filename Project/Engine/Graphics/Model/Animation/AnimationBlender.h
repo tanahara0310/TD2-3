@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IAnimationController.h"
 #include "Engine/Graphics/Model/Skeleton/Skeleton.h"
@@ -7,6 +7,9 @@
 #include <optional>
 
 /// @brief 2つのアニメーションをブレンドするコントローラー
+
+namespace CoreEngine
+{
 class AnimationBlender : public IAnimationController {
 public:
     /// @brief コンストラクタ
@@ -68,3 +71,4 @@ private:
     // ブレンドタイマー
     GameTimer blendTimer_;
 };
+}

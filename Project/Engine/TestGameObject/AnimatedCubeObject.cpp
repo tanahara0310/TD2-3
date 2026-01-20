@@ -1,4 +1,4 @@
-#include "AnimatedCubeObject.h"
+﻿#include "AnimatedCubeObject.h"
 #include <EngineSystem.h>
 #include "Engine/Graphics/Model/Animation/Animator.h"
 #include "Engine/Camera/ICamera.h"
@@ -7,6 +7,9 @@
 #include <imgui.h>
 #endif
 
+
+namespace CoreEngine
+{
 void AnimatedCubeObject::Initialize() {
    // 必須コンポーネントの取得
    auto engine = GetEngineSystem();
@@ -121,4 +124,5 @@ bool AnimatedCubeObject::IsAnimationFinished() const {
 	  return model_->IsAnimationFinished();
    }
    return true;
+}
 }

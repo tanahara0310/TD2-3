@@ -1,8 +1,11 @@
-#include "PrimitivePlane.h"
+﻿#include "PrimitivePlane.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void PrimitivePlane::Initialize(DirectXCommon* dxCommon, ResourceFactory* resourceFactory,
                                  float width, float height) {
     assert(dxCommon && resourceFactory);
@@ -91,4 +94,5 @@ void PrimitivePlane::Resize(float width, float height) {
     currentWidth_ = width;
     currentHeight_ = height;
     CreateVertices(width, height);
+}
 }

@@ -1,8 +1,11 @@
-#include "FadeEffect.h"
+﻿#include "FadeEffect.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 #include <algorithm> // std::clampのために追加
 
+
+namespace CoreEngine
+{
 void FadeEffect::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
@@ -225,4 +228,5 @@ void FadeEffect::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

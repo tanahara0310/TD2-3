@@ -1,6 +1,9 @@
-#include "CollisionManager.h"
+﻿#include "CollisionManager.h"
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 namespace {
    // コライダーペアを一意にするためのヘルパー関数
    std::pair<Collider*, Collider*> MakePair(Collider* a, Collider* b) {
@@ -62,4 +65,5 @@ void CollisionManager::CheckAllCollisions() {
 void CollisionManager::Clear() {
    colliders_.clear();
    previousCollisions_.clear();
+}
 }

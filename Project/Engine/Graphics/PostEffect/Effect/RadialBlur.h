@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
+
+namespace CoreEngine
+{
 class RadialBlur : public PostEffectBase {
 public:
     /// @brief ラジアルブラーパラメータ構造体
@@ -47,3 +50,4 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer_;
     RadialBlurParams* mappedData_ = nullptr;
 };
+}

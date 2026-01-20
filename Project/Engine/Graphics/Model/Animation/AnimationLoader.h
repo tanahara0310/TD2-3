@@ -3,8 +3,15 @@
 #include "Animation.h"
 #include <string>
 
+// 前方宣言（assimp）
+struct aiScene;
+struct aiNodeAnim;
+
 /// @brief アニメーションファイル読み込み専用クラス
 /// Assimpを使用してglTFなどからアニメーションデータを解析
+
+namespace CoreEngine
+{
 class AnimationLoader {
 public:
     /// @brief アニメーションファイルを読み込む
@@ -18,10 +25,11 @@ private:
     /// @param scene Assimpシーン
     /// @param animationIndex アニメーションインデックス（デフォルト0）
     /// @return 解析されたアニメーション
-    static Animation ParseAnimation(const struct aiScene* scene, unsigned int animationIndex = 0);
+    static Animation ParseAnimation(const ::aiScene* scene, unsigned int animationIndex = 0);
 
     /// @brief AssimpのNodeAnimationをNodeAnimationに変換
     /// @param aiNodeAnim Assimpのノードアニメーション
     /// @return 変換されたNodeAnimation
-    static NodeAnimation ConvertNodeAnimation(const struct aiNodeAnim* aiNodeAnim, double ticksPerSecond);
+    static NodeAnimation ConvertNodeAnimation(const ::aiNodeAnim* aiNodeAnim, double ticksPerSecond);
 };
+}

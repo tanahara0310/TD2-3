@@ -1,9 +1,12 @@
-#include "SceneManager.h"
+﻿#include "SceneManager.h"
 #include <EngineSystem.h>
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Light/LightManager.h"
 #include "Engine/Utility/FrameRate/FrameRateController.h"
 
+
+namespace CoreEngine
+{
 void SceneManager::Initialize(EngineSystem* engine) {
 	engine_ = engine;
 
@@ -150,4 +153,5 @@ void SceneManager::DoChangeScene(const std::string& name) {
 	currentSceneName_ = name;
 	currentScene_->SetSceneManager(this);
 	currentScene_->Initialize(engine_);
+}
 }

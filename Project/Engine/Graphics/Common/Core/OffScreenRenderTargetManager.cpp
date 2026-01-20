@@ -7,6 +7,10 @@
 #include <cassert>
 #include <format>
 
+using namespace Microsoft::WRL;
+
+namespace CoreEngine
+{
 void OffScreenRenderTargetManager::Initialize(ID3D12Device* device, DescriptorManager* descriptorManager)
 {
     device_ = device;
@@ -116,4 +120,5 @@ void OffScreenRenderTargetManager::CreateOffScreenRenderTarget()
         offscreen2SrvHandle_,
         "OffScreenRenderTarget2"
     );
+}
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <span>
 #include <array>
@@ -8,6 +8,9 @@
 #include "Engine/Math/Matrix/Matrix4x4.h"
 
 ///  頂点に影響を与えるジョイントの最大数
+
+namespace CoreEngine
+{
 const uint32_t kNumMaxInfluence = 4;
 
 /// @brief 頂点ごとのインフルエンス情報
@@ -37,3 +40,4 @@ struct SkinCluster {
 	std::span<WellForGPU> mappedPalette;                       // Paletteデータをマップしたもの
 	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle; // PaletteのSRV
 };
+}

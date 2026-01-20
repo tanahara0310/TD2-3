@@ -1,7 +1,10 @@
-#include "RootSignatureManager.h"
+﻿#include "RootSignatureManager.h"
 
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void RootSignatureManager::AddRootCBV(const RootDescriptorConfig& config)
 {
     AddRootDescriptor(D3D12_ROOT_PARAMETER_TYPE_CBV, config);
@@ -170,4 +173,5 @@ void RootSignatureManager::SetSampler(const D3D12_STATIC_SAMPLER_DESC& sampler)
 void RootSignatureManager::SetDefaultSampler(UINT shaderRegister, D3D12_SHADER_VISIBILITY shadervisibility)
 {
     AddDefaultLinearSampler(shaderRegister, shadervisibility, 0);
+}
 }

@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
 
 /// @brief パーティクルシステムのメインモジュール
 /// Unityの「Main Module」に相当
+
+namespace CoreEngine
+{
 class MainModule : public ParticleModule {
 public:
 	/// @brief シミュレーション空間
@@ -121,3 +124,4 @@ private:
 	/// @return ランダム値
 	float ApplyRandomness(float base, float randomness) const;
 };
+}

@@ -15,44 +15,49 @@
 #include "TextureViewer.h"
 
 // 前方宣言
-class DirectXCommon;
-class PostEffectManager;
-class GameDebugUI;
+namespace CoreEngine {
+    class DirectXCommon;
+    class PostEffectManager;
+    class GameDebugUI;
+}
 
 /// @brief ImGui管理クラス
+
+namespace CoreEngine
+{
 class ImGuiManager {
 public:
-    /// @brief 初期化
-    /// @param hwnd
-    /// @param device
-    /// @param swaoChainDesc
-    /// @param srvHeap
-    void Initialize(HWND hwnd, DirectXCommon* dxCommon);
+/// @brief 初期化
+/// @param hwnd
+/// @param device
+/// @param swaoChainDesc
+/// @param srvHeap
+void Initialize(HWND hwnd, CoreEngine::DirectXCommon* dxCommon);
 
-    /// @brief ImGuiの開始処理
-    /// @param postEffectManager PostEffectManagerへのポインタ（オプション）
-    /// @param gameDebugUI GameDebugUIへのポインタ（オプション）
-    void Begin(PostEffectManager* postEffectManager = nullptr, GameDebugUI* gameDebugUI = nullptr);
+/// @brief ImGuiの開始処理
+/// @param postEffectManager PostEffectManagerへのポインタ（オプション）
+/// @param gameDebugUI GameDebugUIへのポインタ（オプション）
+void Begin(CoreEngine::PostEffectManager* postEffectManager = nullptr, CoreEngine::GameDebugUI* gameDebugUI = nullptr);
 
-    /// @brief ImGuiの終了処理
-    void End();
+/// @brief ImGuiの終了処理
+void End();
 
-    /// @brief ImGuiの描画
-    /// @param commandList
-    void Draw();
+/// @brief ImGuiの描画
+/// @param commandList
+void Draw();
 
-    /// @brief 終了処理
-    void Finalize();
+/// @brief 終了処理
+void Finalize();
 
-    /// @brief ドッキングUIへのアクセッサ
-    /// @return ドッキングUIへのポインタ
-    DockingUI* GetDockingUI() const { return dockingUI_.get(); }
+/// @brief ドッキングUIへのアクセッサ
+/// @return ドッキングUIへのポインタ
+DockingUI* GetDockingUI() const { return dockingUI_.get(); }
 
-    /// @brief シーンビューポートへのアクセッサ
-    /// @return シーンビューポートへのポインタ
-    SceneViewport* GetSceneViewport() const { return sceneViewport_.get(); }
+/// @brief シーンビューポートへのアクセッサ
+/// @return シーンビューポートへのポインタ
+SceneViewport* GetSceneViewport() const { return sceneViewport_.get(); }
 
-    /// @brief テクスチャビューアへのアクセッサ
+/// @brief テクスチャビューアへのアクセッサ
     /// @return テクスチャビューアへのポインタ
     TextureViewer* GetTextureViewer() const { return textureViewer_.get(); }
 
@@ -72,3 +77,4 @@ private: // メンバ関数
     /// @brief フレームの開始
     void StartNewFrame();
 };
+}

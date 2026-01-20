@@ -9,10 +9,16 @@
 #include <unordered_map>
 #include <memory>
 
-class DirectXCommon;
-class DescriptorManager;
+// 前方宣言
+namespace CoreEngine {
+    class DirectXCommon;
+    class DescriptorManager;
+}
 
 /// @brief 単一フォントの管理クラス
+
+namespace CoreEngine
+{
 class Font {
 public:
     Font() = default;
@@ -26,7 +32,7 @@ public:
     /// @param fontSize フォントサイズ（ピクセル）
     /// @param dxCommon DirectXCommon
     /// @return 成功した場合true
-    bool Initialize(FT_Library ftLibrary, const std::string& fontFilePath, uint32_t fontSize, DirectXCommon* dxCommon);
+    bool Initialize(FT_Library ftLibrary, const std::string& fontFilePath, uint32_t fontSize, CoreEngine::DirectXCommon* dxCommon);
 
     /// @brief 文字コードからグリフを取得（キャッシュあり）
     /// @param charCode 文字コード（UTF-32）
@@ -59,8 +65,8 @@ private:
 
 private:
     FT_Face face_ = nullptr;
-    DirectXCommon* dxCommon_ = nullptr;
-    DescriptorManager* descriptorManager_ = nullptr;
+    CoreEngine::DirectXCommon* dxCommon_ = nullptr;
+    CoreEngine::DescriptorManager* descriptorManager_ = nullptr;
 
     std::string fontFilePath_;
     uint32_t fontSize_ = 0;
@@ -69,3 +75,4 @@ private:
 
     std::unordered_map<uint32_t, std::unique_ptr<Glyph>> glyphCache_;
 };
+}

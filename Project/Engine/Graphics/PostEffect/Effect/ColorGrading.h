@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
+
+namespace CoreEngine
+{
 class ColorGrading : public PostEffectBase {
 public:
     /// @brief カラーグレーディングパラメータ構造体
@@ -67,3 +70,4 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer_;
     ColorGradingParams* mappedData_ = nullptr;
 };
+}

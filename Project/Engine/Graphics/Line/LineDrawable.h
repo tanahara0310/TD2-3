@@ -5,11 +5,16 @@
 #include <vector>
 
 // 前方宣言
-class LineRendererPipeline;
-class ICamera;
+namespace CoreEngine {
+    class LineRendererPipeline;
+    class ICamera;
+}
 
 /// @brief ライン描画用GameObjectクラス
 /// @details シーン内で永続的にラインを描画したい場合に使用
+
+namespace CoreEngine
+{
 class LineDrawable : public GameObject {
 public:
     LineDrawable() = default;
@@ -17,11 +22,11 @@ public:
 
     /// @brief 初期化
     /// @param rendererPipeline LineRendererPipelineへのポインタ
-    void Initialize(LineRendererPipeline* rendererPipeline);
+    void Initialize(CoreEngine::LineRendererPipeline* rendererPipeline);
 
     // GameObjectインターフェースの実装
     void Update() override;
-    void Draw(const ICamera* camera) override;
+    void Draw(const CoreEngine::ICamera* camera) override;
     RenderPassType GetRenderPassType() const override { return RenderPassType::Line; }
 
 #ifdef _DEBUG
@@ -49,6 +54,7 @@ public:
     const std::vector<Line>& GetLines() const { return lines_; }
 
 private:
-    LineRendererPipeline* rendererPipeline_ = nullptr;
+    CoreEngine::LineRendererPipeline* rendererPipeline_ = nullptr;
     std::vector<Line> lines_;
 };
+}

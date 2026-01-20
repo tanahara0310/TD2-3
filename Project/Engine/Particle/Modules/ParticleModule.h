@@ -7,6 +7,8 @@
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #endif
 
+namespace CoreEngine
+{
 // 前方宣言
 struct Particle;
 
@@ -33,4 +35,14 @@ public:
 protected:
     bool enabled_ = true;
     RandomGenerator& random_ = RandomGenerator::GetInstance(); // 統一乱数生成器への参照
+
+    /// @brief ランダム性を適用したヘルパー関数
+    /// @param baseValue 基本値
+    /// @param randomness ランダム性の範囲
+    /// @return ランダム性を適用した値
+    float ApplyRandomness(float baseValue, float randomness) {
+        if (randomness <= 0.0f) return baseValue;
+        return baseValue + random_.GetFloat(-randomness, randomness);
+    }
 };
+}

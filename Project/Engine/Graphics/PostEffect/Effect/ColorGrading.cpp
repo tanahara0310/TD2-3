@@ -1,7 +1,10 @@
-#include "ColorGrading.h"
+﻿#include "ColorGrading.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void ColorGrading::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
@@ -273,4 +276,5 @@ void ColorGrading::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

@@ -1,6 +1,9 @@
-#include "CameraShake.h"
+﻿#include "CameraShake.h"
 #include <cmath>
 
+
+namespace CoreEngine
+{
 void CameraShake::Start(float duration, float intensity, float frequency) {
 	intensity_ = intensity;
 	frequency_ = frequency;
@@ -60,4 +63,5 @@ Vector3 CameraShake::GenerateRandomOffset(float amplitude) {
 		random_.GetFloatSigned() * amplitude,
 		random_.GetFloatSigned() * amplitude * 0.5f  // Z軸は控えめに
 	};
+}
 }

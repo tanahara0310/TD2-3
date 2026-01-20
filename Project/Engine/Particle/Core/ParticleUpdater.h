@@ -3,6 +3,8 @@
 #include <list>
 #include <cstdint>
 
+namespace CoreEngine
+{
 // 前方宣言
 struct Particle;
 class ForceModule;
@@ -57,3 +59,4 @@ private:
 	RotationModule* rotationModule_ = nullptr;
 	NoiseModule* noiseModule_ = nullptr;
 };
+}

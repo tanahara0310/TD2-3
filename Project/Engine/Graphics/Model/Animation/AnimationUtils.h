@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Math/Vector/Vector3.h>
 #include <Math/Quaternion/Quaternion.h>
@@ -6,6 +6,9 @@
 #include "NodeAnimation.h"
 
 /// @brief アニメーション補間ユーティリティ
+
+namespace CoreEngine
+{
 namespace AnimationUtils {
 
 /// @brief Vector3のキーフレーム配列から任意の時刻の値を計算
@@ -21,3 +24,4 @@ Vector3 CalculateVector3(const std::vector<Keyframe<Vector3>>& keyframes, float 
 Quaternion CalculateQuaternion(const std::vector<Keyframe<Quaternion>>& keyframes, float time);
 
 } // namespace AnimationUtils
+}

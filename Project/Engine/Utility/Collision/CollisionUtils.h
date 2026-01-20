@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/Math/MathCore.h"
 #include "Engine/Math/BoundingBox.h"
 #include <optional>
 
+
+namespace CoreEngine
+{
 namespace CollisionUtils {
 
     //================================================
@@ -221,4 +224,5 @@ namespace CollisionUtils {
     /// @return 作成されたAABB
     BoundingBox CreateAABBFromPoints(const Vector3* points, size_t count);
 
+}
 }

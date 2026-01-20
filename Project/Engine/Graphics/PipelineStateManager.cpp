@@ -1,4 +1,4 @@
-#include "PipelineStateManager.h"
+﻿#include "PipelineStateManager.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -7,6 +7,9 @@
 // PSOビルダークラス
 // ================================================================================
 
+
+namespace CoreEngine
+{
 PipelineStateBuilder::PipelineStateBuilder(PipelineStateManager* manager)
 	: manager_(manager)
 	, numRenderTargets_(1)
@@ -325,4 +328,5 @@ void PipelineStateManager::Clear()
 void PipelineStateManager::RegisterPipelineState(BlendMode mode, ComPtr<ID3D12PipelineState> pso)
 {
 	pipelineStates_[mode] = pso;
+}
 }

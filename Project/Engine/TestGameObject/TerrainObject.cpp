@@ -1,4 +1,4 @@
-#include "TerrainObject.h"
+﻿#include "TerrainObject.h"
 #include "Engine/EngineSystem/EngineSystem.h"
 #include "Engine/Graphics/Model/ModelManager.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
@@ -6,6 +6,9 @@
 #include "Engine/Camera/ICamera.h"
 #include <numbers>
 
+
+namespace CoreEngine
+{
 void TerrainObject::Initialize() {
    auto engine = GetEngineSystem();
    // 必須コンポーネントの取得
@@ -47,4 +50,5 @@ void TerrainObject::Draw(const ICamera* camera) {
 
    // モデルの描画
    model_->Draw(transform_, camera, texture_.gpuHandle);
+}
 }

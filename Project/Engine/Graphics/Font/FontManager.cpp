@@ -1,8 +1,11 @@
-#include "FontManager.h"
+﻿#include "FontManager.h"
 #include "Font.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Utility/Logger/Logger.h"
 
+
+namespace CoreEngine
+{
 FontManager& FontManager::GetInstance() {
     static FontManager instance;
     return instance;
@@ -96,4 +99,5 @@ Font* FontManager::GetDefaultFont() {
 
 std::string FontManager::GenerateFontKey(const std::string& fontFilePath, uint32_t fontSize) const {
     return fontFilePath + "_" + std::to_string(fontSize);
+}
 }

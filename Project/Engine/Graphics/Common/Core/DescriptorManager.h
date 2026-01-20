@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -9,6 +9,9 @@
 using namespace Microsoft::WRL;
 
 /// @brief ディスクリプタヒープ管理クラス
+
+namespace CoreEngine
+{
 class DescriptorManager {
 public:
 	// ディスクリプタヒープの最大サイズ
@@ -151,3 +154,4 @@ private:
 
 	ID3D12Device* device_ = nullptr;
 };
+}

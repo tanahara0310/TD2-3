@@ -5,7 +5,7 @@
 
 /// @brief ゲーム固有のアプリケーションクラス
 /// Framework を継承し、シーン管理を統合する
-class MyGame : public Framework {
+class MyGame : public CoreEngine::Framework {
 public:
 	MyGame() = default;
 	~MyGame() override;
@@ -33,5 +33,5 @@ private:
 	// ──────────────────────────────────────────────────────────
 
 	/// @brief シーン管理システム
-	std::unique_ptr<SceneManager> sceneManager_;
+	std::unique_ptr<CoreEngine::SceneManager> sceneManager_;
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "MathCore.h"
 #include <cstdint>
@@ -7,6 +7,9 @@
 /// 新しいライトシステムで使用する統一された構造体
 
 /// @brief ディレクショナルライトのデータ構造体（StructuredBuffer用）
+
+namespace CoreEngine
+{
 struct DirectionalLightData {
     Vector4 color;        // ライトの色
     Vector3 direction;    // ライトの方向
@@ -46,3 +49,4 @@ struct LightCounts {
     uint32_t spotLightCount;
     uint32_t padding;  // 16バイトアライメント
 };
+}

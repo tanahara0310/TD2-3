@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
@@ -6,6 +6,9 @@
 
 /// @brief コンポーネント管理クラス
 /// テンプレートを使用して型安全なコンポーネント登録・取得を提供
+
+namespace CoreEngine
+{
 class ComponentManager {
 public:
     /// @brief コンポーネントを登録
@@ -49,3 +52,4 @@ private:
     /// void* として保存し、取得時に適切な型にキャスト
     std::unordered_map<std::type_index, void*> components_;
 };
+}

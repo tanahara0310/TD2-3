@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "MathCore.h"
 #include <cfloat>
 
 /// @brief 軸対象境界ボックス（AABB）
+
+namespace CoreEngine
+{
 struct BoundingBox {
     Vector3 min; ///< 最小座標
     Vector3 max; ///< 最大座標
@@ -45,3 +48,4 @@ struct BoundingBox {
         max = center + half;
     }
 };
+}

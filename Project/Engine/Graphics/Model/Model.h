@@ -14,13 +14,19 @@
 #include "Animation/IAnimationController.h"
 #include "Skeleton/Skeleton.h"
 
-class ICamera;
-class DirectXCommon;
-class ResourceFactory;
-class LightBase;
+// 前方宣言
+namespace CoreEngine {
+    class ICamera;
+    class DirectXCommon;
+    class ResourceFactory;
+    class LightBase;
+}
 
 /// @brief 配置された3Dモデルのインスタンスクラス
 /// ModelResourceへの参照と、個別のトランスフォーム・マテリアルを持つ
+
+namespace CoreEngine
+{
 class Model {
 public:
 	/// @brief モデルの描画タイプ
@@ -38,7 +44,7 @@ public:
 	/// @brief 静的初期化（全Modelインスタンス共通のリソースを初期化）
 	/// @param dxCommon DirectXCommonのポインタ
 	/// @param factory リソースファクトリのポインタ
-	static void Initialize(DirectXCommon* dxCommon, ResourceFactory* factory);
+	static void Initialize(CoreEngine::DirectXCommon* dxCommon, CoreEngine::ResourceFactory* factory);
 
 	/// @brief 初期化（アニメーションコントローラーなし）
 	/// @param resource 共有するModelResourceのポインタ
@@ -53,7 +59,7 @@ public:
 	/// @param transform ワールドトランスフォーム
 	/// @param camera カメラ（ICamera インターフェース）
 	/// @param textureHandle テクスチャハンドル
-	void Draw(const WorldTransform& transform, const ICamera* camera,
+	void Draw(const WorldTransform& transform, const CoreEngine::ICamera* camera,
 		D3D12_GPU_DESCRIPTOR_HANDLE textureHandle);
 
 	/// @brief 初期化されているか確認
@@ -136,6 +142,40 @@ public:
 		return Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
 	}
 
+	/// @brief 環境マップを有効/無効にする
+	/// @param enable true: 有効, false: 無効
+	void SetEnableEnvironmentMap(bool enable) {
+		if (materialManager_) {
+			materialManager_->SetEnableEnvironmentMap(enable);
+		}
+	}
+
+	/// @brief 環境マップが有効かどうかを取得
+	/// @return true: 有効, false: 無効
+	bool IsEnableEnvironmentMap() const {
+		if (materialManager_) {
+			return materialManager_->IsEnableEnvironmentMap();
+		}
+		return false;
+	}
+
+	/// @brief 環境マップの反射強度を設定
+	/// @param intensity 反射強度 (0.0-1.0)
+	void SetEnvironmentMapIntensity(float intensity) {
+		if (materialManager_) {
+			materialManager_->SetEnvironmentMapIntensity(intensity);
+		}
+	}
+
+	/// @brief 環境マップの反射強度を取得
+	/// @return 現在の反射強度
+	float GetEnvironmentMapIntensity() const {
+		if (materialManager_) {
+			return materialManager_->GetEnvironmentMapIntensity();
+		}
+		return 0.0f;
+	}
+
 	void SetModelResource(ModelResource* resource);
 
 private:
@@ -172,3 +212,4 @@ private:
 	void SetupSkinningDrawCommands(ID3D12GraphicsCommandList* cmdList,
 		D3D12_GPU_DESCRIPTOR_HANDLE textureHandle);
 };
+}

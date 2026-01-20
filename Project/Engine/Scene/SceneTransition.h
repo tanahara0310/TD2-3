@@ -3,13 +3,19 @@
 #include <memory>
 #include <functional>
 
-class EngineSystem;
-class PostEffectManager;
-class FadeEffect;
-class SoundManager;
+// 前方宣言
+namespace CoreEngine {
+    class EngineSystem;
+    class PostEffectManager;
+    class FadeEffect;
+    class SoundManager;
+}
 
 /// @brief シーントランジション管理クラス
 /// @details シーン遷移時のフェードイン・フェードアウトなどの演出を管理（ポストエフェクトベース）
+
+namespace CoreEngine
+{
 class SceneTransition {
 public:
     /// @brief トランジションタイプ
@@ -86,12 +92,12 @@ private:
     void ApplyBGMVolume();
 
 private:
-    EngineSystem* engine_ = nullptr;
-    PostEffectManager* postEffectManager_ = nullptr;
-    FadeEffect* fadeEffect_ = nullptr;
-    SoundManager* soundManager_ = nullptr;
+EngineSystem* engine_ = nullptr;
+PostEffectManager* postEffectManager_ = nullptr;
+FadeEffect* fadeEffect_ = nullptr;
+SoundManager* soundManager_ = nullptr;
 
-    TransitionPhase phase_ = TransitionPhase::Idle;
+TransitionPhase phase_ = TransitionPhase::Idle;
     TransitionType type_ = TransitionType::None;
 
     float timer_ = 0.0f;        // 現在のタイマー
@@ -104,3 +110,4 @@ private:
     // BGM音量制御用コールバック
     std::function<void(float)> bgmVolumeCallback_ = nullptr;
 };
+}

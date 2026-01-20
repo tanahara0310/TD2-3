@@ -1,10 +1,13 @@
 #include "ImGuiManager.h"
-#include <filesystem>
-namespace fs = std::filesystem;
-
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Utility/Debug/GameDebugUI.h"
 #include <ImGuizmo.h>
+#include <filesystem>
+
+namespace CoreEngine
+{
+
+namespace fs = std::filesystem;
 
 void ImGuiManager::Initialize(HWND hwnd, DirectXCommon* dxCommon)
 {
@@ -261,4 +264,5 @@ void ImGuiManager::StartNewFrame()
     ImGui_ImplDX12_NewFrame();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame(); // ImGuizmoのフレーム開始
+}
 }

@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
 /// @brief パーティクルのサイズ制御モジュール
 /// 注意: 初期サイズの設定はMainModuleで行います
 /// このモジュールはサイズの変化（Over Lifetime）のみを担当します
+
+namespace CoreEngine
+{
 class SizeModule : public ParticleModule {
 public:
     struct SizeData {
@@ -77,3 +80,4 @@ private:
     /// @return ランダム性が適用されたサイズ
     float ApplyRandomness(float baseSize, float randomness);
 };
+}

@@ -3,7 +3,10 @@
 #include "Engine/Particle/ParticleSystem.h" // Particle, BillboardType, ParticleRenderMode定義のため
 #include <cmath>
 
-using namespace MathCore;
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
 
 uint32_t ParticleRenderDataBuilder::BuildRenderData(
 	const std::list<Particle>& particles,
@@ -157,3 +160,5 @@ horizontalDirection.z / horizontalLength
 		return Matrix::Identity();
 	}
 }
+
+} // namespace CoreEngine

@@ -1,6 +1,9 @@
-#include "FullScreen.h"
+﻿#include "FullScreen.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 
+
+namespace CoreEngine
+{
 const std::wstring& FullScreen::GetPixelShaderPath() const
 {
     static const std::wstring path = L"Assets/Shaders/PostProcess/FullScreen.PS.hlsl";
@@ -18,4 +21,5 @@ void FullScreen::DrawImGui()
     ImGui::Separator();
     
     ImGui::PopID();
+}
 }

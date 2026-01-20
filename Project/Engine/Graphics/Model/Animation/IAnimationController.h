@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include <Math/Matrix/Matrix4x4.h>
 #include <string>
 
 /// @brief アニメーション制御インターフェース
 /// Animator と SkeletonAnimator を統一的に扱うための基底クラス
+
+namespace CoreEngine
+{
 class IAnimationController {
 public:
     virtual ~IAnimationController() = default;
@@ -24,3 +27,4 @@ public:
     /// @return アニメーションが終了していればtrue
     virtual bool IsFinished() const = 0;
 };
+}

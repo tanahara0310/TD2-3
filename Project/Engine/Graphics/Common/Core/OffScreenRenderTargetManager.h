@@ -3,8 +3,9 @@
 #include <d3d12.h>
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
+namespace CoreEngine
+{
+// 前方宣言
 class DescriptorManager;
 
 /// @brief オフスクリーンレンダリングターゲット管理クラス
@@ -31,12 +32,12 @@ private:
 
 private:
     // 1枚目のオフスクリーンバッファ
-    ComPtr<ID3D12Resource> offScreenResource_;
+    Microsoft::WRL::ComPtr<ID3D12Resource> offScreenResource_;
     D3D12_CPU_DESCRIPTOR_HANDLE offscreenRtvHandle_ {};
     D3D12_GPU_DESCRIPTOR_HANDLE offscreenSrvHandle_ {};
 
     // 2枚目のオフスクリーンバッファ
-    ComPtr<ID3D12Resource> offScreen2Resource_;
+    Microsoft::WRL::ComPtr<ID3D12Resource> offScreen2Resource_;
     D3D12_CPU_DESCRIPTOR_HANDLE offscreen2RtvHandle_ {};
     D3D12_GPU_DESCRIPTOR_HANDLE offscreen2SrvHandle_ {};
 
@@ -44,3 +45,5 @@ private:
     ID3D12Device* device_ = nullptr;
     DescriptorManager* descriptorManager_ = nullptr;
 };
+}
+

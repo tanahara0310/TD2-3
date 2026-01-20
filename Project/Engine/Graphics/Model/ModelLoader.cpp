@@ -1,4 +1,4 @@
-#include "ModelLoader.h"
+﻿#include "ModelLoader.h"
 
 #include <cassert>
 #include <format>
@@ -7,6 +7,9 @@
 #include "Engine/Utility/Logger/Logger.h"
 #include "Engine/Utility/FileErrorDialog/FileErrorDialog.h"
 
+
+namespace CoreEngine
+{
 ModelData ModelLoader::LoadModelFile(const std::string& directoryPath, const std::string& filename)
 {
 	std::string fullPath = directoryPath + "/" + filename;
@@ -153,4 +156,5 @@ Node ModelLoader::ReadNode(aiNode* node) {
 	}
 
 	return result;
+}
 }

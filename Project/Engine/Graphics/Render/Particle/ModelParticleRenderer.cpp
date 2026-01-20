@@ -1,4 +1,4 @@
-#include "ModelParticleRenderer.h"
+﻿#include "ModelParticleRenderer.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Graphics/Model/ModelResource.h"
@@ -6,6 +6,9 @@
 #include "Engine/Graphics/TextureManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void ModelParticleRenderer::Draw(ParticleSystem* particle) {
     // 基本的な検証
     if (!ValidateDrawCall(particle)) {
@@ -63,4 +66,5 @@ void ModelParticleRenderer::CreatePSO() {
     if (!result) {
         throw std::runtime_error("Failed to create PSO in ModelParticleRenderer");
     }
+}
 }

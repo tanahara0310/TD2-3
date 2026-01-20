@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -8,6 +8,9 @@ struct Particle;
 /// @brief パーティクルの速度モジュール
 /// 注意: 初期速度の大きさはMainModuleで設定します
 /// このモジュールは速度の方向のみを決定します
+
+namespace CoreEngine
+{
 class VelocityModule : public ParticleModule {
 public:
     struct VelocityData {
@@ -49,3 +52,4 @@ private:
     /// @return ランダムな方向ベクトル
     Vector3 GenerateRandomDirection();
 };
+}

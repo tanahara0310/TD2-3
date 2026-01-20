@@ -1,9 +1,12 @@
-#include "DescriptorManager.h"
+﻿#include "DescriptorManager.h"
 #include "Engine/Utility/Logger/Logger.h"
 
 #include <cassert>
 #include <format>
 
+
+namespace CoreEngine
+{
 namespace {
 	Logger& logger = Logger::GetInstance();
 }
@@ -257,4 +260,5 @@ void DescriptorManager::LogViewCreationWithCount(UINT index, const std::string& 
 	(void)debugName;
 	(void)maxCount;
 #endif
+}
 }

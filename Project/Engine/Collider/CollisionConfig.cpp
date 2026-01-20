@@ -1,5 +1,8 @@
-#include "CollisionConfig.h"
+﻿#include "CollisionConfig.h"
 
+
+namespace CoreEngine
+{
 CollisionConfig::CollisionConfig() {
    // デフォルトはすべて無効化
    for (int i = 0; i < kMaxLayers; ++i) {
@@ -27,4 +30,5 @@ bool CollisionConfig::IsCollisionEnabled(CollisionLayer a, CollisionLayer b) con
    int ia = static_cast<int>(a);
    int ib = static_cast<int>(b);
    return matrix_[ia][ib];
+}
 }

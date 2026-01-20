@@ -1,6 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "Collider.h"
 
+
+namespace CoreEngine
+{
 class SphereCollider : public Collider {
 public:
    SphereCollider(GameObject* owner, float r);
@@ -15,3 +18,4 @@ public:
 private:
    float radius_{};
 };
+}

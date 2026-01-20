@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -11,6 +11,9 @@
 #include "Engine/Math/Matrix/Matrix4x4.h"
 
 /// @brief モデルファイル読み込みクラス
+
+namespace CoreEngine
+{
 class ModelLoader {
 public:
 	/// @brief モデルファイルを読み込む
@@ -31,3 +34,4 @@ private:
 	static Node ReadNode(aiNode* node);
 
 };
+}

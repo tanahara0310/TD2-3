@@ -1,6 +1,9 @@
-#include "Invert.h"
+﻿#include "Invert.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 
+
+namespace CoreEngine
+{
 void Invert::DrawImGui()
 {
 #ifdef _DEBUG
@@ -19,4 +22,5 @@ void Invert::DrawImGui()
     
     ImGui::PopID();
 #endif // _DEBUG
+}
 }

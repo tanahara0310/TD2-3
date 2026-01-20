@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <unordered_set>
 #include "Collider.h"
@@ -6,6 +6,9 @@
 
 /// @brief 衝突判定を一括管理するマネージャークラス
 /// @note 登録されたすべてのコライダー間の衝突判定を行い、適切なコールバックを実行
+
+namespace CoreEngine
+{
 class CollisionManager {
 public:
    explicit CollisionManager(CollisionConfig* config);
@@ -38,3 +41,4 @@ private:
    // 前フレームの衝突ペアを記録（Enter/Stay/Exitの判定用）
    std::unordered_set<std::pair<Collider*, Collider*>, ColliderPairHash> previousCollisions_;
 };
+}

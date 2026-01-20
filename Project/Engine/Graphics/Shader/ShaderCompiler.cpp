@@ -4,6 +4,9 @@
 
 #include "Utility/Logger/Logger.h"
 
+
+namespace CoreEngine
+{
 void ShaderCompiler::Initialize()
 {
 
@@ -90,4 +93,5 @@ IDxcBlob* ShaderCompiler::CompileShader(const std::wstring& filePath, const wcha
 
     // 生成したバイナリを返す
     return shaderBlob;
+}
 }

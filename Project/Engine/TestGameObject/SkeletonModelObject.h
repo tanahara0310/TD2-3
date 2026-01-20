@@ -5,6 +5,9 @@
 #include <memory>
 
 /// @brief Skeletonモデルオブジェクト
+
+namespace CoreEngine
+{
 class SkeletonModelObject : public GameObject {
 public:
     /// @brief 初期化処理
@@ -16,6 +19,11 @@ public:
     /// @brief 描画処理
     /// @param camera カメラ
     void Draw(const ICamera* camera) override;
+    
+#ifdef _DEBUG
+    /// @brief ImGui拡張UI描画
+    bool DrawImGuiExtended() override;
+#endif
 
     /// @brief 描画パスタイプを取得（スキニングモデル用）
     /// @return 描画パスタイプ
@@ -37,3 +45,4 @@ private:
     /// @brief テクスチャハンドル
     TextureManager::LoadedTexture uvCheckerTexture_;
 };
+}

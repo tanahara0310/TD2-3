@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "Skeleton.h"
 #include "Engine/Graphics/Structs/Node.h"
 
 /// @brief Skeletonローダークラス
+
+namespace CoreEngine
+{
 class SkeletonLoader {
 public:
     /// @brief NodeからSkeletonを作成
@@ -18,3 +21,4 @@ private:
     /// @return 作成されたJointのIndex
     static int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 };
+}

@@ -1,7 +1,10 @@
-#include "ChromaticAberration.h"
+﻿#include "ChromaticAberration.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void ChromaticAberration::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
@@ -241,4 +244,5 @@ void ChromaticAberration::CreateConstantBuffer()
     
     // 初期値で更新
     UpdateConstantBuffer();
+}
 }

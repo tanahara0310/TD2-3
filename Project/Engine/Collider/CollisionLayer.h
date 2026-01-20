@@ -1,7 +1,10 @@
-#pragma once
+﻿#pragma once
 
 /// @brief 衝突判定レイヤー
 /// @note 衝突判定の最適化とゲームロジックの分離に使用
+
+namespace CoreEngine
+{
 enum class CollisionLayer {
    Default = 0,   // デフォルトレイヤー（汎用）
    Player,        // プレイヤー
@@ -15,3 +18,4 @@ enum class CollisionLayer {
    Environment,   // 環境オブジェクト（壁など）
    Count          // レイヤー数（列挙の最後に配置）
 };
+}

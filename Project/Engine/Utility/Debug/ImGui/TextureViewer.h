@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 
 class TextureManager;
 
 /// @brief テクスチャビューアークラス
+
+namespace CoreEngine
+{
 class TextureViewer {
 public:
     /// @brief テクスチャビューアーウィンドウを描画
@@ -16,3 +19,4 @@ private:
     int selectedTextureIndex_ = -1;
     std::string selectedTexturePath_;
 };
+}

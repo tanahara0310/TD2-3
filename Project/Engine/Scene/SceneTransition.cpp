@@ -6,25 +6,28 @@
 #include "Engine/Utility/FrameRate/FrameRateController.h"
 #include "Engine/Audio/SoundManager.h"
 
+
+namespace CoreEngine
+{
 void SceneTransition::Initialize(EngineSystem* engine) {
-    engine_ = engine;
+engine_ = engine;
 
-    // PostEffectManagerを取得
-    postEffectManager_ = engine_->GetComponent<PostEffectManager>();
+// PostEffectManagerを取得
+postEffectManager_ = engine_->GetComponent<PostEffectManager>();
 
-    // FadeEffectを取得
-    fadeEffect_ = postEffectManager_->GetEffect<FadeEffect>(PostEffectNames::FadeEffect);
+// FadeEffectを取得
+fadeEffect_ = postEffectManager_->GetEffect<FadeEffect>(PostEffectNames::FadeEffect);
 
-    // SoundManagerを取得
-    soundManager_ = engine_->GetComponent<SoundManager>();
+// SoundManagerを取得
+soundManager_ = engine_->GetComponent<SoundManager>();
 
-    // 初期状態：完全に透明（フェードなし）
-    fadeEffect_->SetFadeAlpha(0.0f);
-    fadeEffect_->SetFadeType(FadeEffect::FadeType::BlackFade);
-    fadeEffect_->SetEnabled(false); // デフォルトは無効
+// 初期状態：完全に透明（フェードなし）
+fadeEffect_->SetFadeAlpha(0.0f);
+fadeEffect_->SetFadeType(FadeEffect::FadeType::BlackFade);
+fadeEffect_->SetEnabled(false); // デフォルトは無効
 
-    // 初期状態
-    phase_ = TransitionPhase::Idle;
+// 初期状態
+phase_ = TransitionPhase::Idle;
     timer_ = 0.0f;
     duration_ = 1.0f;
 }
@@ -226,4 +229,5 @@ void SceneTransition::ApplyBGMVolume() {
 
     // コールバックを呼び出して音量倍率を通知
     bgmVolumeCallback_(volumeMultiplier);
+}
 }

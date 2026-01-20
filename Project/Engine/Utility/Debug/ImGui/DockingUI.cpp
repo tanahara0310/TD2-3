@@ -1,5 +1,8 @@
-#include "DockingUI.h"
+﻿#include "DockingUI.h"
 
+
+namespace CoreEngine
+{
 void DockingUI::RegisterWindow(const std::string& windowName, DockArea area)
 {
     registeredWindows_[windowName] = area;
@@ -125,4 +128,5 @@ void DockingUI::BuildDockLayout()
 
     // レイアウト構築完了
     ImGui::DockBuilderFinish(dockMain);
+}
 }

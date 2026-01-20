@@ -1,4 +1,4 @@
-#include "GameTimer.h"
+﻿#include "GameTimer.h"
 #include <algorithm>
 #include <cmath>
 
@@ -6,6 +6,9 @@
 #include <imgui.h>
 #endif
 
+
+namespace CoreEngine
+{
 GameTimer::GameTimer(float duration, bool loop) 
     : duration_(duration), loop_(loop) {
 }
@@ -447,4 +450,5 @@ GameTimer::IntervalChecker* GameTimer::FindOrCreateIntervalChecker(float interva
     intervalCheckers_.push_back(newChecker);
     
     return &intervalCheckers_.back();
+}
 }

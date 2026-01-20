@@ -1,4 +1,4 @@
-#include "KeyboardInput.h"
+﻿#include "KeyboardInput.h"
 
 #include <algorithm> // std::copy を使用するために追加
 #include <cassert>
@@ -7,6 +7,9 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+
+namespace CoreEngine
+{
 struct KeyName {
     uint8_t code;
     const char* name;
@@ -100,4 +103,5 @@ bool KeyboardInput::IsKeyTriggered(uint8_t keyNumber) const
 bool KeyboardInput::IsKeyReleased(uint8_t keyNumber) const
 {
     return !(key_[keyNumber] & 0x80) && (preKey_[keyNumber] & 0x80);
+}
 }

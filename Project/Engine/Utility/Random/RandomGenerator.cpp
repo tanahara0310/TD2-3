@@ -1,6 +1,9 @@
-#include "RandomGenerator.h"
+﻿#include "RandomGenerator.h"
 #include <chrono>
 
+
+namespace CoreEngine
+{
 RandomGenerator& RandomGenerator::GetInstance()
 {
     static RandomGenerator instance;
@@ -57,4 +60,5 @@ bool RandomGenerator::GetBool(float probability)
     
     std::bernoulli_distribution dist(probability);
     return dist(engine_);
+}
 }

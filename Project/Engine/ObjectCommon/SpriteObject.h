@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/ObjectCommon/GameObject.h"
 #include "Engine/WorldTransfom/WorldTransform.h"
@@ -12,6 +12,9 @@
 using Microsoft::WRL::ComPtr;
 
 /// @brief スプライトオブジェクト - GameObject基底クラスを継承してRenderManager対応
+
+namespace CoreEngine
+{
 class SpriteObject : public GameObject {
 public:
     /// @brief コンストラクタ
@@ -154,4 +157,8 @@ private:
     
     /// @brief ブレンドモード（デフォルトはアルファブレンド）
     BlendMode blendMode_ = BlendMode::kBlendModeNormal;
+    
+    /// @brief 頂点データ更新フラグ（Dirty Flag パターン）
+    bool vertexDataDirty_ = false;
 };
+}

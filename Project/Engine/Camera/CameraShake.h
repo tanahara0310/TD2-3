@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "MathCore.h"
 #include "Engine/Utility/Random/RandomGenerator.h"
@@ -6,6 +6,9 @@
 
 /// @brief カメラシェイククラス
 /// @details カメラに揺れを追加して臨場感を演出
+
+namespace CoreEngine
+{
 class CameraShake {
 public:
 	CameraShake() = default;
@@ -50,3 +53,4 @@ private:
 	GameTimer shakeIntervalTimer_;              // 揺れの間隔管理
 	RandomGenerator& random_ = RandomGenerator::GetInstance();  // 乱数生成器
 };
+}

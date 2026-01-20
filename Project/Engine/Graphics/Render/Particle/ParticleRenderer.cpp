@@ -1,9 +1,12 @@
-#include "ParticleRenderer.h"
+﻿#include "ParticleRenderer.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Camera/ICamera.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void ParticleRenderer::Initialize(ID3D12Device* device) {
     // 基底クラスの初期化（共通処理）
     BaseParticleRenderer::Initialize(device);
@@ -81,4 +84,5 @@ void ParticleRenderer::CreateSharedVertexBuffer() {
     vertexBufferView_.BufferLocation = vertexBuffer_->GetGPUVirtualAddress();
     vertexBufferView_.SizeInBytes = static_cast<UINT>(vertexBufferSize);
     vertexBufferView_.StrideInBytes = sizeof(VertexData);
+}
 }

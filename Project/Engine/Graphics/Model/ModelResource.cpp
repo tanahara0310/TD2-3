@@ -1,4 +1,4 @@
-#include "ModelResource.h"
+﻿#include "ModelResource.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/TextureManager.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
@@ -8,6 +8,9 @@
 
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void ModelResource::Initialize(DirectXCommon* dxCommon, ResourceFactory* factory, TextureManager* textureMg)
 {
     dxCommon_ = dxCommon;
@@ -98,4 +101,5 @@ const Animation* ModelResource::GetAnimation(const std::string& name) const {
 
 void ModelResource::AddAnimation(const std::string& name, const Animation& animation) {
     animations_[name] = animation;
+}
 }

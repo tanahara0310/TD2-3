@@ -12,6 +12,9 @@
 #include <EngineSystem.h>
 
 // 頂点データ構造体
+
+namespace CoreEngine
+{
 struct SkyBoxVertex {
    Vector4 position; // Vector3からVector4に変更
 };
@@ -241,3 +244,4 @@ bool SkyBoxObject::DrawImGuiExtended() {
    return changed;
 }
 #endif
+}

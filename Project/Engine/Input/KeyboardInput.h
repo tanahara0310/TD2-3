@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "IInputDevice.h"
 #include <cstdint>
 
 /// @brief キーボード入力クラス
+
+namespace CoreEngine
+{
 class KeyboardInput : public IInputDevice {
 public:
     /// @brief 初期化
@@ -33,3 +36,4 @@ private:
     BYTE key_[256] = {}; ///< 現在のキーの状態
     BYTE preKey_[256] = {}; ///< 1フレーム前のキーの状態
 };
+}

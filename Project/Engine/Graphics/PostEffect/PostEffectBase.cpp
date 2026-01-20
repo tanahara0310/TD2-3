@@ -1,6 +1,9 @@
-#include "PostEffectBase.h"
+﻿#include "PostEffectBase.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void PostEffectBase::Initialize(DirectXCommon* dxCommon)
 {
     assert(dxCommon);
@@ -73,4 +76,5 @@ void PostEffectBase::Draw(D3D12_GPU_DESCRIPTOR_HANDLE inputSrvHandle)
     BindOptionalCBVs(commandList);
     
     commandList->DrawInstanced(3, 1, 0, 0);
+}
 }

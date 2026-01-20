@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 #include <array>
 #include "CollisionLayer.h"
 
 /// @brief 衝突判定の設定を管理するクラス
 /// @note レイヤー間の衝突可否をマトリクスで管理
+
+namespace CoreEngine
+{
 class CollisionConfig {
 public:
    CollisionConfig();
@@ -24,3 +27,4 @@ private:
    static constexpr int kMaxLayers = static_cast<int>(CollisionLayer::Count);
    std::array<std::array<bool, kMaxLayers>, kMaxLayers> matrix_;
 };
+}

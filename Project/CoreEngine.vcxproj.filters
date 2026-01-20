@@ -267,6 +267,14 @@
     <ClCompile Include="Engine\Graphics\Model\Animation\AnimationBlender.cpp" />
     <ClCompile Include="Engine\Camera\CameraShake.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\PrimitivePlane.cpp" />
+    <ClCompile Include="Engine\Camera\Debug\CameraDebugUI.cpp" />
+    <ClCompile Include="Engine\Camera\CameraPresetManager.cpp" />
+    <ClCompile Include="Engine\Camera\ICamera.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\Bloom.cpp" />
+    <ClCompile Include="Engine\Utility\ProcessExecutor\ProcessExecutor.cpp" />
+    <ClCompile Include="Application\Scene\ResultScene\ResultScene.cpp" />
+    <ClCompile Include="Application\Scene\TitleScene\TitleScene.cpp" />
+    <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -699,6 +707,13 @@
     <ClInclude Include="Engine\Graphics\Model\Animation\AnimationBlender.h" />
     <ClInclude Include="Engine\Camera\CameraShake.h" />
     <ClInclude Include="Engine\Graphics\Primitive\PrimitivePlane.h" />
+    <ClInclude Include="Engine\Camera\Debug\CameraDebugUI.h" />
+    <ClInclude Include="Engine\Camera\CameraPresetManager.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\Bloom.h" />
+    <ClInclude Include="Engine\Utility\ProcessExecutor\ProcessExecutor.h" />
+    <ClInclude Include="Application\Scene\TitleScene\TitleScene.h" />
+    <ClInclude Include="Application\Scene\ResultScene\ResultScene.h" />
+    <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

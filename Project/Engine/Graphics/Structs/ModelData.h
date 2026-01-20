@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <map>
 
@@ -6,6 +6,9 @@
 #include "VertexData.h"
 #include "Node.h"
 
+
+namespace CoreEngine
+{
 struct VertexWeightData {
 	float weight;
 	uint32_t vertexIndex;
@@ -24,4 +27,4 @@ struct ModelData {
 	MaterialData material;        // マテリアルデータ
 	Node rootNode;             // Node階層構造のルート
 };
-
+}

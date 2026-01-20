@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IScene.h"
 #include "SceneTransition.h"
@@ -10,6 +10,9 @@
 
 class EngineSystem; // 前方宣言
 
+
+namespace CoreEngine
+{
 class SceneManager {
 public:
 
@@ -105,3 +108,4 @@ private:
 	/// @brief 次のトランジション時間
 	float nextTransitionDuration_ = 1.0f;
 };
+}

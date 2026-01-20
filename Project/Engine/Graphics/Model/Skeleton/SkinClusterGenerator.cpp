@@ -5,9 +5,10 @@
 #include <algorithm>
 #include <cassert>
 
-using namespace MathCore;
 
-SkinCluster SkinClusterGenerator::CreateSkinCluster(
+namespace CoreEngine
+{
+CoreEngine::SkinCluster SkinClusterGenerator::CreateSkinCluster(
 	const Microsoft::WRL::ComPtr<ID3D12Device>& device,
 	const Skeleton& skeleton,
 	const ModelData& modelData,
@@ -47,7 +48,7 @@ SkinCluster SkinClusterGenerator::CreateSkinCluster(
 
 	// InverseBindPoseMatrixの格納領域を作成して、単位行列で埋める
 	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
-	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), Matrix::Identity);
+	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), CoreEngine::MathCore::Matrix::Identity);
 
 	// ModelDataのSkinCluster情報を解析してInfluenceの中身を埋める
 	for (const auto& jointWeight : modelData.skinClusterData) { // ModelのSkinClusterの情報を解析
@@ -82,6 +83,7 @@ void SkinClusterGenerator::Update(SkinCluster& skinCluster, const Skeleton& skel
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
 			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
-			Matrix::Transpose(Matrix::Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
+			CoreEngine::MathCore::Matrix::Transpose(CoreEngine::MathCore::Matrix::Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
 	}
+}
 }

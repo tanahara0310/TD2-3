@@ -1,4 +1,4 @@
-#include "SoundManager.h"
+﻿#include "SoundManager.h"
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -15,6 +15,9 @@
 #pragma warning(disable : 4244) // double から float への変換
 
 // ===== SoundVoice クラス実装 =====
+
+namespace CoreEngine
+{
 SoundVoice::SoundVoice()
     : sourceVoice_(nullptr)
     , isPlaying_(false)
@@ -45,7 +48,7 @@ bool SoundVoice::Initialize(IXAudio2* xAudio2, const SoundData& soundData)
     }
 
     // バッファ設定
-    buffer_.pAudioData = soundData.pBuffer;
+    buffer_.pAudioData = soundData.GetBuffer();
     buffer_.AudioBytes = soundData.bufferSize;
     buffer_.Flags = XAUDIO2_END_OF_STREAM;
 
@@ -57,6 +60,10 @@ void SoundVoice::Play(bool loop)
     if (!sourceVoice_) {
         return;
     }
+
+    // 既存のバッファをクリア（再生中の場合も含む）
+    sourceVoice_->Stop();
+    sourceVoice_->FlushSourceBuffers();
 
     // ループ設定
     if (loop) {
@@ -239,24 +246,6 @@ SoundHandle SoundManager::LoadSound(const std::string& filename)
     return handle;
 }
 
-SoundData SoundManager::LoadWaveFile(const std::string& filename)
-{
-    // パスを解決
-    std::string resolvedPath = ResolveFilePath(filename);
-    SoundData soundData;
-    LoadWaveFileInternal(resolvedPath, soundData);
-    return soundData;
-}
-
-SoundData SoundManager::LoadMP3File(const std::string& filename)
-{
-    // パスを解決
-    std::string resolvedPath = ResolveFilePath(filename);
-    SoundData soundData;
-    ExtractPCMDataFromFile(resolvedPath, soundData);
-    return soundData;
-}
-
 bool SoundManager::LoadWaveFileInternal(const std::string& filename, SoundData& outSoundData)
 {
     Logger::GetInstance().Log(std::format("Loading audio file (WAV): {}", filename), LogLevel::INFO, LogCategory::Audio);
@@ -320,15 +309,15 @@ bool SoundManager::LoadWaveFileInternal(const std::string& filename, SoundData& 
         return false;
     }
 
-    // Dataチャンクのデータ部の読み込み
-    char* pBuffer = new char[static_cast<size_t>(data.size)];
-    file.read(pBuffer, static_cast<std::streamsize>(data.size));
+    // Dataチャンクのデータ部の読み込み（スマートポインタで管理）
+    auto pBuffer = std::make_unique<BYTE[]>(static_cast<size_t>(data.size));
+    file.read(reinterpret_cast<char*>(pBuffer.get()), static_cast<std::streamsize>(data.size));
     // waveファイルを閉じる
     file.close();
 
     // 結果を設定
     outSoundData.wfex = format.fmt;
-    outSoundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
+    outSoundData.pBuffer = std::move(pBuffer);
     outSoundData.bufferSize = static_cast<unsigned int>(data.size);
     outSoundData.format = "wav";
 
@@ -427,12 +416,12 @@ bool SoundManager::ExtractPCMDataFromFile(const std::string& filename, SoundData
         sample.Reset();
     }
 
-    // データをコピー
+    // データをコピー（スマートポインタで管理）
     if (!audioData.empty()) {
         outSoundData.wfex = *waveFormat;
         outSoundData.bufferSize = static_cast<unsigned int>(audioData.size());
-        outSoundData.pBuffer = new BYTE[outSoundData.bufferSize];
-        memcpy(outSoundData.pBuffer, audioData.data(), outSoundData.bufferSize);
+        outSoundData.pBuffer = std::make_unique<BYTE[]>(outSoundData.bufferSize);
+        memcpy(outSoundData.pBuffer.get(), audioData.data(), outSoundData.bufferSize);
         outSoundData.format = "mp3";
     }
 
@@ -457,16 +446,6 @@ void SoundManager::UnloadSound(SoundHandle handle)
     pendingVolume_.erase(handle);
 }
 
-void SoundManager::UnloadSoundData(SoundData* soundData)
-{
-    if (soundData && soundData->pBuffer) {
-        delete[] soundData->pBuffer;
-        soundData->pBuffer = nullptr;
-        soundData->bufferSize = 0;
-        ZeroMemory(&soundData->wfex, sizeof(WAVEFORMATEX));
-    }
-}
-
 bool SoundManager::PlaySound(SoundHandle handle, bool loop)
 {
     auto dataIt = soundDataMap_.find(handle);
@@ -477,15 +456,12 @@ bool SoundManager::PlaySound(SoundHandle handle, bool loop)
     // 既存のボイスがある場合
     auto voiceIt = soundVoiceMap_.find(handle);
     if (voiceIt != soundVoiceMap_.end()) {
-        // いったん止めて再生し直す
-        voiceIt->second->Stop();
-
-        // （任意）予約音量があれば既存ボイスにも適用しておく
+        // 予約音量があれば既存ボイスにも適用しておく
         if (auto it = pendingVolume_.find(handle); it != pendingVolume_.end()) {
             voiceIt->second->SetVolume(it->second);
-            // pendingVolume_.erase(it); // 予約を消したい場合は有効化
         }
 
+        // 再生（Play内部でStop/Flushが実行される）
         voiceIt->second->Play(loop);
         return true;
     }
@@ -496,20 +472,14 @@ bool SoundManager::PlaySound(SoundHandle handle, bool loop)
         return false;
     }
 
-    // ★ここで予約音量を適用（voice が定義されているスコープ！）
+    // 予約音量を適用
     if (auto it = pendingVolume_.find(handle); it != pendingVolume_.end()) {
         voice->SetVolume(it->second);
-        // pendingVolume_.erase(it); // 予約を消したい場合は有効化
     }
 
     voice->Play(loop);
     soundVoiceMap_[handle] = std::move(voice);
     return true;
-}
-
-bool SoundManager::PlaySoundOneShot(SoundHandle handle)
-{
-    return PlaySound(handle, false);
 }
 
 void SoundManager::StopSound(SoundHandle handle)
@@ -629,17 +599,6 @@ void SoundManager::Shutdown()
     ShutdownMediaFoundation();
 }
 
-// ===== 新しい便利メソッドの実装 =====
-SoundHandle SoundManager::PlaySoundFile(const std::string& filename, bool loop, float volume)
-{
-    SoundHandle handle = LoadSound(filename);
-    if (handle != 0) {
-        SetVolume(handle, volume);
-        PlaySound(handle, loop);
-    }
-    return handle;
-}
-
 void SoundManager::StopAndUnload(SoundHandle handle)
 {
     if (handle != 0) {
@@ -673,6 +632,13 @@ SoundManager::SoundResource::~SoundResource()
 SoundManager::SoundResource::SoundResource(SoundResource&& other) noexcept
     : manager_(other.manager_)
     , handle_(other.handle_)
+    , isFading_(other.isFading_)
+    , isFadingIn_(other.isFadingIn_)
+    , fadeTimer_(other.fadeTimer_)
+    , fadeDuration_(other.fadeDuration_)
+    , fadeStartVolume_(other.fadeStartVolume_)
+    , fadeTargetVolume_(other.fadeTargetVolume_)
+    , stopAfterFade_(other.stopAfterFade_)
 {
     other.manager_ = nullptr;
     other.handle_ = 0;
@@ -689,6 +655,13 @@ SoundManager::SoundResource& SoundManager::SoundResource::operator=(SoundResourc
         // 新しいリソースを取得
         manager_ = other.manager_;
         handle_ = other.handle_;
+        isFading_ = other.isFading_;
+        isFadingIn_ = other.isFadingIn_;
+        fadeTimer_ = other.fadeTimer_;
+        fadeDuration_ = other.fadeDuration_;
+        fadeStartVolume_ = other.fadeStartVolume_;
+        fadeTargetVolume_ = other.fadeTargetVolume_;
+        stopAfterFade_ = other.stopAfterFade_;
 
         // 移動元をクリア
         other.manager_ = nullptr;
@@ -699,8 +672,9 @@ SoundManager::SoundResource& SoundManager::SoundResource::operator=(SoundResourc
 
 bool SoundManager::SoundResource::Play(bool loop)
 {
-    if (!IsValid())
+    if (!IsValid()) {
         return false;
+    }
     return manager_->PlaySound(handle_, loop);
 }
 
@@ -767,7 +741,9 @@ std::unique_ptr<SoundManager::SoundResource> SoundManager::CreateSoundResource(c
 
 void SoundManager::SoundResource::FadeIn(float duration, float targetVolume)
 {
-    if (!IsValid()) return;
+    if (!IsValid()) {
+        return;
+    }
     
     isFading_ = true;
     isFadingIn_ = true;
@@ -783,7 +759,9 @@ void SoundManager::SoundResource::FadeIn(float duration, float targetVolume)
 
 void SoundManager::SoundResource::FadeOut(float duration, bool stopAfterFade)
 {
-    if (!IsValid()) return;
+    if (!IsValid()) {
+        return;
+    }
     
     isFading_ = true;
     isFadingIn_ = false;
@@ -796,7 +774,9 @@ void SoundManager::SoundResource::FadeOut(float duration, bool stopAfterFade)
 
 void SoundManager::SoundResource::UpdateFade(float deltaTime)
 {
-    if (!isFading_ || !IsValid()) return;
+    if (!isFading_ || !IsValid()) {
+        return;
+    }
     
     fadeTimer_ += deltaTime;
     
@@ -821,55 +801,6 @@ void SoundManager::SoundResource::UpdateFade(float deltaTime)
     manager_->SetVolume(handle_, currentVolume);
 }
 
-void SoundManager::UpdateAllFades(float deltaTime)
-{
-    (void)deltaTime; // 未使用パラメータの警告を抑制
-    // このメソッドは使用しない（各SoundResourceが個別にUpdateFadeを呼ぶ）
-    // グローバル管理が必要な場合はここで全SoundResourceを追跡する仕組みが必要
-}
-
-
-// ===== 後方互換性のための従来型メソッド実装 =====
-SoundData SoundManager::SoundLoadWave(const char* filename)
-{
-    // 新しいメソッドを使用して実装
-    return LoadWaveFile(std::string(filename));
-}
-
-void SoundManager::SoundUnload(SoundData* soundData)
-{
-    // 新しいメソッドを使用して実装
-    UnloadSoundData(soundData);
-}
-
-void SoundManager::SoundPlayWave(const SoundData& soundData)
-{
-    // 一時的なボイスを作成して再生（従来の動作を模倣）
-    HRESULT result = S_OK;
-
-    // 波形フォーマットを元にSoundVoiceの生成
-    IXAudio2SourceVoice* pSourceVoice = nullptr;
-    result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
-    if (FAILED(result)) {
-        return;
-    }
-
-    // 再生する波形データの設定
-    XAUDIO2_BUFFER buf {};
-    buf.pAudioData = soundData.pBuffer; // 音声データのポインタ
-    buf.AudioBytes = soundData.bufferSize; // 音声データのサイズ
-    buf.Flags = XAUDIO2_END_OF_STREAM; // 音声データの終端を示すフラグ
-
-    // 波形データの再生
-    result = pSourceVoice->SubmitSourceBuffer(&buf);
-    if (SUCCEEDED(result)) {
-        result = pSourceVoice->Start();
-    }
-
-    // 注意：この実装ではボイスの管理は行わないため、
-    // 再生後の停止やボリューム制御はできません
-}
-
 std::string SoundManager::ResolveFilePath(const std::string& filePath) const
 {
     // すでにAssetsで始まっている場合はそのまま返す
@@ -887,3 +818,4 @@ std::string SoundManager::ResolveFilePath(const std::string& filePath) const
 }
 
 #pragma warning(pop) // 警告設定を復元
+}

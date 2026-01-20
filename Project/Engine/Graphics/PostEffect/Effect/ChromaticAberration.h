@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
+
+namespace CoreEngine
+{
 class ChromaticAberration : public PostEffectBase {
 public:
     /// @brief 色収差パラメータ構造体
@@ -61,3 +64,4 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer_;
     ChromaticAberrationParams* mappedData_ = nullptr;
 };
+}

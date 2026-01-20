@@ -1,10 +1,14 @@
 #pragma once
 #include <imgui.h>
 
+/// @brief シーンビューポートクラス
+
+namespace CoreEngine
+{
+
 class DirectXCommon;
 class PostEffectManager;
 
-/// @brief シーンビューポートクラス
 class SceneViewport {
 public: // メンバ関数
     /// @brief シーンビューポートの描画
@@ -25,3 +29,4 @@ private: // メンバ変数
     ImVec2 viewportSize_ {};
     bool isViewportHovered_ = false;
 };
+}

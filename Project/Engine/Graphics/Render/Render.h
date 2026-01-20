@@ -4,6 +4,9 @@
 #include <d3d12.h>
 #include <wrl.h>
 
+namespace CoreEngine
+{
+
 class DirectXCommon;
 
 class Render {
@@ -65,3 +68,4 @@ private:
     D3D12_VIEWPORT viewport_ {};
     D3D12_RECT scissorRect_ {};
 };
+}

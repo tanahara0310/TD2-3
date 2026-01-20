@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "../PostEffectBase.h"
 #include <wrl.h>
 #include <d3d12.h>
 
+
+namespace CoreEngine
+{
 class Blur : public PostEffectBase {
 public:
     /// @brief ブラーパラメータ構造体
@@ -49,3 +52,4 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Resource> constantBuffer_;
     BlurParams* mappedData_ = nullptr;
 };
+}

@@ -1,4 +1,4 @@
-#include "RenderManager.h"
+﻿#include "RenderManager.h"
 #include "Engine/ObjectCommon/GameObject.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Engine/Graphics/Render/Particle/ParticleRenderer.h"
@@ -7,6 +7,9 @@
 #include "Engine/Camera/ICamera.h"
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void RenderManager::Initialize(ID3D12Device* device) {
 	// 現時点では特に初期化処理なし
 	(void)device; // 未使用警告を回避
@@ -42,8 +45,7 @@ void RenderManager::SetCommandList(ID3D12GraphicsCommandList* cmdList) {
 }
 
 void RenderManager::AddDrawable(GameObject* obj) {
-	if (!obj || !obj->IsActive() || obj->IsMarkedForDestroy()) return;
-
+	// GameObjectManagerで事前フィルタリング済み（null/Active/MarkedForDestroyチェック済み）
 	DrawCommand cmd;
 	cmd.object = obj;
 	cmd.passType = obj->GetRenderPassType();
@@ -70,7 +72,24 @@ const ICamera* RenderManager::GetCameraForPass(RenderPassType passType) {
 }
 
 void RenderManager::DrawAll() {
-	if (drawQueue_.empty() || !cmdList_) return;
+	if (drawQueue_.empty()) {
+		#ifdef _DEBUG
+			// 描画キューが空の場合は警告を出力（通常は問題ないが、意図しない場合に気づくため）
+			static bool firstWarning = true;
+			if (firstWarning) {
+				OutputDebugStringA("INFO: RenderManager draw queue is empty.\n");
+				firstWarning = false;
+			}
+		#endif
+		return;
+	}
+	
+	if (!cmdList_) {
+		#ifdef _DEBUG
+			OutputDebugStringA("ERROR: CommandList is null in RenderManager::DrawAll!\n");
+		#endif
+		return;
+	}
 
 	SortDrawQueue();
 
@@ -79,8 +98,9 @@ void RenderManager::DrawAll() {
 	const ICamera* currentCamera = nullptr;
 
 	for (const auto& cmd : drawQueue_) {
-		// オブジェクトの有効性チェック
-		if (!cmd.object || !cmd.object->IsActive() || cmd.object->IsMarkedForDestroy()) {
+		// GameObjectManagerで事前フィルタリング済み
+		// 削除マークのみチェック（更新中に削除マークされた可能性があるため）
+		if (!cmd.object || cmd.object->IsMarkedForDestroy()) {
 			continue;
 		}
 
@@ -103,6 +123,9 @@ void RenderManager::DrawAll() {
 				
 				currentRenderer->BeginPass(cmdList_, cmd.blendMode);
 			} else {
+				#ifdef _DEBUG
+					OutputDebugStringA("WARNING: Renderer not found for pass type!\n");
+				#endif
 				currentRenderer = nullptr;
 				currentCamera = nullptr;
 			}
@@ -140,9 +163,22 @@ void RenderManager::ClearQueue() {
 }
 
 void RenderManager::SortDrawQueue() {
-	// 描画パスタイプでソート（パイプライン切り替え最小化）
+	// 描画コマンドを最適化してステート変更を最小化
+	// 優先順位: 1. パスタイプ > 2. ブレンドモード
 	std::sort(drawQueue_.begin(), drawQueue_.end(),
 		[](const DrawCommand& a, const DrawCommand& b) {
-			return static_cast<int>(a.passType) < static_cast<int>(b.passType);
+			// 1. パスタイプでソート（パイプライン切り替え最小化）
+			if (a.passType != b.passType) {
+				return static_cast<int>(a.passType) < static_cast<int>(b.passType);
+			}
+			
+			// 2. 同一パス内ではブレンドモードでソート（ブレンドステート切り替え最小化）
+			if (a.blendMode != b.blendMode) {
+				return static_cast<int>(a.blendMode) < static_cast<int>(b.blendMode);
+			}
+			
+			// 3. その他の条件が同じ場合は順序を維持（安定ソート）
+			return false;
 		});
+}
 }

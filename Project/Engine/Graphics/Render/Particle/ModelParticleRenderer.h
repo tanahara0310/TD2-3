@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "BaseParticleRenderer.h"
 #include <d3d12.h>
@@ -8,6 +8,9 @@
 class ParticleSystem;
 
 /// @brief モデルパーティクル専用レンダラー
+
+namespace CoreEngine
+{
 class ModelParticleRenderer : public BaseParticleRenderer {
 public:
     ModelParticleRenderer() = default;
@@ -25,3 +28,4 @@ protected:
     /// @brief パイプラインステートオブジェクトの作成（モデル用）
     void CreatePSO() override;
 };
+}

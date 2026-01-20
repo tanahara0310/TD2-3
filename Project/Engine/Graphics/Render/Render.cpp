@@ -1,9 +1,12 @@
-#include "Render.h"
+﻿#include "Render.h"
 #include "Graphics/Common/DirectXCommon.h"
 #include "WinApp/WinApp.h"
 
 using namespace Microsoft::WRL;
 
+
+namespace CoreEngine
+{
 void Render::Initialize(DirectXCommon* dxCommon, ComPtr<ID3D12DescriptorHeap> dsvHeap)
 {
 	dxCommon_ = dxCommon;
@@ -192,9 +195,11 @@ void Render::BackBufferPostDraw()
 		commandManager->SignalFrame(backBufferIndex);
 	}
 
-	// Present（画面に反映） - VSyncを有効化して60FPS固定
-	// 第1引数: 1 = VSyncを待つ（60Hz）、0 = 即座に描画
-	dxCommon_->GetSwapChain()->Present(1, 0);
+	// Present（画面に反映）
+	// VSyncを有効化して60FPS固定
+	static constexpr UINT kVSyncEnabled = 1;  // 1 = VSyncを待つ（60Hz）、0 = 即座に描画
+	static constexpr UINT kPresentFlags = 0;  // Present時の追加フラグ
+	dxCommon_->GetSwapChain()->Present(kVSyncEnabled, kPresentFlags);
 
 	// 次のフレームの準備
 	UINT nextFrameIndex = dxCommon_->GetSwapChain()->GetCurrentBackBufferIndex();
@@ -223,4 +228,5 @@ void Render::ResourceBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES sta
 	barrier.Transition.StateAfter = stateAfter;
 
 	dxCommon_->GetCommandList()->ResourceBarrier(1, &barrier);
+}
 }

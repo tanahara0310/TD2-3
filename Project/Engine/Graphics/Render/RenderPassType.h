@@ -1,6 +1,9 @@
-#pragma once
+﻿#pragma once
 
 /// @brief 描画パスタイプ
+
+namespace CoreEngine
+{
 enum class RenderPassType {
     Invalid = -1,        // 無効
     Model = 0,           // 通常モデル
@@ -12,3 +15,4 @@ enum class RenderPassType {
     Text,                // テキスト描画
     Line,                // ライン描画（デバッグ用）
 };
+}

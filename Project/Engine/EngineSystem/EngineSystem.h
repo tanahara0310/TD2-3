@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <wrl.h>
 #include <functional>
 #include <memory>
@@ -50,6 +50,9 @@ class ConsoleUI; // 前方宣言（デバッグビルドのみ）
 
 
 /// @brief エンジンシステム中核システム管理クラス
+
+namespace CoreEngine
+{
 class EngineSystem {
 public:
 	/// @brief エンジンシステムの初期化
@@ -167,3 +170,4 @@ private:
 	std::unique_ptr<GameDebugUI> gameDebugUI_ = std::make_unique<GameDebugUI>(); // ゲームデバッグUIのインスタンス
 #endif // _DEBUG
 };
+}

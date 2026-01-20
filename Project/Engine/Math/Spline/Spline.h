@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "Math/Vector/Vector3.h"
@@ -6,6 +6,9 @@
 
 /// @brief 3Dスプライン曲線クラス
 /// 3Dレールシューティングゲーム用のスプライン曲線を扱う汎用クラス
+
+namespace CoreEngine
+{
 class Spline {
 public:
     /// @brief コントロールポイント構造体
@@ -153,3 +156,4 @@ private:
     SplineType splineType_;                     // スプライン曲線の種類
     bool isLoop_;                               // ループフラグ
 };
+}

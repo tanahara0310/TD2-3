@@ -1,17 +1,20 @@
 #include "SwapChainManager.h"
-#include "WinApp/WinApp.h"
+#include "Engine/WinApp/WinApp.h"
 #include "Engine/Utility/Logger/Logger.h"
 
 #include <cassert>
 #include <format>
 
+using namespace Microsoft::WRL;
 
+namespace CoreEngine
+{
 namespace{
 	Logger& logger = Logger::GetInstance();
 }
 
 void SwapChainManager::Initialize(ID3D12Device* device, IDXGIFactory7* dxgiFactory,
-	ID3D12CommandQueue* commandQueue, ID3D12DescriptorHeap* rtvHeap, WinApp* winApp)
+	ID3D12CommandQueue* commandQueue, ID3D12DescriptorHeap* rtvHeap, CoreEngine::WinApp* winApp)
 {
 	device_ = device;
 	dxgiFactory_ = dxgiFactory;
@@ -128,4 +131,5 @@ void SwapChainManager::CreateSwapChain()
 	// swapChain1をswapChainにキャストし変換(これをやらないと例外エラー)
 	result = swapChain1.As(&swapChain_);
 	assert(SUCCEEDED(result));
+}
 }

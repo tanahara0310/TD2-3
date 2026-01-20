@@ -1,9 +1,12 @@
-#include "SkeletonAnimator.h"
+﻿#include "SkeletonAnimator.h"
 #include "Engine/Graphics/Model/Animation/AnimationUtils.h"
 #include "Engine/Math/MathCore.h"
 #include <algorithm>
 #include <cassert>
 
+
+namespace CoreEngine
+{
 SkeletonAnimator::SkeletonAnimator(const Skeleton& skeleton, const Animation& animation, bool looping)
     : skeleton_(skeleton)
     , animation_(&animation)
@@ -72,4 +75,5 @@ void SkeletonAnimator::ApplyAnimationAndUpdateMatrices() {
             joint.skeletonSpaceMatrix = joint.localMatrix;
         }
     }
+}
 }

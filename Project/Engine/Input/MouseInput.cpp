@@ -1,10 +1,13 @@
-#include "MouseInput.h"
+﻿#include "MouseInput.h"
 #include <cassert>
 #include <corecrt_wstdio.h>
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+
+namespace CoreEngine
+{
 void MouseInput::Initialize(IDirectInput8* directInput, HWND hwnd)
 {
     HRESULT result;
@@ -105,4 +108,5 @@ POINT MouseInput::GetCursorPosition() const
 
     // 取得失敗時は座標を(0, 0)にする
     return { 0, 0 };
+}
 }

@@ -12,9 +12,11 @@
 #include <memory>
 #include <vector>
 
+namespace CoreEngine
+{
+
 class Font;
 struct SpriteMaterial;
-
 namespace TextRendererRootParam {
     static constexpr UINT kMaterial = 0;
     static constexpr UINT kTransform = 1;
@@ -76,3 +78,4 @@ private:
     size_t currentBufferIndex_ = 0;
     UINT currentFrameIndex_ = 0;
 };
+}

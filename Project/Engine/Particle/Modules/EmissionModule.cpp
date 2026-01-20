@@ -1,10 +1,13 @@
-#include "EmissionModule.h"
+﻿#include "EmissionModule.h"
 #include "../ParticleSystem.h" // Particle構造体のために必要
 
 #ifdef _DEBUG
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #endif
 
+
+namespace CoreEngine
+{
 EmissionModule::EmissionModule() {
     emissionData_.rateOverTime = 10;
     emissionData_.burstCount = 0;
@@ -147,3 +150,4 @@ bool EmissionModule::ShowImGui() {
     return changed;
 }
 #endif
+}

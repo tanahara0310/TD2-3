@@ -1,7 +1,10 @@
-#include "SkyBoxRenderer.h"
+﻿#include "SkyBoxRenderer.h"
 #include "Engine/Camera/ICamera.h"
 #include <cassert>
 
+
+namespace CoreEngine
+{
 void SkyBoxRenderer::Initialize(ID3D12Device* device) {
     // ★既存のSkyBoxRender::Initialize()の実装をコピー
     
@@ -74,4 +77,5 @@ void SkyBoxRenderer::EndPass() {
 void SkyBoxRenderer::SetCamera(const ICamera* camera) {
     // SkyBoxでは特にカメラCBVを保持する必要はないため空実装
     (void)camera;
+}
 }

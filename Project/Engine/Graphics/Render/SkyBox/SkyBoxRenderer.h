@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Graphics/Render/IRenderer.h"
 #include "Engine/Graphics/PipelineStateManager.h"
 #include "Engine/Graphics/RootSignatureManager.h"
@@ -8,6 +8,9 @@
 #include <memory>
 
 // SkyBox用 Root Parameter インデックス定数
+
+namespace CoreEngine
+{
 namespace SkyBoxRendererRootParam {
     static constexpr UINT kWVP = 0;          // トランスフォーム用CBV (b0, VS)
     static constexpr UINT kMaterial = 1;     // マテリアル用CBV (b0, PS)
@@ -34,3 +37,4 @@ private:
     
     ID3D12PipelineState* pipelineState_ = nullptr;
 };
+}

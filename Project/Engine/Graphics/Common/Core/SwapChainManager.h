@@ -5,10 +5,13 @@
 #include <wrl.h>
 #include <cstdint>
 
-using namespace Microsoft::WRL;
+// 前方宣言
+namespace CoreEngine {
+    class WinApp;
+}
 
-class WinApp;
-
+namespace CoreEngine
+{
 /// @brief スワップチェーン管理クラス
 class SwapChainManager {
 public:
@@ -19,7 +22,7 @@ public:
     /// @param rtvHeap RTVディスクリプタヒープ
     /// @param winApp ウィンドウアプリケーション
     void Initialize(ID3D12Device* device, IDXGIFactory7* dxgiFactory, ID3D12CommandQueue* commandQueue,
-        ID3D12DescriptorHeap* rtvHeap, WinApp* winApp);
+        ID3D12DescriptorHeap* rtvHeap, CoreEngine::WinApp* winApp);
 
     /// @brief スワップチェーンのリサイズ
     /// @param width 新しい幅
@@ -44,8 +47,8 @@ private:
 
 private:
     // スワップチェーン関連
-    ComPtr<IDXGISwapChain4> swapChain_;
-    ComPtr<ID3D12Resource> swapChainResources_[2];
+    Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
+    Microsoft::WRL::ComPtr<ID3D12Resource> swapChainResources_[2];
 
     // バックバッファのリソース
     D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2];
@@ -54,7 +57,7 @@ private:
     // 依存関係
     IDXGIFactory7* dxgiFactory_ = nullptr;
     ID3D12CommandQueue* commandQueue_ = nullptr;
-    WinApp* winApp_ = nullptr;
+    CoreEngine::WinApp* winApp_ = nullptr;
 
     // RTVヒープの参照（リサイズ時のRTV再作成用）
     ID3D12DescriptorHeap* rtvHeap_ = nullptr;
@@ -63,3 +66,4 @@ private:
     // 初回初期化フラグ
     bool isInitialized_ = false;
 };
+}

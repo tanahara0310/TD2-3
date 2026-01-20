@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include <random>
 #include <array>
 #include <memory>
 
 /// @brief エンジン内で統一された乱数生成クラス
+
+namespace CoreEngine
+{
 class RandomGenerator {
 public:
     /// @brief インスタンスを取得（シングルトンパターン）
@@ -53,3 +56,4 @@ private:
     std::mt19937 engine_;                           // メルセンヌ・ツイスター乱数エンジン
     bool initialized_ = false;                      // 初期化フラグ
 };
+}

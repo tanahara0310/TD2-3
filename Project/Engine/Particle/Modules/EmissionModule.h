@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
 
 /// @brief パーティクル放出モジュール（Unity Emission Module相当）
 /// パーティクルの放出タイミングと数を制御します
+
+namespace CoreEngine
+{
 class EmissionModule : public ParticleModule {
 public:
 	/// @brief 放出データ
@@ -65,3 +68,4 @@ private:
 	// Rate over Time用の累積時間
 	float emissionAccumulator_ = 0.0f;
 };
+}

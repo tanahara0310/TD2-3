@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <cassert>
 #include <d3d12.h>
@@ -20,6 +20,9 @@
 using namespace Microsoft::WRL;
 
 /// @brief DirectX12の初期化・管理を行うメインクラス
+
+namespace CoreEngine
+{
 class DirectXCommon {
 public:
     /// @brief 初期化
@@ -87,3 +90,4 @@ private:
 	std::unique_ptr<OffScreenRenderTargetManager> offScreenManager_ = std::make_unique<OffScreenRenderTargetManager>();
 	std::unique_ptr<DepthStencilManager> depthStencilManager_ = std::make_unique<DepthStencilManager>();
 };
+}

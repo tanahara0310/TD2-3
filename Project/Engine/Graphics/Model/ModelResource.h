@@ -12,6 +12,8 @@
 #include "Animation/Animation.h"
 #include "Skeleton/Skeleton.h"
 
+namespace CoreEngine
+{
 // 前方宣言
 class DirectXCommon;
 class ResourceFactory;
@@ -107,3 +109,4 @@ private:
 
 	std::map<std::string, Animation> animations_;
 };
+}

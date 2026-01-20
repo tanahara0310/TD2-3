@@ -3,7 +3,10 @@
 #include <string>
 #include <vector>
 
-class SceneManager; // 前方宣言
+namespace CoreEngine
+{
+// 前方宣言
+class SceneManager;
 
 /// @brief シーン管理用のImGuiタブクラス
 class SceneManagerTab {
@@ -64,3 +67,4 @@ private:
     // シーン検索・フィルタ
     char sceneSearchBuffer_[256] = "";     // シーン検索用バッファ
 };
+}

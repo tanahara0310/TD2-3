@@ -1,8 +1,11 @@
-#include "ParticleResourceManager.h"
+﻿#include "ParticleResourceManager.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Particle/ParticleSystem.h" // ParticleForGPU定義のため
 
+
+namespace CoreEngine
+{
 void ParticleResourceManager::Initialize(DirectXCommon* dxCommon, ResourceFactory* resourceFactory, uint32_t maxInstances) {
 	dxCommon_ = dxCommon;
 	resourceFactory_ = resourceFactory;
@@ -19,7 +22,8 @@ void ParticleResourceManager::CreateInstancingResource(uint32_t maxInstances) {
 		sizeof(ParticleForGPU) * maxInstances
 	);
 
-	// マップしてポインタを取得
+	// 永続マッピング（D3D12_HEAP_TYPE_UPLOADでは推奨される方法）
+	// パーティクルデータは毎フレーム更新されるため、マップしたままにする
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 }
 
@@ -41,4 +45,5 @@ void ParticleResourceManager::CreateSRV(uint32_t maxInstances) {
 		srvHandleGPU_,
 		"ParticleInstancingSRV"
 	);
+}
 }

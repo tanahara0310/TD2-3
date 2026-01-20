@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <functional>
 #include <vector>
@@ -7,6 +7,9 @@
 
 /// @brief ゲーム用タイマークラス
 /// シーン遷移、ゲーム内演出のタイミング制御に使用（イージングは分離）
+
+namespace CoreEngine
+{
 class GameTimer {
 public:
 	/// @brief コールバック情報
@@ -256,3 +259,4 @@ private:
 		return static_cast<float>(frameCount) / fps;
 	}
 };
+}

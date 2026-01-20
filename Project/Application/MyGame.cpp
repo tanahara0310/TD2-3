@@ -3,7 +3,11 @@
 #include "WinApp/WinApp.h"
 #include "Scene/TestScene/TestScene.h"
 #include "Scene/ParticleTestScene/ParticleTestScene.h"
+#include "Application/Scene/TitleScene/TitleScene.h"
+#include "Application/Scene/GameScene/GameScene.h"
+#include "Application/Scene/ResultScene/ResultScene.h"
 
+using namespace CoreEngine;
 
 MyGame::~MyGame() = default;
 
@@ -13,15 +17,18 @@ void MyGame::Initialize()
 	// シーン管理システムの初期化
 	// ──────────────────────────────────────────────────────────
 
-	sceneManager_ = std::make_unique<SceneManager>();
+	sceneManager_ = std::make_unique<CoreEngine::SceneManager>();
 	sceneManager_->Initialize(GetEngineSystem());
 
 	// 全シーンを登録（アプリ層で実装）
 	sceneManager_->RegisterScene<TestScene>("TestScene");
 	sceneManager_->RegisterScene<ParticleTestScene>("ParticleTestScene");
+	sceneManager_->RegisterScene<TitleScene>("TitleScene");
+	sceneManager_->RegisterScene<GameScene>("GameScene");
+	sceneManager_->RegisterScene<ResultScene>("ResultScene");
 
 	// 初期シーンを設定（トランジション無し）
-	sceneManager_->SetInitialScene("TestScene");
+	sceneManager_->SetInitialScene("TitleScene");
 
 	// ===== コンソールログ出力とシーンマネージャーの設定 =====
 #ifdef _DEBUG

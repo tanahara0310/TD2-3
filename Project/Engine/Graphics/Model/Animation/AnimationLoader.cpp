@@ -1,9 +1,12 @@
-#include "AnimationLoader.h"
+﻿#include "AnimationLoader.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <cassert>
 
+
+namespace CoreEngine
+{
 Animation AnimationLoader::LoadAnimationFile(const std::string& directoryPath, const std::string& filename) {
 	// ファイルパスを構築
 	std::string filePath = directoryPath + "/" + filename;
@@ -91,4 +94,5 @@ NodeAnimation AnimationLoader::ConvertNodeAnimation(const aiNodeAnim* aiNodeAnim
 	}
 
 	return nodeAnimation;
+}
 }

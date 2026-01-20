@@ -5,7 +5,10 @@
 #include <algorithm>
 #include <cfloat>
 
-using namespace MathCore;
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
 
 // ビューポート位置・サイズを保持する静的変数
 static ImVec2 viewportPos;
@@ -195,4 +198,5 @@ bool Gizmo::RayIntersectsSphere(const Vector3& rayOrigin, const Vector3& rayDir,
 	float c = Vector::Dot(oc, oc) - sphere.radius * sphere.radius;
 	float disc = b * b - c;
 	return disc >= 0.0f;
+}
 }

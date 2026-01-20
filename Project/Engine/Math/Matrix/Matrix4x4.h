@@ -1,6 +1,9 @@
-
+﻿
 #pragma once
 
+
+namespace CoreEngine
+{
 struct Matrix4x4 {
     float m[4][4];
 
@@ -61,3 +64,4 @@ struct Matrix4x4 {
         return *this;
     }
 };
+}

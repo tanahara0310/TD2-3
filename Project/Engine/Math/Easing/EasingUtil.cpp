@@ -1,7 +1,10 @@
-#include "EasingUtil.h"
+﻿#include "EasingUtil.h"
 #include "Engine/Math/MathCore.h"  // ★★★ MyMathの代わりにMathCoreを使用 ★★★
 #include <numbers>
 
+
+namespace CoreEngine
+{
 namespace EasingUtil {
 
 float Apply(float t, Type type) {
@@ -340,3 +343,4 @@ const char* GetTypeDescription(Type type) {
 }
 
 } // namespace EasingUtil
+}

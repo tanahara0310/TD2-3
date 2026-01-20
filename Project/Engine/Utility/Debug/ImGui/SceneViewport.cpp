@@ -1,10 +1,13 @@
-#include "SceneViewport.h"
+﻿#include "SceneViewport.h"
 
 #include "Graphics/Common/DirectXCommon.h"
 #include "Graphics/PostEffect/PostEffectManager.h"
 #include "WinApp/WinApp.h"
 #include "Gizmo.h"
 
+
+namespace CoreEngine
+{
 void SceneViewport::DrawSceneViewport(DirectXCommon* dxCommon, PostEffectManager* postEffectManager)
 {
     // Sceneウィンドウを描画開始（背景透過・スクロール無効）
@@ -60,4 +63,5 @@ void SceneViewport::DrawSceneViewport(DirectXCommon* dxCommon, PostEffectManager
         ImGui::Image(texID, ImVec2(drawW, drawH));
     }
     ImGui::End();
+}
 }

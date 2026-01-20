@@ -11,8 +11,9 @@
 #include <imgui.h>
 #endif
 
-using namespace MathCore;
 
+namespace CoreEngine
+{
 void GridRenderer::Initialize()
 {
     SetActive(true);
@@ -228,3 +229,4 @@ bool GridRenderer::DrawImGui()
     return changed;
 }
 #endif
+}

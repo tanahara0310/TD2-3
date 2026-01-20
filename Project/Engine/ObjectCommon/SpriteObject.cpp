@@ -11,7 +11,10 @@
 #include <cstdio>
 #include <imgui.h>
 
-using namespace MathCore;
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
 
 void SpriteObject::Initialize(const std::string& textureFilePath, const std::string& name) {
     auto engine = GetEngineSystem();
@@ -39,6 +42,9 @@ void SpriteObject::Initialize(const std::string& textureFilePath, const std::str
     
     // アクティブ状態
     isActive_ = true;
+    
+    // 初期化時は頂点データを更新
+    vertexDataDirty_ = false; // CreateVertexBuffer内でUpdateVertexDataが呼ばれるため
 }
 
 void SpriteObject::SetSizeFromTexture(const std::string& textureFilePath) {
@@ -124,10 +130,21 @@ void SpriteObject::UpdateVertexData() {
 
 void SpriteObject::Update() {
     if (!isActive_) return;
+    
+    // 頂点データが変更されている場合のみ更新
+    if (vertexDataDirty_) {
+        UpdateVertexData();
+        vertexDataDirty_ = false;
+    }
 }
 
 void SpriteObject::Draw2D(const ICamera* camera) {
-    if (!spriteRenderer_) return;
+    if (!spriteRenderer_) {
+        #ifdef _DEBUG
+            OutputDebugStringA("ERROR: SpriteRenderer is null in SpriteObject::Draw2D!\n");
+        #endif
+        return;
+    }
     
     auto* commandList = spriteRenderer_->GetDirectXCommon()->GetCommandList();
     
@@ -176,9 +193,7 @@ void SpriteObject::Reset() {
     uvMin_ = { 0.0f, 0.0f };
     uvMax_ = { 1.0f, 1.0f };
     
-    if (vertexResource_) {
-        UpdateVertexData();
-    }
+    vertexDataDirty_ = true;
 }
 
 void SpriteObject::SetTexture(const std::string& textureFilePath) {
@@ -187,9 +202,9 @@ void SpriteObject::SetTexture(const std::string& textureFilePath) {
 }
 
 void SpriteObject::SetAnchor(const Vector2& anchor) {
-    anchorPoint_ = anchor;
-    if (vertexResource_) {
-        UpdateVertexData();
+    if (anchorPoint_.x != anchor.x || anchorPoint_.y != anchor.y) {
+        anchorPoint_ = anchor;
+        vertexDataDirty_ = true;
     }
 }
 
@@ -206,7 +221,7 @@ void SpriteObject::SetTextureRect(float texLeft, float texTop, float texWidth, f
     uvMax_.x = (texLeft + texWidth) / textureWidth;
     uvMax_.y = (texTop + texHeight) / textureHeight;
     
-    UpdateVertexData();
+    vertexDataDirty_ = true;
 }
 
 void SpriteObject::SetUVRect(float uvLeft, float uvTop, float uvRight, float uvBottom) {
@@ -215,7 +230,7 @@ void SpriteObject::SetUVRect(float uvLeft, float uvTop, float uvRight, float uvB
     uvMax_.x = uvRight;
     uvMax_.y = uvBottom;
     
-    UpdateVertexData();
+    vertexDataDirty_ = true;
 }
 
 void SpriteObject::SetUVOffset(float offsetX, float offsetY) {
@@ -242,10 +257,9 @@ void SpriteObject::UpdateUVTransformMatrix(const EulerTransform& uvTransform) {
 }
 
 void SpriteObject::ChangeAnchorKeepingPosition(const Vector2& newAnchor) {
-    // アンカーポイントを変更（座標は変更しない）
-    anchorPoint_ = newAnchor;
-    if (vertexResource_) {
-        UpdateVertexData();
+    if (anchorPoint_.x != newAnchor.x || anchorPoint_.y != newAnchor.y) {
+        anchorPoint_ = newAnchor;
+        vertexDataDirty_ = true;
     }
 }
 
@@ -354,4 +368,5 @@ bool SpriteObject::DrawImGui() {
 
 void SpriteObject::Draw(const ICamera* camera) {
     Draw2D(camera);
+}
 }

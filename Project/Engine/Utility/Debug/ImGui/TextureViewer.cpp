@@ -1,9 +1,12 @@
-#include "TextureViewer.h"
+﻿#include "TextureViewer.h"
 #include "Engine/Graphics/TextureManager.h"
 
 #include <imgui.h>
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 void TextureViewer::DrawTextureViewer(bool isOpen)
 {
     if (!isOpen) {
@@ -148,4 +151,5 @@ void TextureViewer::DrawTextureViewer(bool isOpen)
         ImGui::EndChild();
     }
     ImGui::End();
+}
 }

@@ -13,9 +13,13 @@
 #include "Engine/Graphics/Render/RenderManager.h"
 #endif
 
-using namespace MathCore;
-
 // 初期化関数
+
+namespace CoreEngine
+{
+
+using namespace CoreEngine::MathCore;
+
 void ParticleSystem::Initialize(DirectXCommon* dxCommon, ResourceFactory* resourceFactory, const std::string& name)
 {
 	// オブジェクト名を設定
@@ -289,3 +293,4 @@ bool ParticleSystem::DrawImGui()
 	return changed;
 }
 #endif
+}

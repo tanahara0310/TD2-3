@@ -1,4 +1,4 @@
-#include "InputManager.h"
+﻿#include "InputManager.h"
 #include <cassert>
 
 #include "GamepadInput.h"
@@ -8,6 +8,9 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+
+namespace CoreEngine
+{
 void InputManager::Initialize(HINSTANCE hInstance, HWND hwnd)
 {
 
@@ -63,4 +66,5 @@ GamepadInput* InputManager::GetGamepad()
 {
     // リストの2番目がゲームパッド入力であることが前提
     return dynamic_cast<GamepadInput*>(devices_[2].get());
+}
 }

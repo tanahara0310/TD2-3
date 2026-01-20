@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 
 /// <summary>
 /// クォータニオン構造体
 /// </summary>
+
+namespace CoreEngine
+{
 struct Quaternion {
     float x, y, z, w;
 
@@ -133,4 +136,5 @@ inline Quaternion operator-(const Quaternion& q)
 inline Quaternion operator+(const Quaternion& q)
 {
     return q; // 単項プラスは値をそのまま返す
+}
 }

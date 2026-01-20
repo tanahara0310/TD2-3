@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/ObjectCommon/GameObject.h"
 
 /// @brief AnimatedCubeモデルオブジェクト
+
+namespace CoreEngine
+{
 class AnimatedCubeObject : public GameObject {
 public:
     /// @brief 初期化処理
@@ -54,3 +57,4 @@ public:
 private:
     float deltaTime_ = 1.0f / 60.0f;  //!< デルタタイム（60FPS想定）
 };
+}

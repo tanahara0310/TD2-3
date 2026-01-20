@@ -1,7 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "CollisionLayer.h"
 #include "MathCore.h"
 
+
+namespace CoreEngine
+{
 enum class ColliderType {
    None,
    Sphere,
@@ -41,3 +44,4 @@ protected:
    CollisionLayer layer_ = CollisionLayer::Default;
    bool isEnabled_ = true;
 };
+}

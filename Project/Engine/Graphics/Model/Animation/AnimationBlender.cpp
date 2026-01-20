@@ -1,9 +1,12 @@
-#include "AnimationBlender.h"
+﻿#include "AnimationBlender.h"
 #include "Engine/Graphics/Model/Skeleton/SkeletonAnimator.h"
 #include "Engine/Math/MathCore.h"
 #include "Engine/Utility/Collision/CollisionUtils.h"
 #include <algorithm>
 
+
+namespace CoreEngine
+{
 AnimationBlender::AnimationBlender(std::unique_ptr<IAnimationController> currentController)
     : currentController_(std::move(currentController)) {
     blendTimer_.SetName("AnimationBlendTimer");
@@ -165,4 +168,5 @@ Skeleton AnimationBlender::BlendSkeletons(const Skeleton& skeleton1, const Skele
     }
 
     return result;
+}
 }

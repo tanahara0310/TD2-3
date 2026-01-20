@@ -7,10 +7,16 @@
 #include <memory>
 #include <mutex>
 
-class DirectXCommon;
-class Font;
+// 前方宣言
+namespace CoreEngine {
+    class DirectXCommon;
+    class Font;
+}
 
 /// @brief フォント管理クラス（シングルトン）
+
+namespace CoreEngine
+{
 class FontManager {
 public:
     /// @brief シングルトンインスタンスを取得
@@ -24,7 +30,7 @@ public:
     /// @brief 初期化
     /// @param dxCommon DirectXCommon
     /// @return 成功した場合true
-    bool Initialize(DirectXCommon* dxCommon);
+    bool Initialize(CoreEngine::DirectXCommon* dxCommon);
 
     /// @brief 終了処理
     void Finalize();
@@ -33,7 +39,7 @@ public:
     /// @param fontFilePath フォントファイルパス
     /// @param fontSize フォントサイズ（ピクセル）
     /// @return フォントへのポインタ（失敗時はnullptr）
-    Font* LoadFont(const std::string& fontFilePath, uint32_t fontSize);
+    CoreEngine::Font* LoadFont(const std::string& fontFilePath, uint32_t fontSize);
 
     /// @brief デフォルトフォントを設定
     /// @param fontFilePath フォントファイルパス
@@ -42,7 +48,8 @@ public:
 
     /// @brief デフォルトフォントを取得
     /// @return デフォルトフォント
-    Font* GetDefaultFont();
+    CoreEngine::Font* GetDefaultFont();
+
 
 private:
     FontManager() = default;
@@ -56,11 +63,12 @@ private:
 
 private:
     FT_Library ftLibrary_ = nullptr;
-    DirectXCommon* dxCommon_ = nullptr;
+    CoreEngine::DirectXCommon* dxCommon_ = nullptr;
     bool isInitialized_ = false;
 
-    std::unordered_map<std::string, std::unique_ptr<Font>> fontCache_;
+    std::unordered_map<std::string, std::unique_ptr<CoreEngine::Font>> fontCache_;
     std::mutex cacheMutex_;
 
     std::string defaultFontKey_;
 };
+}

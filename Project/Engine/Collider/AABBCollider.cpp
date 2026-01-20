@@ -8,6 +8,9 @@
 #include "Engine/Camera/ICamera.h"
 #endif
 
+
+namespace CoreEngine
+{
 AABBCollider::AABBCollider(GameObject* owner, const Vector3& size) {
    type_ = ColliderType::AABB;
    owner_ = owner;
@@ -35,19 +38,21 @@ void AABBCollider::SetSize(const Vector3& size) {
    size_ = size;
 }
 
-Vector3 AABBCollider::GetMin() const {
+
+CoreEngine::Vector3 AABBCollider::GetMin() const {
    return GetPosition() - size_ * 0.5f;
 }
 
-Vector3 AABBCollider::GetMax() const {
+CoreEngine::Vector3 AABBCollider::GetMax() const {
    return GetPosition() + size_ * 0.5f;
 }
 
 #ifdef _DEBUG
-void AABBCollider::DrawDebug(LineRendererPipeline* pipeline, const ICamera* camera, const Vector3& color) const {
+void AABBCollider::DrawDebug(CoreEngine::LineRendererPipeline* pipeline, const CoreEngine::ICamera* camera, const CoreEngine::Vector3& color) const {
    if (!pipeline || !camera) return;
 
-   Vector3 center = GetPosition();
-   DebugLineDrawer::DrawBox(pipeline, camera, center, size_, color, 1.0f);
+   CoreEngine::Vector3 center = GetPosition();
+   CoreEngine::DebugLineDrawer::DrawBox(pipeline, camera, center, size_, color, 1.0f);
 }
 #endif
+}

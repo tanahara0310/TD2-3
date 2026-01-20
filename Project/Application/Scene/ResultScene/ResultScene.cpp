@@ -21,6 +21,7 @@ void ResultScene::Initialize(EngineSystem* engine)
 	}
 
 	// リザルトシーンの初期化処理
+    sceneCommandExecutor_.Initialize();
 }
 
 void ResultScene::OnUpdate()
@@ -34,6 +35,7 @@ void ResultScene::Draw()
 	BaseScene::Draw();
 
 	// リザルトシーンの描画処理
+    sceneCommandExecutor_.ExecuteCommand();
 }
 
 void ResultScene::Finalize()

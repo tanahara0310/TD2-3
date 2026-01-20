@@ -34,7 +34,7 @@ void TitleScene::OnUpdate()
     // "Start" キーが押されたらゲームシーンへ遷移
     if (KeyBindConfig::Instance().IsTrigger("Start")) {
         // シーン変更コマンドを追加
-        sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("GameScene", engine_->GetComponent<SceneManager>()));
+        sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("GameScene", sceneManager_));
     }
 
     // タイトルシーンの更新処理

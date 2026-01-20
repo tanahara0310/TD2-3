@@ -275,6 +275,7 @@
     <ClCompile Include="Application\Scene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
+    <ClCompile Include="Engine\Graphics\Line\LineManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -714,6 +715,7 @@
     <ClInclude Include="Application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="Application\Scene\ResultScene\ResultScene.h" />
     <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
+    <ClInclude Include="Engine\Graphics\Line\LineManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

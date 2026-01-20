@@ -8,6 +8,7 @@
 #include "Engine/Graphics/Light/LightManager.h"
 #include "Engine/Graphics/Render/RenderManager.h"
 #include "Engine/Graphics/Render/Line/LineRendererPipeline.h"
+#include "Engine/Graphics/Line/LineManager.h"
 #include "Engine/Graphics/GridRenderer.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Scene/SceneManager.h"
@@ -45,8 +46,8 @@ namespace CoreEngine
         if (!keyboard) {
             return; // キーボードは必須
         }
-#ifdef _DEBUG
 
+#ifdef _DEBUG
         // デバッグカメラへの切り替え
         if (keyboard->IsKeyTriggered(DIK_F1)) {
             cameraManager_->SetActiveCamera("Debug", CameraType::Camera3D);
@@ -74,6 +75,9 @@ namespace CoreEngine
         if (cameraManager_) {
             cameraManager_->DrawImGui();
         }
+
+        // LineManagerのImGui
+        LineManager::GetInstance().DrawImGui();
 
         // ゲームオブジェクトのImGuiデバッグUI表示
         if (ImGui::Begin("オブジェクト制御")) {

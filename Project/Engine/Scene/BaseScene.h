@@ -37,9 +37,20 @@ namespace CoreEngine
 		/// @brief 解放（共通処理 + 派生クラスの解放）
 		virtual void Finalize() override;
 
-	protected:
-		/// @brief 派生クラスでオーバーライドする更新処理（GameObjectの更新前）
-		virtual void OnUpdate() {}
+   /// @brief GameObjectを生成して登録
+   /// @tparam T GameObjectの派生クラス
+   /// @tparam Args コンストラクタ引数の型
+   /// @param args コンストラクタ引数
+   /// @return 生成されたオブジェクトへのポインタ
+   template<typename T, typename... Args>
+   T* CreateObject(Args&&... args) {
+       auto obj = std::make_unique<T>(std::forward<Args>(args)...);
+       return gameObjectManager_.AddObject(std::move(obj));
+   }
+
+protected:
+   /// @brief 派生クラスでオーバーライドする更新処理（GameObjectの更新前）
+   virtual void OnUpdate() {}
 
 		/// @brief 派生クラスでオーバーライドする後処理（GameObjectの更新後、クリーンアップ前）
 		virtual void OnLateUpdate() {}
@@ -73,16 +84,7 @@ namespace CoreEngine
 
 		// === 派生クラス用ヘルパーメソッド ===
 
-		/// @brief GameObjectを生成して登録
-		/// @tparam T GameObjectの派生クラス
-		/// @tparam Args コンストラクタ引数の型
-		/// @param args コンストラクタ引数
-		/// @return 生成されたオブジェクトへのポインタ
-		template<typename T, typename... Args>
-		T* CreateObject(Args&&... args) {
-			auto obj = std::make_unique<T>(std::forward<Args>(args)...);
-			return gameObjectManager_.AddObject(std::move(obj));
-		}
+   
 
 		/// @brief シーンのBGMを登録し、トランジション時の自動フェードを有効化
 		/// @param bgm BGMのSoundResourceポインタ（現在のSetVolume()で設定した音量が使用されます）

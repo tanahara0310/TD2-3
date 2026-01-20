@@ -283,6 +283,13 @@
     <ClCompile Include="Application\Utility\Command\SceneCommandExecutor.cpp" />
     <ClCompile Include="Application\Utility\BulletObject\BulletModel.cpp" />
     <ClCompile Include="Application\Utility\BulletObject\BulletObjectContainer.cpp" />
+    <ClCompile Include="Application\SceneObject\Menu\MenuController.cpp" />
+    <ClCompile Include="Application\SceneObject\Player\Player.cpp" />
+    <ClCompile Include="Application\SceneObject\Ball\Ball.cpp" />
+    <ClCompile Include="Application\SceneObject\Ball\BallController.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\IEnemy.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\DummyEnemy.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\EnemyManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -735,6 +742,14 @@
     <ClInclude Include="Application\Utility\Command\SceneCommandExecutor.h" />
     <ClInclude Include="Application\Utility\BulletObject\BulletObjectContainer.h" />
     <ClInclude Include="Application\Utility\BulletObject\BulletModel.h" />
+    <ClInclude Include="Application\SceneObject\Menu\MenuController.h" />
+    <ClInclude Include="Application\SceneObject\Player\Player.h" />
+    <ClInclude Include="Application\SceneObject\Ball\Ball.h" />
+    <ClInclude Include="Application\SceneObject\Ball\BallController.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\IEnemy.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\DummyEnemy.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\EnemyManager.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\AllEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

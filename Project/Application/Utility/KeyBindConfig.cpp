@@ -22,6 +22,7 @@ KeyBindConfig::KeyBindConfig() {
 	keyBinds_["MoveBack"].keyboardKeys.push_back(DIK_DOWN);
 	keyBinds_["Menu"].keyboardKeys.push_back(DIK_ESCAPE);
 	keyBinds_["Menu"].keyboardKeys.push_back(DIK_E);
+    keyBinds_["Shot"].keyboardKeys.push_back(DIK_SPACE);
 
     keyBinds_["Start"].controllerButtons.push_back(XINPUT_GAMEPAD_A);
     keyBinds_["Start"].controllerButtons.push_back(XINPUT_GAMEPAD_B);

@@ -3,6 +3,9 @@
 #include "../Engine/Scene/SceneManager.h"
 #include <memory>
 
+// アプリ用システム
+#include "Application/Utility/KeyBindConfig.h"
+
 /// @brief ゲーム固有のアプリケーションクラス
 /// Framework を継承し、シーン管理を統合する
 class MyGame : public CoreEngine::Framework {

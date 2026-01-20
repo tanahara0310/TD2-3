@@ -4,6 +4,10 @@
 #include "Engine/Graphics/Render/RenderManager.h"
 #include "Engine/Graphics/TextureManager.h"
 
+#include <memory>
+#include "Application/Utility/KeyBindConfig.h"
+#include "Application/Utility/Command/SceneAllCommand.h"
+
 namespace CoreEngine
 {
 void TitleScene::Initialize(EngineSystem* engine)
@@ -19,11 +23,22 @@ void TitleScene::Initialize(EngineSystem* engine)
 	}
 
 	// タイトルシーンの初期化処理
+    sceneCommandExecutor_.Initialize();
 }
 
 void TitleScene::OnUpdate()
 {
-	// タイトルシーンの更新処理
+    // 入力処理更新
+    KeyBindConfig::Instance().Update();
+
+    // "Start" キーが押されたらゲームシーンへ遷移
+    if (KeyBindConfig::Instance().IsTrigger("Start")) {
+        // シーン変更コマンドを追加
+        sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("GameScene", engine_->GetComponent<SceneManager>()));
+    }
+
+    // タイトルシーンの更新処理
+    sceneCommandExecutor_.ExecuteCommand();
 }
 
 void TitleScene::Draw()

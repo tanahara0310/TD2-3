@@ -1,7 +1,8 @@
 #pragma once
-
 #include "Scene/BaseScene.h"
 #include "EngineSystem/EngineSystem.h"
+
+#include "Application/Utility/Command/SceneCommandExecutor.h"
 
 namespace CoreEngine
 {
@@ -20,5 +21,8 @@ public:
 protected:
 	/// @brief 更新処理（BaseSceneのOnUpdate()をオーバーライド）
 	void OnUpdate() override;
+
+private:
+    SceneCommandExecutor sceneCommandExecutor_;
 };
 }

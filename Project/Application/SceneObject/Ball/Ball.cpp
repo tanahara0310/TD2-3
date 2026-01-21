@@ -30,7 +30,7 @@ Ball::Ball() {
     SetActive(false);
     rotateSpeed_ = 0.1f;
 
-    collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.5f);
+    collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.8f);
     collider_->SetLayer(CoreEngine::CollisionLayer::Item);
 }
 

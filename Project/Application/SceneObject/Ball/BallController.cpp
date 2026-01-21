@@ -115,6 +115,7 @@ void BallController::Update() {
         if ((CoreEngine::Math::Vector::Length(ballPos - hitPos) < nowRadius_)) {
             // 反射処理
             isReturning_ = false;
+            ball_->isHitEnemy_ = false;
             hangTimeCounter_ = config_["HangTime"].get<float>();
 
         } else {

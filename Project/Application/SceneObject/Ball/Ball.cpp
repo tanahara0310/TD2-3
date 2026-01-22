@@ -36,6 +36,10 @@ Ball::Ball() {
 
 void Ball::Initialize() {
     SetActive(false);
+
+    float size = 1.4f;
+    transform_.scale = { size, size, size };
+    collider_->SetRadius(size * 0.5f);
 }
 
 void Ball::Update() {

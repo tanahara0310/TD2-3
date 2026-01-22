@@ -13,6 +13,7 @@
 
 class Player;
 class Ball;
+#include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyManager.h"
 
@@ -46,12 +47,12 @@ private:
     // カメラの操作
     CameraController cameraController_;
     // ゲームの操作
-    MenuController menuController_;
+    std::unique_ptr<MenuController> menuController_;
 
     // ゲームのオブジェクト
     Player* player_;
     Ball* ball_;
-
+    std::unique_ptr<MenuView> menuView_;
     
     // ゲームオブジェクトの制御
     std::unique_ptr<EnemyManager> enemyManager_;

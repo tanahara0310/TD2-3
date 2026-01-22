@@ -12,6 +12,7 @@
 #include "Application/SceneObject/Ball/Ball.h"
 #include "Application/SceneObject/Enemy/AllEnemy.h"
 
+#include "Application/Utility/Command/SceneAllCommand.h"
 
 namespace CoreEngine
 {
@@ -33,7 +34,6 @@ void GameScene::Initialize(EngineSystem* engine)
 	// ゲームシーンの初期化処理
     sceneCommandExecutor_.Initialize();
     cameraController_.Initialize();
-    menuController_.Initialize();
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
@@ -48,6 +48,11 @@ void GameScene::Initialize(EngineSystem* engine)
 
     // ボールコントローラーの生成
     ballController_ = std::make_unique<BallController>(ball_, player_);
+    // メニューコントローラーの生成
+    menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
+    menuController_->Initialize();
+    menuView_ = std::make_unique<MenuView>(this, menuController_.get());
+    menuView_->Initialize();
 
     collisionConfig_ = std::make_unique<CollisionConfig>();
     collisionManager_ = std::make_unique<CollisionManager>(collisionConfig_.get());
@@ -73,16 +78,24 @@ void GameScene::OnUpdate()
     KeyBindConfig::Instance().Update();
 
     // メニューコントローラーの更新
-    menuController_.Update();
+    menuController_->Update();
+    menuView_->Update();
 
     // メニューが閉じている場合のみゲームシーンを更新
-    if (!menuController_.IsMenuOpen()) {
+    if (!menuController_->IsMenuOpen()) {
         cameraController_.Update();
         player_->Update();
         ball_->Update();
         ballController_->Update();
         enemyManager_->Update();
         collisionManager_->CheckAllCollisions();
+    }
+
+    // メニューでタイトルへ戻る要求があった場合
+    if (menuController_->isRequestToExitTitle_) {
+        // シーン変更コマンドを追加
+        sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("TitleScene", sceneManager_));
+        menuController_->isRequestToExitTitle_ = false;
     }
 
     // ゲームシーンの更新処理
@@ -94,7 +107,7 @@ void GameScene::Draw()
 	BaseScene::Draw();
 
 	// ゲームシーンの描画処理
-    if (menuController_.IsMenuOpen()) {
+    if (menuController_->IsMenuOpen()) {
 #ifdef _DEBUG
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
         ImGui::Begin("Menu", nullptr, flags);

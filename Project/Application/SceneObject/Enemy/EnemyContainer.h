@@ -4,12 +4,12 @@
 #include "IEnemy.h"
 #include "Scene/BaseScene.h"
 
-class EnemyManager final {
+class EnemyContainer final {
 public:
 
-    EnemyManager()= delete;
-    explicit EnemyManager(CoreEngine::BaseScene* scene);
-    ~EnemyManager() = default;
+    EnemyContainer()= delete;
+    explicit EnemyContainer(CoreEngine::BaseScene* scene);
+    ~EnemyContainer() = default;
     void Update();
 
     template<typename T>
@@ -35,6 +35,9 @@ public:
     std::unordered_map<std::string, std::vector<IEnemy*>>& GetEnemyMap() {
         return enemyMap_;
     }
+
+    // 死んでいる敵のリスト
+    std::vector<IEnemy*> DeathEnemyList();
 
 private:
     CoreEngine::BaseScene* scene_ = nullptr;

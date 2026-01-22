@@ -1,0 +1,94 @@
+#include "EnemyKillMotionManager.h"
+#include "Application/SceneObject/Combo/EnemyKillComboCounter.h"
+#include "Application/SceneObject/Enemy/EnemyContainer.h"
+#include "Application/SceneObject/Player/Player.h"
+#include "Application/SceneObject/CameraController/CameraController.h"
+#include "Application/SceneObject/Ball/BallController.h"
+
+#include "Application/SceneObject/CameraController/AllCameraWork.h"
+
+EnemyKillMotionManager::EnemyKillMotionManager(
+    EnemyKillComboCounter* comboCounter,
+    Player* player,
+    EnemyContainer* enemyContainer,
+    CameraController* cameraController,
+    BallController* ballController) :
+    container_(enemyContainer),
+    comboCounter_(comboCounter),
+    player_(player),
+    cameraController_(cameraController),
+    ballController_(ballController) {
+    isPlayingMotion_ = false;
+    eraseCooldown_ = 0.5f;
+    currentEraseCooldown_ = 0.0f;
+}
+
+void EnemyKillMotionManager::Update() {
+    ImGui::Begin("EnemyKillMotionManager");
+    ImGui::Text("isPlayingMotion_: %d", isPlayingMotion_);
+    ImGui::Text("CurrentEraseCooldown_: %.2f", currentEraseCooldown_);
+    ImGui::Text("ComboTimer: %.2f", comboCounter_->GetComboTimer());
+    ImGui::Text("CurrentCombo: %d", comboCounter_->GetCurrentCombo());
+    ImGui::End();
+
+    // コンボタイマーの更新処理
+    auto enemyList = container_->DeathEnemyList();
+    // コンボタイマーが0より大きい場合は何もしない
+    if (comboCounter_->GetComboTimer() > 0.0) {
+
+    } else {
+        comboCounter_->ResetCombo();
+        if (!enemyList.empty() && !isPlayingMotion_) {
+            if (!isPlayingMotion_) {
+                isPlayingMotion_ = true;
+                currentEraseCooldown_ = 0.5f; // 最初の消去までの猶予
+            }
+        }
+    }
+    // コンボタイマーが0以下で敵がいる場合はキル演出開始
+    if (!enemyList.empty() && !ballController_->GetIsThrowing()) {
+        if (!isPlayingMotion_) {
+            isPlayingMotion_ = true;
+            currentEraseCooldown_ = 1.0f; // 最初の消去までの猶予
+        }
+    }
+
+    // キル演出中の更新処理
+    if (isPlayingMotion_) {
+        if (!enemyList.empty()) {
+            // 一番遠い敵を取得
+            float maxDistance = 0.0f;
+            CoreEngine::Vector3 furthestEnemyPos;
+            IEnemy* furthestEnemy = nullptr;
+            for (auto enemy : enemyList) {
+                CoreEngine::Vector3 toEnemy = enemy->GetTransform() - player_->GetTransform();
+                float distance = CoreEngine::Math::Vector::Length(toEnemy);
+                if (distance > maxDistance) {
+                    maxDistance = distance;
+                    furthestEnemyPos = enemy->GetTransform();
+                    furthestEnemy = enemy;
+                }
+            }
+            // カメラワーク設定
+            cameraController_->SetCameraWork<GoToCamera>(furthestEnemy->GetTransform() + CoreEngine::Vector3(0.0f, 10.0f, -10.0f), 0.1f);
+
+            // 外側のやつから順番に消す
+            if (currentEraseCooldown_ <= 0.0f) {
+                furthestEnemy->SetActive(false);
+                currentEraseCooldown_ = eraseCooldown_;
+                // TODO: ここにエフェクトを追加
+
+            } else {
+                currentEraseCooldown_ -= 1.0f / 60.0f;
+            }
+
+            return;
+        } else {
+            isPlayingMotion_ = false;
+            cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+        }
+    }
+
+
+}
+

@@ -3,11 +3,11 @@
 #include "Engine/Camera/CameraManager.h"
 #include "Application/Utility/MatsumotoUtility.h"
 
-FollowCamera::FollowCamera(CoreEngine::CameraManager& camera, CoreEngine::Vector3& followPos, const CoreEngine::Vector3& offset, float speed)
+FollowCamera::FollowCamera(CoreEngine::CameraManager* camera, CoreEngine::Vector3& followPos, const CoreEngine::Vector3& offset, float speed)
     :cameraManager_(camera), followPos_(followPos), offset_(offset), speed_(speed) {}
 
 void FollowCamera::Update() {
-    CoreEngine::Camera* camera = static_cast<CoreEngine::Camera*>(cameraManager_.GetActiveCamera(CoreEngine::CameraType::Camera3D));
+    CoreEngine::Camera* camera = static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
     if (!camera) {
         return;
     }

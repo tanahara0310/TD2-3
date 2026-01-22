@@ -14,6 +14,18 @@ public:
 
     template<typename T>
     void SpawnEnemy(const CoreEngine::Vector3& position) {
+        // 再利用可能な敵がいるか確認
+        if (enemyMap_.find(typeid(T).name()) != enemyMap_.end()) {
+            for (auto* enemy : enemyMap_[typeid(T).name()]) {
+                if (!enemy->IsActive()) {
+                    enemy->Initialize();
+                    enemy->SetActive(true);
+                    enemy->GetTransform() = position;
+                    return;
+                }
+            }
+        }
+        // 新規作成
         enemyMap_[typeid(T).name()].push_back(scene_->CreateObject<T>());
         auto& enemyList = enemyMap_[typeid(T).name()];
         auto* newEnemy = enemyList.back();

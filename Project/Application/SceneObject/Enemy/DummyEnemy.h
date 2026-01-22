@@ -5,6 +5,7 @@ class DummyEnemy : public IEnemy {
 public:
     DummyEnemy();
 
+    void Initialize() override;
     void EnemyUpdate() override;
     void OnCollisionEnter(CoreEngine::GameObject* other) override;
 

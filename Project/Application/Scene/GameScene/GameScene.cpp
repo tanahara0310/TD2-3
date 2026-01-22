@@ -37,7 +37,9 @@ void GameScene::Initialize(EngineSystem* engine)
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
+    player_->SetAutoUpdate(false);
     ball_ = CreateObject<Ball>();
+    ball_->SetAutoUpdate(false);
 
     // プレイヤーの初期化
     player_->Initialize();

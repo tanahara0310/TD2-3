@@ -10,7 +10,7 @@ public:
 
     virtual void EnemyUpdate() = 0;
 
-    void Initialize();
+    virtual void Initialize() = 0;
     void Update() override;
     void Draw(const CoreEngine::ICamera* camera) override;
 #ifdef _DEBUG

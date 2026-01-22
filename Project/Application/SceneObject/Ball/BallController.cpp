@@ -126,3 +126,7 @@ void BallController::Update() {
         ball_->isHitEnemy_ = false;
     }
 }
+
+bool BallController::GetIsThrowing() {
+    return ball_->IsActive();
+}

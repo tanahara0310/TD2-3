@@ -289,10 +289,16 @@
     <ClCompile Include="Application\SceneObject\Ball\BallController.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\IEnemy.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\DummyEnemy.cpp" />
-    <ClCompile Include="Application\SceneObject\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\EnemyContainer.cpp" />
     <ClCompile Include="Engine\Graphics\Line\LineManager.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Dissolve.cpp" />
     <ClCompile Include="Application\SceneObject\Menu\MenuView.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\EnemyMapLoader.cpp" />
+    <ClCompile Include="Application\SceneObject\Combo\EnemyKillComboCounter.cpp" />
+    <ClCompile Include="Application\SceneObject\Combo\EnemyKillMotionManager.cpp" />
+    <ClCompile Include="Application\SceneObject\CameraController\TowPointFramingCameraWork.cpp" />
+    <ClCompile Include="Application\SceneObject\CameraController\DynamicFOVCameraWork.cpp" />
+    <ClCompile Include="Application\SceneObject\CameraController\GoToCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -751,11 +757,17 @@
     <ClInclude Include="Application\SceneObject\Ball\BallController.h" />
     <ClInclude Include="Application\SceneObject\Enemy\IEnemy.h" />
     <ClInclude Include="Application\SceneObject\Enemy\DummyEnemy.h" />
-    <ClInclude Include="Application\SceneObject\Enemy\EnemyManager.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\EnemyContainer.h" />
     <ClInclude Include="Application\SceneObject\Enemy\AllEnemy.h" />
     <ClInclude Include="Engine\Graphics\Line\LineManager.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\Dissolve.h" />
     <ClInclude Include="Application\SceneObject\Menu\MenuView.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\EnemyMapLoader.h" />
+    <ClInclude Include="Application\SceneObject\Combo\EnemyKillComboCounter.h" />
+    <ClInclude Include="Application\SceneObject\Combo\EnemyKillMotionManager.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\TowPointFramingCameraWork.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\DynamicFOVCameraWork.h" />
+    <ClInclude Include="Application\SceneObject\CameraController\GoToCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

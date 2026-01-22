@@ -20,7 +20,9 @@ public:
     CoreEngine::Vector3* GetPosPtr() { return &transform_.translate; }
     CoreEngine::SphereCollider* GetCollider() { return collider_.get(); }
     virtual void OnCollisionEnter(CoreEngine::GameObject* other) override = 0;
+    bool IsAlive() const { return isAlive_; }
 
 protected:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
+    bool isAlive_;
 };

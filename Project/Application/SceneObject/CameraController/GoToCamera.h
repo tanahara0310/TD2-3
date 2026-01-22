@@ -1,26 +1,20 @@
 #pragma once
 #include "ICameraWork.h"
 #include "Engine/EngineSystem/EngineSystem.h"
-
 namespace CoreEngine {
     class CameraManager;
 }
-
-class FollowCamera : public ICameraWork {
+class GoToCamera final : public ICameraWork {
 public:
-    FollowCamera() = delete;
-    explicit FollowCamera(
+    GoToCamera() = delete;
+    explicit GoToCamera(
         CoreEngine::CameraManager* camera,
-        CoreEngine::Vector3& followPos,
-        const CoreEngine::Vector3& offset,
+        const CoreEngine::Vector3& targetPos,
         float speed);
-    ~FollowCamera() override = default;
-
+    ~GoToCamera() override = default;
     void Update() override;
 private:
     const float speed_;
-    CoreEngine::Vector3& followPos_;
-    const CoreEngine::Vector3& offset_;
+    const CoreEngine::Vector3 targetPos_;
     CoreEngine::CameraManager* cameraManager_;
-
 };

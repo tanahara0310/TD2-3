@@ -29,6 +29,8 @@ IEnemy::IEnemy(const std::string& modelPath, const std::string& texturePath) {
 
     collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.5f);
     collider_->SetLayer(CoreEngine::CollisionLayer::Enemy);
+    
+    isAlive_ = true;
 }
 
 void IEnemy::Initialize() {

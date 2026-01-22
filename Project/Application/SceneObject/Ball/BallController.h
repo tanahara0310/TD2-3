@@ -12,6 +12,9 @@ public:
     explicit BallController(Ball* ball, Player* player);
 
     void Update();
+
+    bool GetIsThrowing();
+
 private:
     Ball* ball_;
     Player* player_;

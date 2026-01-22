@@ -33,7 +33,8 @@ void GameScene::Initialize(EngineSystem* engine)
 
 	// ゲームシーンの初期化処理
     sceneCommandExecutor_.Initialize();
-    cameraController_.Initialize();
+    cameraController_ = std::make_unique<CameraController>(cameraManager_.get());
+    cameraController_->Initialize();
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
@@ -45,8 +46,7 @@ void GameScene::Initialize(EngineSystem* engine)
     player_->Initialize();
     ball_->Initialize();
 
-    enemyManager_ = std::make_unique<EnemyManager>(this);
-    enemyManager_->SpawnEnemy<DummyEnemy>({ 3.0f, 0.0f, 0.0f });
+    enemyManager_ = std::make_unique<EnemyContainer>(this);
 
     // ボールコントローラーの生成
     ballController_ = std::make_unique<BallController>(ball_, player_);
@@ -55,6 +55,22 @@ void GameScene::Initialize(EngineSystem* engine)
     menuController_->Initialize();
     menuView_ = std::make_unique<MenuView>(this, menuController_.get());
     menuView_->Initialize();
+    // 敵配置データのロード
+    enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get());
+    enemyMapLoader_->LoadEnemyMap("testA.json");
+    enemyMapLoader_->RespawnEnemies();
+
+    // 敵キルコンボカウンターの生成
+    enemyKillComboCounter_ = std::make_unique<EnemyKillComboCounter>(enemyManager_.get());
+    enemyKillComboCounter_->Initialize();
+    // 敵キルモーションマネージャーの生成
+    enemyKillMotionManager_ = std::make_unique<EnemyKillMotionManager>(
+        enemyKillComboCounter_.get(),
+        player_,
+        enemyManager_.get(),
+        cameraController_.get(),
+        ballController_.get());
+    enemyKillMotionManager_->isPlayingMotion_ = false;
 
     collisionConfig_ = std::make_unique<CollisionConfig>();
     collisionManager_ = std::make_unique<CollisionManager>(collisionConfig_.get());
@@ -85,11 +101,20 @@ void GameScene::OnUpdate()
 
     // メニューが閉じている場合のみゲームシーンを更新
     if (!menuController_->IsMenuOpen()) {
-        cameraController_.Update();
-        player_->Update();
-        ball_->Update();
-        ballController_->Update();
+        
+
+        cameraController_->Update();
+        if (!enemyKillMotionManager_->isPlayingMotion_) {
+            player_->Update();
+            ball_->Update();
+            ballController_->Update();
+            
+        }
         enemyManager_->Update();
+
+        enemyKillComboCounter_->Update();
+        enemyKillMotionManager_->Update();
+
         collisionManager_->CheckAllCollisions();
     }
 
@@ -107,16 +132,6 @@ void GameScene::OnUpdate()
 void GameScene::Draw()
 {
 	BaseScene::Draw();
-
-	// ゲームシーンの描画処理
-    if (menuController_->IsMenuOpen()) {
-#ifdef _DEBUG
-        ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
-        ImGui::Begin("Menu", nullptr, flags);
-        ImGui::Text("メニューが開いています");
-        ImGui::End();
-#endif // _DEBUG
-    }
 }
 
 void GameScene::Finalize()

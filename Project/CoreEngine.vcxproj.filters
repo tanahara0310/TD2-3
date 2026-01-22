@@ -290,6 +290,8 @@
     <ClCompile Include="Application\SceneObject\Enemy\IEnemy.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\DummyEnemy.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Engine\Graphics\Line\LineManager.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\Dissolve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -750,6 +752,8 @@
     <ClInclude Include="Application\SceneObject\Enemy\DummyEnemy.h" />
     <ClInclude Include="Application\SceneObject\Enemy\EnemyManager.h" />
     <ClInclude Include="Application\SceneObject\Enemy\AllEnemy.h" />
+    <ClInclude Include="Engine\Graphics\Line\LineManager.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\Dissolve.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

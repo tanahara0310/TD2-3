@@ -1,5 +1,4 @@
-#include "CollisionManager.h"
-#include "Engine/ObjectCommon/GameObject.h"
+﻿#include "CollisionManager.h"
 #include <algorithm>
 
 
@@ -31,10 +30,6 @@ void CollisionManager::CheckAllCollisions() {
 
          // コライダーが無効化されている場合はスキップ
          if (!a->IsEnabled() || !b->IsEnabled()) continue;
-
-         // GameObjectが非アクティブの場合はスキップ
-         if (!a->GetOwner() || !a->GetOwner()->IsActive()) continue;
-         if (!b->GetOwner() || !b->GetOwner()->IsActive()) continue;
 
          // コリジョンマトリクスで判定が無効なら処理しない
          if (!config_->IsCollisionEnabled(a->GetLayer(), b->GetLayer())) continue;

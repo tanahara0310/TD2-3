@@ -31,6 +31,9 @@ Player::Player() {
 
     // プレイヤーの初期設定
     config_.emplace("Speed", 0.1f);
+    config_.emplace("Health", 3);
+    config_.emplace("MaxHealth", 3);
+    config_.emplace("DamageInterval", 3.0f);
 
     canMove_ = true;
 
@@ -41,10 +44,13 @@ Player::Player() {
 
     collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.5f);
     collider_->SetLayer(CoreEngine::CollisionLayer::Player);
+
+    velocity_ = { 0.0f, 0.0f, 0.0f };
 }
 
 void Player::Initialize() {
     canMove_ = true;
+    velocity_ = { 0.0f, 0.0f, 0.0f };
 }
 
 void Player::Update() {
@@ -56,6 +62,18 @@ void Player::Update() {
     localScaleAnimValue_.y = sinf(animTimer_) * 0.1f;
     localScaleAnimValue_.x = sinf(animTimer_ + 3.14f / 2.0f) * 0.1f;
     localScaleAnimValue_.z = localScaleAnimValue_.x;
+
+    // ダメージ無敵時間の更新
+    if (damageInvincibilityTimer_ > 0.0f) {
+        damageInvincibilityTimer_ -= 1.0f / 60.0f;
+        model_->SetMaterialColor({
+            1.0f,
+            fabsf(sinf(damageInvincibilityTimer_*10.0f)),
+            fabsf(sinf(damageInvincibilityTimer_*10.0f)),
+            1.0f });
+    } else {
+        model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+    }
 
     // 入力処理（移動）
     CoreEngine::Vector2 moveDir = { 0.0f, 0.0f };
@@ -88,6 +106,11 @@ void Player::Update() {
         transform_.translate.x += moveDir.x * speed;
         transform_.translate.z += moveDir.y * speed;
     }
+
+    // 力の減衰
+    velocity_ *= 0.9f;
+    transform_.translate += velocity_;
+
     // トランスフォームの更新
     transform_.scale = defaultScale_ + localScaleAnimValue_;
     transform_.TransferMatrix();
@@ -106,4 +129,14 @@ CoreEngine::Vector3& Player::GetTransform() {
 
 void Player::OnCollisionEnter(GameObject* other) {
     (void)other;
+    if (other->GetObjectName() == std::string("IEnemy")) {
+        if (damageInvincibilityTimer_ > 0.0f) {
+            return;
+        }
+
+        // ダメージ処理
+        damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
+        isDamaged_ = true;
+        //velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
+    }
 }

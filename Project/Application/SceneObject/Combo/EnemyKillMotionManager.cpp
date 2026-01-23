@@ -24,15 +24,29 @@ EnemyKillMotionManager::EnemyKillMotionManager(
 }
 
 void EnemyKillMotionManager::Update() {
+#ifdef _DEBUG
     ImGui::Begin("EnemyKillMotionManager");
     ImGui::Text("isPlayingMotion_: %d", isPlayingMotion_);
     ImGui::Text("CurrentEraseCooldown_: %.2f", currentEraseCooldown_);
     ImGui::Text("ComboTimer: %.2f", comboCounter_->GetComboTimer());
     ImGui::Text("CurrentCombo: %d", comboCounter_->GetCurrentCombo());
     ImGui::End();
-
+#endif // _DEBUG
     // コンボタイマーの更新処理
     auto enemyList = container_->DeathEnemyList();
+
+    if (player_->isDamaged_) {
+        isPlayingMotion_ = false;
+        player_->isDamaged_ = false;
+        cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+        // 全ての死んだ敵を非アクティブ化
+        for (auto enemy : enemyList) {
+            enemy->SetActive(false);
+        }
+        return;
+    }
+
+    
     // コンボタイマーが0より大きい場合は何もしない
     if (comboCounter_->GetComboTimer() > 0.0) {
 

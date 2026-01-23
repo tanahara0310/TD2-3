@@ -177,6 +177,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Enemy\EnemyContainer.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\EnemyMapLoader.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\IEnemy.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\EnemyWaveManager.cpp" />
     <ClCompile Include="Application\SceneObject\Menu\MenuController.cpp" />
     <ClCompile Include="Application\SceneObject\Menu\MenuView.cpp" />
     <ClCompile Include="Application\SceneObject\Player\Player.cpp" />
@@ -387,6 +388,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Enemy\EnemyContainer.h" />
     <ClInclude Include="Application\SceneObject\Enemy\EnemyMapLoader.h" />
     <ClInclude Include="Application\SceneObject\Enemy\IEnemy.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\EnemyWaveManager.h" />
     <ClInclude Include="Application\SceneObject\Menu\MenuController.h" />
     <ClInclude Include="Application\SceneObject\Menu\MenuView.h" />
     <ClInclude Include="Application\SceneObject\Player\Player.h" />

@@ -21,6 +21,7 @@ public:
                     enemy->Initialize();
                     enemy->SetActive(true);
                     enemy->GetTransform() = position;
+                    enemy->SetAlive(true);
                     return;
                 }
             }

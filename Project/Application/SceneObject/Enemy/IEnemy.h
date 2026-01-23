@@ -21,6 +21,7 @@ public:
     CoreEngine::SphereCollider* GetCollider() { return collider_.get(); }
     virtual void OnCollisionEnter(CoreEngine::GameObject* other) override = 0;
     bool IsAlive() const { return isAlive_; }
+    void SetAlive(bool val) { isAlive_ = val; }
 
 protected:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;

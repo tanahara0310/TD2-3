@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <externals/nlohmann/single_include/nlohmann/json.hpp>
 class EnemyContainer;
 
@@ -16,7 +17,13 @@ public:
     // 敵を再配置する
     void RespawnEnemies();
 
+    // スタックから敵を出現させる
+    void SpawnEnemiesFromStack(int index);
+    // スタックの数を取得する
+    size_t GetEnemyMapStackSize() const;
+
 private:
     EnemyContainer* enemyManager_;
     nlohmann::json enemyMapData_;
+    std::vector<nlohmann::json> enemyMapStack_;
 };

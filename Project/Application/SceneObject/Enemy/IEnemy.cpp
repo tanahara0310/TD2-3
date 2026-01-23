@@ -33,9 +33,6 @@ IEnemy::IEnemy(const std::string& modelPath, const std::string& texturePath) {
     isAlive_ = true;
 }
 
-void IEnemy::Initialize() {
-}
-
 void IEnemy::Update() {
     transform_.TransferMatrix();
 }

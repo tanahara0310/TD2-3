@@ -19,6 +19,7 @@ class Ball;
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/EnemyMapLoader.h"
+#include "Application/SceneObject/Enemy/EnemyWaveManager.h"
 
 namespace CoreEngine
 {
@@ -63,6 +64,6 @@ private:
     std::unique_ptr<EnemyMapLoader> enemyMapLoader_;
     std::unique_ptr<EnemyKillComboCounter> enemyKillComboCounter_;
     std::unique_ptr<EnemyKillMotionManager> enemyKillMotionManager_;
-
+    std::unique_ptr<EnemyWaveManager> enemyWaveManager_;
 };
 }

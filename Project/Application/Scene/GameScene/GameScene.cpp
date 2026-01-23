@@ -58,7 +58,8 @@ void GameScene::Initialize(EngineSystem* engine)
     // 敵配置データのロード
     enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get());
     enemyMapLoader_->LoadEnemyMap("testA.json");
-    enemyMapLoader_->RespawnEnemies();
+    enemyMapLoader_->LoadEnemyMap("testB.json");
+    enemyMapLoader_->LoadEnemyMap("testC.json");
 
     // 敵キルコンボカウンターの生成
     enemyKillComboCounter_ = std::make_unique<EnemyKillComboCounter>(enemyManager_.get());
@@ -71,6 +72,9 @@ void GameScene::Initialize(EngineSystem* engine)
         cameraController_.get(),
         ballController_.get());
     enemyKillMotionManager_->isPlayingMotion_ = false;
+
+    // 敵ウェーブマネージャーの生成
+    enemyWaveManager_ = std::make_unique<EnemyWaveManager>(enemyMapLoader_.get());
 
     collisionConfig_ = std::make_unique<CollisionConfig>();
     collisionManager_ = std::make_unique<CollisionManager>(collisionConfig_.get());
@@ -92,6 +96,21 @@ void GameScene::Initialize(EngineSystem* engine)
 
 void GameScene::OnUpdate()
 {
+#ifdef _DEBUG
+    ImGui::Begin("Game Controller");
+    // ウェーブを進める
+    if (ImGui::Button("Next Wave")) {
+        enemyWaveManager_->StartNextWave();
+        auto& enemyMap = enemyManager_->GetEnemyMap();
+        for (auto& [typeName, enemyList] : enemyMap) {
+            for (auto& enemy : enemyList) {
+                collisionManager_->RegisterCollider(enemy->GetCollider());
+            }
+        }
+    }
+    ImGui::End();
+#endif
+
     // 入力処理更新
     KeyBindConfig::Instance().Update();
 

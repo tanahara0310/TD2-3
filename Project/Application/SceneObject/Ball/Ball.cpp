@@ -3,6 +3,7 @@
 #include "Engine/Camera/ICamera.h"
 
 #include "Application/Utility/KeyBindConfig.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 Ball::Ball() {
     // 必須コンポーネントの取得
@@ -40,6 +41,8 @@ void Ball::Initialize() {
     float size = 1.4f;
     transform_.scale = { size, size, size };
     collider_->SetRadius(size * 0.5f);
+
+    MatsumotoUtility::LoadSceneObjectConfig(config_,"BallConfig.json");
 }
 
 void Ball::Update() {

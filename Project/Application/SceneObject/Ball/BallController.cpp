@@ -26,6 +26,10 @@ BallController::BallController(Ball* ball, Player* player) :
     switchCooldown_ = 0.0f;
 }
 
+void BallController::Initialize() {
+    MatsumotoUtility::LoadSceneObjectConfig(config_, "BallControllerConfig.json");
+}
+
 void BallController::Update() {
     if (!ball_ || !player_) {
         return;

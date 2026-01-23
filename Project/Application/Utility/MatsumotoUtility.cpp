@@ -1,8 +1,13 @@
 #include "MatsumotoUtility.h"
 #include <cmath>
 #include <numbers>
+#include <fstream>
 
 using namespace CoreEngine;
+
+namespace {
+    const std::string kSceneObjectConfigDirectory = "Assets/ApplicationAssets/SceneObjectsParameters/";
+}
 
 float MatsumotoUtility::SimpleEaseIn(float from, float to, float transitionSpeed) {
     float value = from;
@@ -62,4 +67,65 @@ CoreEngine::Vector3 MatsumotoUtility::CartesianToSpherical(const CoreEngine::Vec
     result.y = theta;
     result.z = phi;
     return result;
+}
+
+void MatsumotoUtility::SaveSceneObjectConfig(nlohmann::json& json, const std::string& fileName) {
+    try
+    {
+        std::ifstream inputFile(kSceneObjectConfigDirectory + fileName);
+        if (inputFile.is_open())
+        {
+            nlohmann::json existingJson;
+            inputFile >> existingJson;
+            inputFile.close();
+            // 既存のJSONと新しいJSONをマージ
+            for (auto& [key, value] : json.items())
+            {
+                existingJson[key] = value;
+            }
+            // マージしたJSONをファイルに保存
+            std::ofstream outputFile(kSceneObjectConfigDirectory + fileName);
+            if (outputFile.is_open())
+            {
+                outputFile << existingJson.dump(4); // インデント付きで保存
+                outputFile.close();
+            }
+        } else
+        {
+            // ファイルが存在しない場合、新規作成
+            std::ofstream outputFile(kSceneObjectConfigDirectory + fileName);
+            if (outputFile.is_open())
+            {
+                outputFile << json.dump(4); // インデント付きで保存
+                outputFile.close();
+            }
+        }
+    }
+    catch (const std::exception&)
+    {
+
+    }
+}
+
+void MatsumotoUtility::LoadSceneObjectConfig(nlohmann::json& json, const std::string& fileName) {
+    try
+    {
+        std::ifstream inputFile(kSceneObjectConfigDirectory + fileName);
+        if (inputFile.is_open())
+        {
+            nlohmann::json loadedJson;
+            inputFile >> loadedJson;
+            inputFile.close();
+
+            // 読み込んだJSONを引数のJSONにマージ
+            for (auto& [key, value] : loadedJson.items())
+            {
+                json[key] = value;
+            }
+        }
+    }
+    catch (const std::exception&)
+    {
+            
+    }
 }

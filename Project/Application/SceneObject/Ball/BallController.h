@@ -11,6 +11,7 @@ public:
     BallController() = delete;
     explicit BallController(Ball* ball, Player* player);
 
+    void Initialize();
     void Update();
 
     bool GetIsThrowing();

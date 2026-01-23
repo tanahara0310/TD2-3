@@ -50,6 +50,7 @@ void GameScene::Initialize(EngineSystem* engine)
 
     // ボールコントローラーの生成
     ballController_ = std::make_unique<BallController>(ball_, player_);
+    ballController_->Initialize();
     // メニューコントローラーの生成
     menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
     menuController_->Initialize();
@@ -118,8 +119,6 @@ void GameScene::OnUpdate()
 
     // メニューが閉じている場合のみゲームシーンを更新
     if (!menuController_->IsMenuOpen()) {
-        
-
         cameraController_->Update();
         if (!enemyKillMotionManager_->isPlayingMotion_) {
             player_->Update();

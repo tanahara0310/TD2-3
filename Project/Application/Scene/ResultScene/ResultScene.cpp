@@ -4,7 +4,9 @@
 #include "Engine/Graphics/Render/RenderManager.h"
 #include "Engine/Graphics/TextureManager.h"
 
+#include <memory>
 #include "Application/Utility/KeyBindConfig.h"
+#include "Application/Utility/Command/SceneAllCommand.h"
 
 namespace CoreEngine
 {
@@ -28,14 +30,20 @@ void ResultScene::OnUpdate()
 {
     // 入力処理更新
     KeyBindConfig::Instance().Update();
+
+    // "Start" キーが押されたらゲームシーンへ遷移
+    if (KeyBindConfig::Instance().IsTrigger("Start")) {
+        // シーン変更コマンドを追加
+        sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("TitleScene", sceneManager_));
+    }
+
+    // タイトルシーンの更新処理
+    sceneCommandExecutor_.ExecuteCommand();
 }
 
 void ResultScene::Draw()
 {
 	BaseScene::Draw();
-
-	// リザルトシーンの描画処理
-    sceneCommandExecutor_.ExecuteCommand();
 }
 
 void ResultScene::Finalize()

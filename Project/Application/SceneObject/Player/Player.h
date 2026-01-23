@@ -23,6 +23,7 @@ public:
     bool canMove_;
     bool isDamaged_;
     CoreEngine::Vector3 lookDir_;
+    
 
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;

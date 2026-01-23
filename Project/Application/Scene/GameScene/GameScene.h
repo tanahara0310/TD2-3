@@ -7,6 +7,7 @@
 #include "Engine/Collider/CollisionConfig.h"
 #include "Engine/Collider/CollisionManager.h"
 
+#include "Application/Utility/Stopwatch.h"
 #include "Application/Utility/Command/SceneCommandExecutor.h"
 #include "Application/SceneObject/CameraController/CameraController.h"
 #include "Application/SceneObject/Menu/MenuController.h"
@@ -19,6 +20,11 @@ class Ball;
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/EnemyMapLoader.h"
+#include "Application/SceneObject/Enemy/EnemyWaveManager.h"
+
+#include "Application/SceneObject/GameRule/GameResultManager.h"
+#include "Application/SceneObject/GameRule/TimeAndEnemyCountSpawnRule.h"
+#include "Application/SceneObject/Presenters/GameClearSequence.h"
 
 namespace CoreEngine
 {
@@ -33,6 +39,9 @@ public:
 
 	/// @brief 解放
 	void Finalize() override;
+
+
+    void NextWave();
 
 protected:
 	/// @brief 更新処理（BaseSceneのOnUpdate()をオーバーライド）
@@ -58,11 +67,16 @@ private:
     std::unique_ptr<MenuView> menuView_;
     
     // ゲームオブジェクトの制御
+    std::unique_ptr<Stopwatch> gameStopwatch_;
     std::unique_ptr<EnemyContainer> enemyManager_;
     std::unique_ptr<BallController> ballController_;
     std::unique_ptr<EnemyMapLoader> enemyMapLoader_;
     std::unique_ptr<EnemyKillComboCounter> enemyKillComboCounter_;
     std::unique_ptr<EnemyKillMotionManager> enemyKillMotionManager_;
+    std::unique_ptr<EnemyWaveManager> enemyWaveManager_;
 
+    std::unique_ptr<GameResultManager> gameResultManager_;
+    std::unique_ptr<TimeAndEnemyCountSpawnRule> gameRule_;
+    std::unique_ptr<GameClearSequence> gameClearSequence_;
 };
 }

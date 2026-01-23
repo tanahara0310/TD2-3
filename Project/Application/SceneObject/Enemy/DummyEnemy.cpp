@@ -9,6 +9,7 @@ void DummyEnemy::Initialize() {
     SetActive(true);
     collider_->SetEnabled(true);
     isActive_ = true;
+    transform_.scale = { 1.0f,1.0f,1.0f };
 }
 
 void DummyEnemy::EnemyUpdate() {
@@ -22,11 +23,11 @@ void DummyEnemy::EnemyUpdate() {
 }
 
 void DummyEnemy::OnCollisionEnter(CoreEngine::GameObject* other) {
-    if (other->GetObjectName() == std::string("Ball")) {
-        hp_--;
-        if (hp_ <= 0) {
-            isAlive_ = false;
-            collider_->SetEnabled(false);
-        }
+    other;
+
+    hp_--;
+    if (hp_ <= 0) {
+        isAlive_ = false;
+        collider_->SetEnabled(false);
     }
 }

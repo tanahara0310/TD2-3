@@ -14,6 +14,10 @@
 
 #include "Application/Utility/Command/SceneAllCommand.h"
 
+namespace {
+    const double GAME_CLEAR_TIME_MS = 18000.0;
+}
+
 namespace CoreEngine
 {
 void GameScene::Initialize(EngineSystem* engine)
@@ -35,6 +39,8 @@ void GameScene::Initialize(EngineSystem* engine)
     sceneCommandExecutor_.Initialize();
     cameraController_ = std::make_unique<CameraController>(cameraManager_.get());
     cameraController_->Initialize();
+    gameStopwatch_ = std::make_unique<Stopwatch>();
+    gameStopwatch_->Start();
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
@@ -50,6 +56,7 @@ void GameScene::Initialize(EngineSystem* engine)
 
     // ボールコントローラーの生成
     ballController_ = std::make_unique<BallController>(ball_, player_);
+    ballController_->Initialize();
     // メニューコントローラーの生成
     menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
     menuController_->Initialize();
@@ -58,7 +65,8 @@ void GameScene::Initialize(EngineSystem* engine)
     // 敵配置データのロード
     enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get());
     enemyMapLoader_->LoadEnemyMap("testA.json");
-    enemyMapLoader_->RespawnEnemies();
+    enemyMapLoader_->LoadEnemyMap("testB.json");
+    enemyMapLoader_->LoadEnemyMap("testC.json");
 
     // 敵キルコンボカウンターの生成
     enemyKillComboCounter_ = std::make_unique<EnemyKillComboCounter>(enemyManager_.get());
@@ -71,6 +79,9 @@ void GameScene::Initialize(EngineSystem* engine)
         cameraController_.get(),
         ballController_.get());
     enemyKillMotionManager_->isPlayingMotion_ = false;
+
+    // 敵ウェーブマネージャーの生成
+    enemyWaveManager_ = std::make_unique<EnemyWaveManager>(enemyMapLoader_.get());
 
     collisionConfig_ = std::make_unique<CollisionConfig>();
     collisionManager_ = std::make_unique<CollisionManager>(collisionConfig_.get());
@@ -87,13 +98,47 @@ void GameScene::Initialize(EngineSystem* engine)
             collisionManager_->RegisterCollider(enemy->GetCollider());
         }
     }
+
+    // ゲーム結果マネージャーの生成
+    gameResultManager_ = std::make_unique<GameResultManager>();
+    gameResultManager_->Initialize();
+    // 時間経過でクリア
+    std::function<bool()> timeUpCondition = [this]() {
+        return gameStopwatch_->ElapsedMilliseconds() >= GAME_CLEAR_TIME_MS;
+        };
+    gameResultManager_->AddGameClearCondition(timeUpCondition);
     
+    // ゲームルールの設定
+    gameRule_ = std::make_unique<TimeAndEnemyCountSpawnRule>(
+        std::bind(&GameScene::NextWave,this) ,
+        std::bind(&EnemyContainer::GetAliveEnemyCount,enemyManager_.get()));
+
+    // ゲームクリアシーケンスの生成
+    gameClearSequence_ = std::make_unique<GameClearSequence>(this, sceneManager_, &sceneCommandExecutor_);
+    gameClearSequence_->Initialize();
 }
 
 void GameScene::OnUpdate()
 {
+#ifdef _DEBUG
+    ImGui::Begin("Game Controller");
+    // 時間の表示
+    ImGui::Text("Elapsed Time: %.2f ms", gameStopwatch_->ElapsedMilliseconds());
+    // バーで表示
+    float timeRatio = static_cast<float>(gameStopwatch_->ElapsedMilliseconds() / GAME_CLEAR_TIME_MS);
+    ImGui::ProgressBar(timeRatio, ImVec2(0.0f, 0.0f), "Time to Clear");
+    ImGui::End();
+#endif
+
     // 入力処理更新
     KeyBindConfig::Instance().Update();
+
+    if (gameResultManager_->CheckGameClear()) {
+        gameClearSequence_->Update();
+        sceneCommandExecutor_.ExecuteCommand();
+        return;
+        //menuController_->
+    }
 
     // メニューコントローラーの更新
     menuController_->Update();
@@ -101,13 +146,16 @@ void GameScene::OnUpdate()
 
     // メニューが閉じている場合のみゲームシーンを更新
     if (!menuController_->IsMenuOpen()) {
-        
+        if(!gameStopwatch_->IsRunning()){
+            gameStopwatch_->Resume();
+        }
 
         cameraController_->Update();
         if (!enemyKillMotionManager_->isPlayingMotion_) {
             player_->Update();
             ball_->Update();
             ballController_->Update();
+            gameRule_->Update();
             
         }
         enemyManager_->Update();
@@ -116,7 +164,14 @@ void GameScene::OnUpdate()
         enemyKillMotionManager_->Update();
 
         collisionManager_->CheckAllCollisions();
+    } else {
+        if (gameStopwatch_->IsRunning()) {
+            gameStopwatch_->Pause();
+        }
     }
+
+    // ゲーム結果の判定
+    gameResultManager_->Update();
 
     // メニューでタイトルへ戻る要求があった場合
     if (menuController_->isRequestToExitTitle_) {
@@ -127,6 +182,16 @@ void GameScene::OnUpdate()
 
     // ゲームシーンの更新処理
     sceneCommandExecutor_.ExecuteCommand();
+}
+
+void GameScene::NextWave() {
+    enemyWaveManager_->StartNextWave();
+    auto& enemyMap = enemyManager_->GetEnemyMap();
+    for (auto& [typeName, enemyList] : enemyMap) {
+        for (auto& enemy : enemyList) {
+            collisionManager_->RegisterCollider(enemy->GetCollider());
+        }
+    }
 }
 
 void GameScene::Draw()

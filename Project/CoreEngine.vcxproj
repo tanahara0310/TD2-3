@@ -177,9 +177,13 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Enemy\EnemyContainer.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\EnemyMapLoader.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\IEnemy.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\EnemyWaveManager.cpp" />
+    <ClCompile Include="Application\SceneObject\GameRule\GameResultManager.cpp" />
+    <ClCompile Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.cpp" />
     <ClCompile Include="Application\SceneObject\Menu\MenuController.cpp" />
     <ClCompile Include="Application\SceneObject\Menu\MenuView.cpp" />
     <ClCompile Include="Application\SceneObject\Player\Player.cpp" />
+    <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Application\Scene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Application\Scene\TitleScene\TitleScene.cpp" />
@@ -189,6 +193,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\Utility\Command\SceneCommandExecutor.cpp" />
     <ClCompile Include="Application\Utility\KeyBindConfig.cpp" />
     <ClCompile Include="Application\Utility\MatsumotoUtility.cpp" />
+    <ClCompile Include="Application\Utility\Stopwatch.cpp" />
     <ClCompile Include="Engine\Camera\Camera2D.cpp" />
     <ClCompile Include="Engine\Camera\CameraManager.cpp" />
     <ClCompile Include="Engine\Camera\CameraPresetManager.cpp" />
@@ -387,9 +392,13 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Enemy\EnemyContainer.h" />
     <ClInclude Include="Application\SceneObject\Enemy\EnemyMapLoader.h" />
     <ClInclude Include="Application\SceneObject\Enemy\IEnemy.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\EnemyWaveManager.h" />
+    <ClInclude Include="Application\SceneObject\GameRule\GameResultManager.h" />
+    <ClInclude Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.h" />
     <ClInclude Include="Application\SceneObject\Menu\MenuController.h" />
     <ClInclude Include="Application\SceneObject\Menu\MenuView.h" />
     <ClInclude Include="Application\SceneObject\Player\Player.h" />
+    <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Application\Scene\ResultScene\ResultScene.h" />
     <ClInclude Include="Application\Scene\TitleScene\TitleScene.h" />
@@ -402,6 +411,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\Utility\KeyBindConfig.h" />
     <ClInclude Include="Application\Utility\MatsumotoUtility.h" />
     <ClInclude Include="Application\Utility\RingBuffer.h" />
+    <ClInclude Include="Application\Utility\Stopwatch.h" />
     <ClInclude Include="Engine\Camera\Camera2D.h" />
     <ClInclude Include="Engine\Camera\CameraManager.h" />
     <ClInclude Include="Engine\Camera\CameraPresetManager.h" />

@@ -10,6 +10,7 @@ namespace {
 
 EnemyMapLoader::EnemyMapLoader(EnemyContainer* enemyManager)
     : enemyManager_(enemyManager) {
+    enemyMapStack_.clear();
 }
 
 void EnemyMapLoader::SaveEnemyMap(const std::string& fileName) {
@@ -41,6 +42,7 @@ void EnemyMapLoader::LoadEnemyMap(const std::string& fileName) {
     {
         std::ifstream ifs(kEnemyMapFilePath + fileName);
         ifs >> enemyMapData_;
+        enemyMapStack_.push_back(enemyMapData_);
     }
     catch (const std::exception&)
     {
@@ -69,4 +71,22 @@ void EnemyMapLoader::RespawnEnemies() {
     catch (const std::exception&)
     {
     }
+}
+
+void EnemyMapLoader::SpawnEnemiesFromStack(int index) {
+    try
+    {
+        if (index < 0 || index >= static_cast<int>(enemyMapStack_.size())) {
+            return;
+        }
+        enemyMapData_ = enemyMapStack_[index];
+        RespawnEnemies();
+    }
+    catch (const std::exception&)
+    {
+    }
+}
+
+size_t EnemyMapLoader::GetEnemyMapStackSize() const {
+    return enemyMapStack_.size();
 }

@@ -29,3 +29,15 @@ std::vector<IEnemy*> EnemyContainer::DeathEnemyList() {
     }
     return result;
 }
+
+size_t EnemyContainer::GetAliveEnemyCount() const {
+    size_t count = 0;
+    for (const auto& [typeName, enemyList] : enemyMap_) {
+        for (const auto& enemy : enemyList) {
+            if (enemy->IsAlive() && enemy->IsActive()) {
+                count++;
+            }
+        }
+    }
+    return count;
+}

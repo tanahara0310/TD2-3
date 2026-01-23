@@ -4,6 +4,11 @@
 
 #include "Application/Utility/Command/SceneCommandExecutor.h"
 
+class Player;
+class Ball;
+#include "Application/SceneObject/Menu/MenuView.h"
+#include "Application/SceneObject/Ball/BallController.h"
+
 namespace CoreEngine
 {
 /// @brief タイトルシーンクラス
@@ -24,5 +29,9 @@ protected:
 
 private:
     SceneCommandExecutor sceneCommandExecutor_;
+
+    Player* player_;
+    Ball* ball_;
+    std::unique_ptr<BallController> ballController_;
 };
 }

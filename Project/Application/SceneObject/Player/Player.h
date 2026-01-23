@@ -21,14 +21,18 @@ public:
     void OnCollisionEnter(GameObject* other) override;
 
     bool canMove_;
+    bool isDamaged_;
     CoreEngine::Vector3 lookDir_;
+    
 
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
 
     CoreEngine::Vector3 defaultScale_;
     CoreEngine::Vector3 localScaleAnimValue_;
+    CoreEngine::Vector3 velocity_;
     nlohmann::json config_;
 
     float animTimer_;
+    float damageInvincibilityTimer_;
 };

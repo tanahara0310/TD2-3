@@ -21,6 +21,7 @@ public:
                     enemy->Initialize();
                     enemy->SetActive(true);
                     enemy->GetTransform() = position;
+                    enemy->SetAlive(true);
                     return;
                 }
             }
@@ -38,6 +39,7 @@ public:
 
     // 死んでいる敵のリスト
     std::vector<IEnemy*> DeathEnemyList();
+    size_t GetAliveEnemyCount() const;
 
 private:
     CoreEngine::BaseScene* scene_ = nullptr;

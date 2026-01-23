@@ -8,6 +8,9 @@
 #include "Application/Utility/KeyBindConfig.h"
 #include "Application/Utility/Command/SceneAllCommand.h"
 
+#include "Application/SceneObject/Player/Player.h"
+#include "Application/SceneObject/Ball/Ball.h"
+
 namespace CoreEngine
 {
 void TitleScene::Initialize(EngineSystem* engine)
@@ -24,6 +27,13 @@ void TitleScene::Initialize(EngineSystem* engine)
 
 	// タイトルシーンの初期化処理
     sceneCommandExecutor_.Initialize();
+
+    player_ = CreateObject<Player>();
+    ball_ = CreateObject<Ball>();
+    player_->Initialize();
+    ball_->Initialize();
+    ballController_ = std::make_unique<BallController>(ball_, player_);
+
 }
 
 void TitleScene::OnUpdate()
@@ -36,6 +46,10 @@ void TitleScene::OnUpdate()
         // シーン変更コマンドを追加
         sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("GameScene", sceneManager_));
     }
+
+    player_->Update();
+    ball_->Update();
+    ballController_->Update();
 
     // タイトルシーンの更新処理
     sceneCommandExecutor_.ExecuteCommand();

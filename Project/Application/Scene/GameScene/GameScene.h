@@ -21,6 +21,8 @@ class Ball;
 #include "Application/SceneObject/Enemy/EnemyMapLoader.h"
 #include "Application/SceneObject/Enemy/EnemyWaveManager.h"
 
+#include "Application/SceneObject/GameRule/TimeAndEnemyCountSpawnRule.h"
+
 namespace CoreEngine
 {
 /// @brief ゲームシーンクラス
@@ -34,6 +36,9 @@ public:
 
 	/// @brief 解放
 	void Finalize() override;
+
+
+    void NextWave();
 
 protected:
 	/// @brief 更新処理（BaseSceneのOnUpdate()をオーバーライド）
@@ -65,5 +70,7 @@ private:
     std::unique_ptr<EnemyKillComboCounter> enemyKillComboCounter_;
     std::unique_ptr<EnemyKillMotionManager> enemyKillMotionManager_;
     std::unique_ptr<EnemyWaveManager> enemyWaveManager_;
+
+    std::unique_ptr<TimeAndEnemyCountSpawnRule> gameRule_;
 };
 }

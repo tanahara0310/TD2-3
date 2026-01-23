@@ -300,6 +300,7 @@
     <ClCompile Include="Application\SceneObject\CameraController\DynamicFOVCameraWork.cpp" />
     <ClCompile Include="Application\SceneObject\CameraController\GoToCamera.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\EnemyWaveManager.cpp" />
+    <ClCompile Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -770,6 +771,7 @@
     <ClInclude Include="Application\SceneObject\CameraController\DynamicFOVCameraWork.h" />
     <ClInclude Include="Application\SceneObject\CameraController\GoToCamera.h" />
     <ClInclude Include="Application\SceneObject\Enemy\EnemyWaveManager.h" />
+    <ClInclude Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

@@ -91,7 +91,11 @@ void GameScene::Initialize(EngineSystem* engine)
             collisionManager_->RegisterCollider(enemy->GetCollider());
         }
     }
-    
+
+    // ゲームルールの設定
+    gameRule_ = std::make_unique<TimeAndEnemyCountSpawnRule>(
+        std::bind(&GameScene::NextWave,this) ,
+        std::bind(&EnemyContainer::GetAliveEnemyCount,enemyManager_.get()));
 }
 
 void GameScene::OnUpdate()
@@ -100,13 +104,7 @@ void GameScene::OnUpdate()
     ImGui::Begin("Game Controller");
     // ウェーブを進める
     if (ImGui::Button("Next Wave")) {
-        enemyWaveManager_->StartNextWave();
-        auto& enemyMap = enemyManager_->GetEnemyMap();
-        for (auto& [typeName, enemyList] : enemyMap) {
-            for (auto& enemy : enemyList) {
-                collisionManager_->RegisterCollider(enemy->GetCollider());
-            }
-        }
+        
     }
     ImGui::End();
 #endif
@@ -127,6 +125,7 @@ void GameScene::OnUpdate()
             player_->Update();
             ball_->Update();
             ballController_->Update();
+            gameRule_->Update();
             
         }
         enemyManager_->Update();
@@ -146,6 +145,16 @@ void GameScene::OnUpdate()
 
     // ゲームシーンの更新処理
     sceneCommandExecutor_.ExecuteCommand();
+}
+
+void GameScene::NextWave() {
+    enemyWaveManager_->StartNextWave();
+    auto& enemyMap = enemyManager_->GetEnemyMap();
+    for (auto& [typeName, enemyList] : enemyMap) {
+        for (auto& enemy : enemyList) {
+            collisionManager_->RegisterCollider(enemy->GetCollider());
+        }
+    }
 }
 
 void GameScene::Draw()

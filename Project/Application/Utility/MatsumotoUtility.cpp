@@ -3,6 +3,10 @@
 #include <numbers>
 #include <fstream>
 
+#ifdef _DEBUG
+#include "Engine/Utility/Debug/NotificationManager.h"
+#endif
+
 using namespace CoreEngine;
 
 namespace {
@@ -89,6 +93,9 @@ void MatsumotoUtility::SaveSceneObjectConfig(nlohmann::json& json, const std::st
             {
                 outputFile << existingJson.dump(4); // インデント付きで保存
                 outputFile.close();
+#ifdef _DEBUG
+                CoreEngine::NotificationManager::GetInstance().ShowNotification("設定を保存しました", 2.0f);
+#endif
             }
         } else
         {
@@ -98,6 +105,9 @@ void MatsumotoUtility::SaveSceneObjectConfig(nlohmann::json& json, const std::st
             {
                 outputFile << json.dump(4); // インデント付きで保存
                 outputFile.close();
+#ifdef _DEBUG
+                CoreEngine::NotificationManager::GetInstance().ShowNotification("設定を保存しました", 2.0f);
+#endif
             }
         }
     }
@@ -122,6 +132,10 @@ void MatsumotoUtility::LoadSceneObjectConfig(nlohmann::json& json, const std::st
             {
                 json[key] = value;
             }
+
+#ifdef _DEBUG
+            CoreEngine::NotificationManager::GetInstance().ShowNotification("設定を読み込みました", 2.0f);
+#endif
         }
     }
     catch (const std::exception&)

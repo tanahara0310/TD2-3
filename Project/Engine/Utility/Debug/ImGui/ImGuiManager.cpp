@@ -1,6 +1,7 @@
 #include "ImGuiManager.h"
 #include "Engine/Graphics/Common/DirectXCommon.h"
 #include "Engine/Utility/Debug/GameDebugUI.h"
+#include "Engine/Utility/Debug/NotificationManager.h"
 #include <ImGuizmo.h>
 #include <filesystem>
 
@@ -73,6 +74,10 @@ void ImGuiManager::Begin(PostEffectManager* postEffectManager, GameDebugUI* game
     // フレームの開始
     StartNewFrame();
 
+    // NotificationManagerを更新
+    ImGuiIO& io = ImGui::GetIO();
+    CoreEngine::NotificationManager::GetInstance().Update(io.DeltaTime);
+
     
     // ドッキングUIの開始（メニューバーの高さを考慮してドッキングスペースを配置）
     dockingUI_->BeginDockSpaceHostWindow();
@@ -84,6 +89,12 @@ void ImGuiManager::Begin(PostEffectManager* postEffectManager, GameDebugUI* game
     // テクスチャビューアの描画（GameDebugUIの状態に応じて）
     bool showTextureViewer = gameDebugUI ? gameDebugUI->IsTextureViewerVisible() : false;
     textureViewer_->DrawTextureViewer(showTextureViewer);
+
+    // 通知を描画
+    DrawNotifications();
+
+    // NotificationManagerの通知を描画
+    CoreEngine::NotificationManager::GetInstance().Draw();
 
     ImGui::End();
 }
@@ -264,5 +275,77 @@ void ImGuiManager::StartNewFrame()
     ImGui_ImplDX12_NewFrame();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame(); // ImGuizmoのフレーム開始
+}
+
+void ImGuiManager::ShowNotification(const std::string& message, float duration)
+{
+    Notification notification;
+    notification.message = message;
+    notification.remainingTime = duration;
+    notifications_.push_back(notification);
+}
+
+void ImGuiManager::DrawNotifications()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    float deltaTime = io.DeltaTime;
+
+    // 通知の時間を更新し、期限切れの通知を削除
+    for (auto it = notifications_.begin(); it != notifications_.end(); ) {
+        it->remainingTime -= deltaTime;
+        if (it->remainingTime <= 0.0f) {
+            it = notifications_.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // 通知を描画
+    const float notificationWidth = 300.0f;
+    const float notificationHeight = 60.0f;
+    const float padding = 10.0f;
+    const float startY = 50.0f;
+
+    for (size_t i = 0; i < notifications_.size(); ++i) {
+        const auto& notification = notifications_[i];
+        
+        // フェードアウトのアルファ値を計算
+        float alpha = 1.0f;
+        if (notification.remainingTime < kNotificationFadeTime) {
+            alpha = notification.remainingTime / kNotificationFadeTime;
+        }
+
+        // ウィンドウの位置を設定（右上に表示）
+        ImVec2 windowPos(io.DisplaySize.x - notificationWidth - padding, startY + i * (notificationHeight + padding));
+        ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(notificationWidth, notificationHeight), ImGuiCond_Always);
+
+        // ウィンドウのスタイル設定
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.2f, 0.6f, 1.0f, 0.9f));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+        // 通知ウィンドウを描画
+        std::string windowName = "##Notification" + std::to_string(i);
+        ImGui::Begin(windowName.c_str(), nullptr, 
+            ImGuiWindowFlags_NoTitleBar | 
+            ImGuiWindowFlags_NoResize | 
+            ImGuiWindowFlags_NoMove | 
+            ImGuiWindowFlags_NoScrollbar | 
+            ImGuiWindowFlags_NoInputs |
+            ImGuiWindowFlags_NoFocusOnAppearing);
+
+        // メッセージを中央に表示
+        ImVec2 textSize = ImGui::CalcTextSize(notification.message.c_str());
+        ImGui::SetCursorPosX((notificationWidth - textSize.x) * 0.5f);
+        ImGui::SetCursorPosY((notificationHeight - textSize.y) * 0.5f);
+        ImGui::Text("%s", notification.message.c_str());
+
+        ImGui::End();
+
+        ImGui::PopStyleColor(2);
+        ImGui::PopStyleVar(2);
+    }
 }
 }

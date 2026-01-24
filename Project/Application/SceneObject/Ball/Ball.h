@@ -12,12 +12,16 @@ public:
     void Draw(const CoreEngine::ICamera* camera) override;
 #ifdef _DEBUG
     const char* GetObjectName() const override { return "Ball"; }
+    bool DrawImGuiExtended() override;
 #endif
     CoreEngine::Vector3& GetTransform();
     CoreEngine::Vector3* GetPosPtr() { return &transform_.translate; }
     CoreEngine::SphereCollider* GetCollider() { return collider_.get(); }
 
     void OnCollisionEnter(GameObject* other) override;
+
+    void SetConfig(const nlohmann::json& config) override;
+    nlohmann::json GetConfig() const override;
 
     float rotateSpeed_;
     bool isHitEnemy_;
@@ -28,5 +32,4 @@ private:
 
     float speed_;
     CoreEngine::Vector3 direction_;
-    nlohmann::json config_;
 };

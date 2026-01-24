@@ -253,7 +253,6 @@
     <ClCompile Include="Engine\Particle\Core\ParticleUpdater.cpp" />
     <ClCompile Include="Engine\Particle\Core\ParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\Debug\ParticleSystemDebugUI.cpp" />
-    <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\ObjectCommon\GameObjectManager.cpp" />
     <ClCompile Include="Engine\Graphics\Line\DebugLineDrawer.cpp" />
     <ClCompile Include="Engine\Graphics\Line\LineDrawable.cpp" />
@@ -304,6 +303,8 @@
     <ClCompile Include="Application\SceneObject\GameRule\GameResultManager.cpp" />
     <ClCompile Include="Application\Utility\Stopwatch.cpp" />
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
+    <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
+    <ClCompile Include="Engine\Utility\Debug\NotificationManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -778,6 +779,7 @@
     <ClInclude Include="Application\SceneObject\GameRule\GameResultManager.h" />
     <ClInclude Include="Application\Utility\Stopwatch.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
+    <ClInclude Include="Engine\Utility\Debug\NotificationManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

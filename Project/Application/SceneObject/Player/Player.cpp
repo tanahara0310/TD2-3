@@ -78,19 +78,9 @@ void Player::Update() {
     // 入力処理（移動）
     CoreEngine::Vector2 moveDir = { 0.0f, 0.0f };
     KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
-    // 4方向いずれかの入力があれば移動開始（同時押しはX優先などの優先順位をつける）
-    if (keyBindConfig.IsPress("MoveRight")) {
-        moveDir.x = 1.0f;
-    }
-    if (keyBindConfig.IsPress("MoveLeft")) {
-        moveDir.x = -1.0f;
-    }
-    if (keyBindConfig.IsPress("MoveForward")) {
-        moveDir.y = 1.0f;
-    }
-    if (keyBindConfig.IsPress("MoveBack")) {
-        moveDir.y = -1.0f;
-    }
+    // 4方向いずれかの入力があれば移動開始
+    moveDir.x = keyBindConfig.GetHorizontalAxis();
+    moveDir.y = keyBindConfig.GetVerticalAxis();
 
     // 正規化
     moveDir = moveDir.Normalize();
@@ -129,7 +119,7 @@ CoreEngine::Vector3& Player::GetTransform() {
 
 void Player::OnCollisionEnter(GameObject* other) {
     (void)other;
-    if (other->GetObjectName() == std::string("IEnemy")) {
+    if (other->GetName() == std::string("IEnemy")) {
         if (damageInvincibilityTimer_ > 0.0f) {
             return;
         }

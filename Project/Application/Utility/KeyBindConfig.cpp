@@ -99,9 +99,11 @@ float KeyBindConfig::GetHorizontalAxis() {
 
     if (IsPress("MoveRight")) {
         x = 1.0f;
+        return x;
     }
     if (IsPress("MoveLeft")) {
         x = -1.0f;
+        return x;
     }
 
     x = inputManager_->GetGamepad()->GetLeftStick().x;
@@ -113,9 +115,11 @@ float KeyBindConfig::GetVerticalAxis() {
 
     if (IsPress("MoveForward")) {
         y = 1.0f;
+        return y;
     }
     if (IsPress("MoveBack")) {
         y = -1.0f;
+        return y;
     }
 
     y = inputManager_->GetGamepad()->GetLeftStick().y;

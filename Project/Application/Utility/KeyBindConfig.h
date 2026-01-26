@@ -35,10 +35,12 @@ public:
 	bool IsTrigger(const std::string& actionName);
 	bool IsRelease(const std::string& actionName);
 	float noControlTimer_ = 0.0f;
+    float GetHorizontalAxis();
+    float GetVerticalAxis();
 
 private:
 	std::unordered_map<std::string, InputDevice> keyBinds_;
-	KeyBindConfig();
+    KeyBindConfig();
 	~KeyBindConfig() = default;
     CoreEngine::EngineSystem* engineSystem_ = nullptr;
     CoreEngine::InputManager* inputManager_ = nullptr;

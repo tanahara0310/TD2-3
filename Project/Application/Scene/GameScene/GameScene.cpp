@@ -46,7 +46,7 @@ void GameScene::Initialize(EngineSystem* engine)
     cameraController_ = std::make_unique<CameraController>(cameraManager_.get());
     CoreEngine::Camera* camera =
         static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
-    camera->SetTranslate({ 0.0f, 15.0f, -10.0f });
+    camera->SetTranslate({ 0.0f, 30.0f, 0.0f });
     camera->SetRotate({3.14f*0.4f,0.0f,0.0f});
     cameraController_->Initialize();
 
@@ -69,7 +69,7 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
 
-    cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 30.0f, -8.0f), 0.1f);
+    cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
 
     skyDome_ = CreateObject<WhiteSkyDome>();
     skyDome_->SetColor(MatsumotoUtility::ColorEggplant);

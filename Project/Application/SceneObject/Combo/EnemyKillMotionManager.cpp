@@ -49,6 +49,7 @@ void EnemyKillMotionManager::Update() {
                     CoreEngine::Vector3(0.0f,0.0f,0.0f),
                     CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
             }
+            enemy->PlaySE("Die");
         }
         return;
     }
@@ -84,6 +85,7 @@ void EnemyKillMotionManager::Update() {
             // 外側のやつから順番に消す
             if (currentEraseCooldown_ <= 0.0f) {
                 furthestEnemy->SetActive(false);
+                furthestEnemy->PlaySE("Die");
                 currentEraseCooldown_ = eraseCooldown_ * eraseCooldownFactor_;
                 eraseCooldownFactor_ *= 0.7f; // 徐々に速くする
                 // エフェクトの再生
@@ -94,13 +96,14 @@ void EnemyKillMotionManager::Update() {
                         CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
                 }
 
-                // 半径2の範囲内にいる敵を消す
+                // 半径3.5の範囲内にいる敵を消す
                 for (auto enemy : enemyList) {
                     if (enemy == furthestEnemy) continue;
                     CoreEngine::Vector3 toEnemy = enemy->GetTransform() - furthestEnemyPos;
                     float distance = CoreEngine::Math::Vector::Length(toEnemy);
-                    if (distance <= 2.0f) {
+                    if (distance <= 3.5f) {
                         enemy->SetActive(false);
+                        enemy->PlaySE("Die");
                     }
                 }
 

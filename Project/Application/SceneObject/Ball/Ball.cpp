@@ -37,6 +37,13 @@ Ball::Ball() {
 
 	collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.8f);
 	collider_->SetLayer(CoreEngine::CollisionLayer::Item);
+
+    CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    if (!soundManager) {
+        assert(false && "SoundManager not found");
+    }
+    soundResources_.clear();
+    soundResources_["Hit"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_BallHit.mp3");
 }
 
 void Ball::Initialize() {
@@ -103,6 +110,13 @@ nlohmann::json Ball::GetConfig() const {
 	config["colliderRadius"] = collider_->GetRadius();
 	
 	return config;
+}
+
+void Ball::PlaySE(const std::string& soundKey) {
+    auto it = soundResources_.find(soundKey);
+    if (it != soundResources_.end()) {
+        soundResources_[soundKey]->Play(false);
+    }
 }
 
 #ifdef _DEBUG

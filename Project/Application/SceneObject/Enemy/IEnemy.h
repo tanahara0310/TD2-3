@@ -23,6 +23,8 @@ public:
     bool IsAlive() const { return isAlive_; }
     void SetAlive(bool val) { isAlive_ = val; }
 
+    virtual void PlaySE(const std::string& soundKey) = 0;
+
 protected:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
     bool isAlive_;

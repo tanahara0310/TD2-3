@@ -164,6 +164,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\SceneObject\BackGround\Ground.cpp" />
     <ClCompile Include="Application\SceneObject\Ball\Ball.cpp" />
     <ClCompile Include="Application\SceneObject\Ball\BallController.cpp" />
     <ClCompile Include="Application\SceneObject\CameraController\CameraController.cpp" />
@@ -377,6 +378,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Utility\Debug\ImGui\SceneViewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
     <ClInclude Include="Application\SceneObject\Ball\Ball.h" />
     <ClInclude Include="Application\SceneObject\Ball\BallController.h" />
     <ClInclude Include="Application\SceneObject\CameraController\AllCameraWork.h" />

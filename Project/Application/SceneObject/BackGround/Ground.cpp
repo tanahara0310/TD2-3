@@ -1,8 +1,8 @@
-#include "WhiteSkyDome.h"
-#include <EngineSystem.h>
+#include "Ground.h"
 #include "Engine/Camera/ICamera.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
-WhiteSkyDome::WhiteSkyDome() {
+Ground::Ground() {
     // 必須コンポーネントの取得
     auto engine = GetEngineSystem();
 
@@ -14,10 +14,8 @@ WhiteSkyDome::WhiteSkyDome() {
     }
 
     // 静的モデルとして作成
-    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/skyDome300.obj");
-    model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
-    model_->GetMaterialManager()->SetEnableLighting(false);
-    model_->GetMaterialManager()->SetShadingMode(0);
+    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/disk.obj");
+    model_->SetMaterialColor(MatsumotoUtility::ColorBrass);
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());
@@ -28,22 +26,22 @@ WhiteSkyDome::WhiteSkyDome() {
 
     // アクティブ状態に設定
     SetActive(true);
+
+    float radius = 50.0f;
+    transform_.scale = { radius, 1.0f, radius };
+    transform_.translate.y = -1.0f;
 }
 
-void WhiteSkyDome::Initialize() {
+void Ground::Initialize() {
 }
 
-void WhiteSkyDome::Update() {
+void Ground::Update() {
     transform_.TransferMatrix();
 }
 
-void WhiteSkyDome::Draw(const CoreEngine::ICamera* camera) {
+void Ground::Draw(const CoreEngine::ICamera* camera) {
     if (!camera || !model_) return;
 
     // モデルの描画
     model_->Draw(transform_, camera, texture_.gpuHandle);
-}
-
-CoreEngine::Vector3& WhiteSkyDome::GetTransform() {
-    return transform_.translate;
 }

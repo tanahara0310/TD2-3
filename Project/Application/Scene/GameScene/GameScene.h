@@ -17,6 +17,7 @@
 class Player;
 class Ball;
 class WhiteSkyDome;
+class Ground;
 #include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
@@ -66,6 +67,7 @@ private:
     Player* player_;
     Ball* ball_;
     WhiteSkyDome* skyDome_;
+    Ground* ground_;
     std::unique_ptr<MenuView> menuView_;
     
     // ゲームオブジェクトの制御

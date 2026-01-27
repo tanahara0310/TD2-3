@@ -305,6 +305,7 @@
     <ClCompile Include="Application\Utility\Stopwatch.cpp" />
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
+    <ClCompile Include="Application\SceneObject\BackGround\Ground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -780,6 +781,7 @@
     <ClInclude Include="Application\Utility\Stopwatch.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
+    <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

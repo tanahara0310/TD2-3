@@ -12,6 +12,7 @@
 // アプリケーションのシーンオブジェクト
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/Ball/Ball.h"
+#include "Application/SceneObject/BackGround/Ground.h"
 #include "Application/SceneObject/Enemy/AllEnemy.h"
 #include "Application/SceneObject/SkyDome/WhiteSkyDome.h"
 
@@ -50,6 +51,7 @@ void GameScene::Initialize(EngineSystem* engine)
     player_->SetAutoUpdate(false);
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
+    ground_ = CreateObject<Ground>();
 
     skyDome_ = CreateObject<WhiteSkyDome>();
     skyDome_->SetColor(MatsumotoUtility::ColorEggplant);

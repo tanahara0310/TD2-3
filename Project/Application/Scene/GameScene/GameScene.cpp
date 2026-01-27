@@ -18,6 +18,8 @@
 
 #include "Application/Utility/Command/SceneAllCommand.h"
 
+#include "Application/SceneObject/Effect/AllEffect.h"
+
 namespace {
     const double GAME_CLEAR_TIME_MS = 60000.0;
 }
@@ -51,6 +53,15 @@ void GameScene::Initialize(EngineSystem* engine)
     gameStopwatch_ = std::make_unique<Stopwatch>();
     gameStopwatch_->Start();
 
+    // エフェクトの生成
+    effectContainers_.clear();
+    effectContainers_["HitEffect"] = std::make_unique<BulletObjectContainer>(20);
+    effectContainers_["HitEffect"]->ApplyToScene<HitEffect>(this);
+    effectContainers_["ShockWaveEffect"] = std::make_unique<BulletObjectContainer>(20);
+    effectContainers_["ShockWaveEffect"]->ApplyToScene<ShockWaveEffect>(this);
+    effectContainers_["SlashEffect"] = std::make_unique<BulletObjectContainer>(20);
+    effectContainers_["SlashEffect"]->ApplyToScene<SlashEffect>(this);
+
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
     player_->SetAutoUpdate(false);
@@ -72,6 +83,17 @@ void GameScene::Initialize(EngineSystem* engine)
     // ボールコントローラーの生成
     ballController_ = std::make_unique<BallController>(ball_, player_);
     ballController_->Initialize();
+    ballController_->SetHitEffectFunction(
+        std::bind(&BulletObjectContainer::Spawn,
+            effectContainers_["ShockWaveEffect"].get(),
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+    );
+    ballController_->SetSlashEffectFunction(
+        std::bind(&BulletObjectContainer::Spawn,
+            effectContainers_["SlashEffect"].get(),
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+    );
+
     // メニューコントローラーの生成
     menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
     menuController_->Initialize();
@@ -94,6 +116,12 @@ void GameScene::Initialize(EngineSystem* engine)
         cameraController_.get(),
         ballController_.get());
     enemyKillMotionManager_->isPlayingMotion_ = false;
+    // キルエフェクト関数の設定
+    enemyKillMotionManager_->SetKillEffectFunction(
+        std::bind(&BulletObjectContainer::Spawn,
+            effectContainers_["HitEffect"].get(),
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+    );
 
     // 敵ウェーブマネージャーの生成
     enemyWaveManager_ = std::make_unique<EnemyWaveManager>(enemyMapLoader_.get());

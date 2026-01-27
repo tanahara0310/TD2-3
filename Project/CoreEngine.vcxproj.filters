@@ -308,6 +308,9 @@
     <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\Utility\Debug\NotificationManager.cpp" />
     <ClCompile Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.cpp" />
+    <ClCompile Include="Application\SceneObject\Effect\HitEffect.cpp" />
+    <ClCompile Include="Application\SceneObject\Effect\ShockWaveEffect.cpp" />
+    <ClCompile Include="Application\SceneObject\Effect\SlashEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -786,6 +789,11 @@
     <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
     <ClInclude Include="Engine\Utility\Debug\NotificationManager.h" />
     <ClInclude Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.h" />
+    <ClInclude Include="Application\SceneObject\Effect\HitEffect.h" />
+    <ClInclude Include="Application\SceneObject\Effect\AllEffect.h" />
+    <ClInclude Include="Application\SceneObject\Effect\ShockWaveEffect.h" />
+    <ClInclude Include="Application\SceneObject\Effect\SlashEffect.h" />
+    <ClInclude Include="Application\SceneObject\Effect\ExplosionEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

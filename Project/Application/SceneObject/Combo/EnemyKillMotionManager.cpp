@@ -43,6 +43,12 @@ void EnemyKillMotionManager::Update() {
         // 全ての死んだ敵を非アクティブ化
         for (auto enemy : enemyList) {
             enemy->SetActive(false);
+            if (killEffectFunc_) {
+                killEffectFunc_(
+                    enemy->GetTransform(), 
+                    CoreEngine::Vector3(0.0f,0.0f,0.0f),
+                    CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
+            }
         }
         return;
     }
@@ -51,7 +57,7 @@ void EnemyKillMotionManager::Update() {
     if (!enemyList.empty() && !ballController_->GetIsThrowing()) {
         if (!isPlayingMotion_) {
             isPlayingMotion_ = true;
-            currentEraseCooldown_ = static_cast<float>(enemyList.size())*0.1f; // 最初の消去までの猶予
+            currentEraseCooldown_ = static_cast<float>(enemyList.size())*0.05f; // 最初の消去までの猶予
             eraseCooldownFactor_ = 1.0f;
         }
     }
@@ -79,8 +85,14 @@ void EnemyKillMotionManager::Update() {
             if (currentEraseCooldown_ <= 0.0f) {
                 furthestEnemy->SetActive(false);
                 currentEraseCooldown_ = eraseCooldown_ * eraseCooldownFactor_;
-                eraseCooldownFactor_ *= 0.9f; // 徐々に速くする
-                // TODO: ここにエフェクトを追加
+                eraseCooldownFactor_ *= 0.7f; // 徐々に速くする
+                // エフェクトの再生
+                if (killEffectFunc_) {
+                    killEffectFunc_(
+                        furthestEnemy->GetTransform(),
+                        CoreEngine::Vector3(0.0f, 0.0f, 0.0f),
+                        CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
+                }
 
             } else {
                 currentEraseCooldown_ -= 1.0f / 60.0f;

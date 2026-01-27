@@ -1,4 +1,7 @@
 #pragma once
+#include <functional>
+#include <EngineSystem.h>
+
 class EnemyKillComboCounter;
 class Player;
 class EnemyContainer;
@@ -18,6 +21,15 @@ public:
 
     void Update();
 
+    // キルエフェクト実行関数の設定
+    void SetKillEffectFunction(
+        const std::function<int(
+            const CoreEngine::Vector3&,
+            const CoreEngine::Vector3&,
+            const CoreEngine::Vector3&)>& func) {
+        killEffectFunc_ = func;
+    }
+
     // キル演出中かどうか
     bool isPlayingMotion_;
 
@@ -31,4 +43,6 @@ private:
     float eraseCooldown_;
     float currentEraseCooldown_;
     float eraseCooldownFactor_;
+
+    std::function<int(const CoreEngine::Vector3&, const CoreEngine::Vector3&, const CoreEngine::Vector3&)> killEffectFunc_;
 };

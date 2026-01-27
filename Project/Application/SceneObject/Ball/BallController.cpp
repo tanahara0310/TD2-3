@@ -122,6 +122,25 @@ void BallController::Update() {
 
     // ボールが敵に当たったら引き戻しor反射
     if (ball_->isHitEnemy_) {
+        if (hitEffectFunc_) {
+            CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(ball_->GetWorldPosition() - ball_->hitPos_);
+            CoreEngine::Vector3 rotate = MatsumotoUtility::DirectionToEulerAngle(direction);
+            hitEffectFunc_(
+                ball_->hitPos_,
+                rotate,
+                CoreEngine::Vector3(1.0f, 1.0f, 1.0f));
+        }
+        if (slashEffectFunc_) {
+            CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(ball_->GetWorldPosition() - ball_->hitPos_);
+            CoreEngine::Vector3 rotate = MatsumotoUtility::DirectionToEulerAngle(direction);
+            rotate.x = 0.0f;
+            rotate.z = 0.0f;
+            slashEffectFunc_(
+                ball_->hitPos_,
+                rotate,
+                CoreEngine::Vector3(5.0f, 0.1f, 50.0f));
+        }
+
         // ボールより敵が近いなら反射
         CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
         CoreEngine::Vector3 hitPos = ball_->hitPos_;

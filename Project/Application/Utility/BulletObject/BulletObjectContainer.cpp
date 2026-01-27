@@ -48,6 +48,7 @@ std::vector<BulletModel*>& BulletObjectContainer::GetBulletObjects() {
 int BulletObjectContainer::Spawn(const Vector3& pos, const Vector3& rotate, const Vector3& scale) {
     for (auto& obj : bulletObjects_) {
         if (obj && !obj->IsActive()) {
+            obj->Initialize();
             obj->GetTransform().translate = pos;
             obj->GetTransform().rotate = rotate;
             obj->GetTransform().scale = scale;

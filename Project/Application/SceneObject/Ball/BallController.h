@@ -23,6 +23,7 @@ private:
     CoreEngine::Vector3 anchorPos_;
     CoreEngine::Vector3 cartesianPos_;
 
+    bool canSwitch_;
     bool isReturning_ = false;
     nlohmann::json config_;
 

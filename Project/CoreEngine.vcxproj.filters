@@ -305,6 +305,7 @@
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\Utility\Debug\NotificationManager.cpp" />
+    <ClCompile Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -780,6 +781,7 @@
     <ClInclude Include="Application\Utility\Stopwatch.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Engine\Utility\Debug\NotificationManager.h" />
+    <ClInclude Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

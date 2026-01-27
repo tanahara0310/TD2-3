@@ -71,7 +71,7 @@ void EnemyKillMotionManager::Update() {
                 }
             }
             // カメラワーク設定
-            cameraController_->SetCameraWork<GoToCamera>(furthestEnemy->GetTransform() + CoreEngine::Vector3(0.0f, 10.0f, -10.0f), 0.1f);
+            cameraController_->SetCameraWork<TowPointFramingCameraWork>(furthestEnemy->GetTransform() ,player_->GetTransform(), 0.1f);
 
             // 外側のやつから順番に消す
             if (currentEraseCooldown_ <= 0.0f) {
@@ -86,7 +86,7 @@ void EnemyKillMotionManager::Update() {
             return;
         } else {
             isPlayingMotion_ = false;
-            cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+            cameraController_->ResetDefaultCameraWork();
         }
     }
 

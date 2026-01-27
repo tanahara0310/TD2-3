@@ -42,7 +42,12 @@ void GameScene::Initialize(EngineSystem* engine)
 	// ゲームシーンの初期化処理
     sceneCommandExecutor_.Initialize();
     cameraController_ = std::make_unique<CameraController>(cameraManager_.get());
+    CoreEngine::Camera* camera =
+        static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
+    camera->SetTranslate({ 0.0f, 15.0f, -10.0f });
+    camera->SetRotate({3.14f*0.4f,0.0f,0.0f});
     cameraController_->Initialize();
+
     gameStopwatch_ = std::make_unique<Stopwatch>();
     gameStopwatch_->Start();
 
@@ -52,6 +57,8 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
+
+    cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 30.0f, -8.0f), 0.1f);
 
     skyDome_ = CreateObject<WhiteSkyDome>();
     skyDome_->SetColor(MatsumotoUtility::ColorEggplant);

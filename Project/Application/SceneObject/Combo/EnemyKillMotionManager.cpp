@@ -45,21 +45,8 @@ void EnemyKillMotionManager::Update() {
         }
         return;
     }
-
     
-    // コンボタイマーが0より大きい場合は何もしない
-    if (comboCounter_->GetComboTimer() > 0.0) {
-
-    } else {
-        comboCounter_->ResetCombo();
-        if (!enemyList.empty() && !isPlayingMotion_) {
-            if (!isPlayingMotion_) {
-                isPlayingMotion_ = true;
-                currentEraseCooldown_ = 0.5f; // 最初の消去までの猶予
-            }
-        }
-    }
-    // コンボタイマーが0以下で敵がいる場合はキル演出開始
+    // 死んだ敵がいる状態でプレイヤーがボールを回収した場合キル演出開始
     if (!enemyList.empty() && !ballController_->GetIsThrowing()) {
         if (!isPlayingMotion_) {
             isPlayingMotion_ = true;

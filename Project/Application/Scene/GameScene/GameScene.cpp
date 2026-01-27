@@ -15,7 +15,7 @@
 #include "Application/Utility/Command/SceneAllCommand.h"
 
 namespace {
-    const double GAME_CLEAR_TIME_MS = 18000.0;
+    const double GAME_CLEAR_TIME_MS = 30000.0;
 }
 
 namespace CoreEngine

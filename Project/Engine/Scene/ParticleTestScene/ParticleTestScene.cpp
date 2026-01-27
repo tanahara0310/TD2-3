@@ -50,12 +50,6 @@ namespace CoreEngine
         numberDisplay_->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f }); // 黄色
 
 
-        //バグ探しSE読み込み
-        auto* soundManager = engine_->GetComponent<SoundManager>();
-
-        bugSe_ = soundManager->CreateSoundResource("SE_switch.wav");
-
-
     }
 
     void ParticleTestScene::OnUpdate()
@@ -66,20 +60,6 @@ namespace CoreEngine
         if (numberDisplay_) {
             numberDisplay_->Update();
         }
-
-        //バグ探しbgmをスペースキー押して再生
-#ifdef _DEBUG
-
-        auto keyboard = engine_->GetComponent<InputManager>();
-        if (keyboard && keyboard->GetKeyboard()->IsKeyTriggered(DIK_SPACE)) {
-
-            if (bugSe_) {
-                bugSe_->Play(false);
-            }
-
-        }
-
-#endif
     }
 
     void ParticleTestScene::Draw()

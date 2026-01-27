@@ -1,4 +1,4 @@
-﻿#include "Collider.h"
+#include "Collider.h"
 #include "Engine/ObjectCommon/GameObject.h"
 
 
@@ -30,5 +30,16 @@ void Collider::OnCollisionExit(Collider* other) {
    if (owner_ && other && other->owner_) {
       owner_->OnCollisionExit(other->owner_);
    }
+}
+
+bool Collider::HasCommonTag(const Collider* other) const {
+   if (!other) return false;
+   
+   for (const auto& tag : tags_) {
+      if (other->HasTag(tag)) {
+         return true;
+      }
+   }
+   return false;
 }
 }

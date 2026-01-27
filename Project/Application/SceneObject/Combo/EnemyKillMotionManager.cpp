@@ -21,6 +21,7 @@ EnemyKillMotionManager::EnemyKillMotionManager(
     isPlayingMotion_ = false;
     eraseCooldown_ = 0.5f;
     currentEraseCooldown_ = 0.0f;
+    eraseCooldownFactor_ = 1.0f;
 }
 
 void EnemyKillMotionManager::Update() {
@@ -50,7 +51,8 @@ void EnemyKillMotionManager::Update() {
     if (!enemyList.empty() && !ballController_->GetIsThrowing()) {
         if (!isPlayingMotion_) {
             isPlayingMotion_ = true;
-            currentEraseCooldown_ = 1.0f; // 最初の消去までの猶予
+            currentEraseCooldown_ = static_cast<float>(enemyList.size())*0.1f; // 最初の消去までの猶予
+            eraseCooldownFactor_ = 1.0f;
         }
     }
 
@@ -76,7 +78,8 @@ void EnemyKillMotionManager::Update() {
             // 外側のやつから順番に消す
             if (currentEraseCooldown_ <= 0.0f) {
                 furthestEnemy->SetActive(false);
-                currentEraseCooldown_ = eraseCooldown_;
+                currentEraseCooldown_ = eraseCooldown_ * eraseCooldownFactor_;
+                eraseCooldownFactor_ *= 0.9f; // 徐々に速くする
                 // TODO: ここにエフェクトを追加
 
             } else {

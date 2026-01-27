@@ -30,4 +30,5 @@ private:
 
     float eraseCooldown_;
     float currentEraseCooldown_;
+    float eraseCooldownFactor_;
 };

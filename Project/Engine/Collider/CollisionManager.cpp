@@ -209,8 +209,13 @@ void CollisionManager::CheckAllCollisions() {
          // コライダーが無効化されている場合はスキップ
          if (!a->IsEnabled() || !b->IsEnabled()) continue;
 
-         // コリジョンマトリクスで判定が無効なら処理しない
-         if (!config_->IsCollisionEnabled(a->GetLayer(), b->GetLayer())) continue;
+         // 衝突判定の条件：
+         // 1. コリジョンマトリクスで有効、または
+         // 2. 共通のタグを持っている
+         bool canCollide = config_->IsCollisionEnabled(a->GetLayer(), b->GetLayer()) ||
+                          a->HasCommonTag(b);
+         
+         if (!canCollide) continue;
 
          auto pair = MakePair(a, b);
          bool isColliding = false;

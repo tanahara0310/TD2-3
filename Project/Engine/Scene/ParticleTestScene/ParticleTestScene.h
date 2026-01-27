@@ -38,9 +38,5 @@ namespace CoreEngine
         // 数字表示（使用例）
         std::unique_ptr<NumberDisplayUtility> numberDisplay_;
         int testScore_ = 0;
-
-
-        //バグ探し
-        std::unique_ptr<SoundManager::SoundResource> bugSe_;
     };
 }

@@ -84,8 +84,6 @@ namespace CoreEngine
 
         // === 派生クラス用ヘルパーメソッド ===
 
-
-
         /// @brief シーンのBGMを登録し、トランジション時の自動フェードを有効化
         /// @param bgm BGMのSoundResourceポインタ（現在のSetVolume()で設定した音量が使用されます）
         void RegisterSceneBGM(std::unique_ptr<SoundManager::SoundResource>* bgm);

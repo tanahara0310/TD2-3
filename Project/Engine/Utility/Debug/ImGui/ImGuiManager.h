@@ -4,6 +4,8 @@
 #include <dxgi1_6.h>
 #include <memory>
 #include <wrl.h>
+#include <string>
+#include <deque>
 
 #include <imgui.h>
 #include <imgui_impl_dx12.h>
@@ -61,6 +63,18 @@ SceneViewport* GetSceneViewport() const { return sceneViewport_.get(); }
     /// @return テクスチャビューアへのポインタ
     TextureViewer* GetTextureViewer() const { return textureViewer_.get(); }
 
+/// @brief 通知を表示
+/// @param message 表示するメッセージ
+/// @param duration 表示時間（秒）
+void ShowNotification(const std::string& message, float duration = 3.0f);
+
+private:
+    // 通知用の構造体
+    struct Notification {
+        std::string message;
+        float remainingTime;
+    };
+
 private:
     HWND hwnd_ = nullptr; // ウィンドウハンドル
     DirectXCommon* dxCommon_ = nullptr; // DirectX共通クラスへのポインタ
@@ -70,11 +84,18 @@ private:
     std::unique_ptr<SceneViewport> sceneViewport_ = std::make_unique<SceneViewport>();
     std::unique_ptr<TextureViewer> textureViewer_ = std::make_unique<TextureViewer>();
 
+    // 通知用
+    std::deque<Notification> notifications_;
+    const float kNotificationFadeTime = 0.5f;
+
 private: // メンバ関数
     /// @brief レイアウトや見た目を変更
     void ApplyCustomTheme();
 
     /// @brief フレームの開始
     void StartNewFrame();
+
+    /// @brief 通知を描画
+    void DrawNotifications();
 };
 }

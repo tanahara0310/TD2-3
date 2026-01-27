@@ -253,7 +253,6 @@
     <ClCompile Include="Engine\Particle\Core\ParticleUpdater.cpp" />
     <ClCompile Include="Engine\Particle\Core\ParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\Debug\ParticleSystemDebugUI.cpp" />
-    <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\ObjectCommon\GameObjectManager.cpp" />
     <ClCompile Include="Engine\Graphics\Line\DebugLineDrawer.cpp" />
     <ClCompile Include="Engine\Graphics\Line\LineDrawable.cpp" />
@@ -306,6 +305,9 @@
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
     <ClCompile Include="Application\SceneObject\BackGround\Ground.cpp" />
+    <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
+    <ClCompile Include="Engine\Utility\Debug\NotificationManager.cpp" />
+    <ClCompile Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -782,6 +784,8 @@
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
     <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
+    <ClInclude Include="Engine\Utility\Debug\NotificationManager.h" />
+    <ClInclude Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

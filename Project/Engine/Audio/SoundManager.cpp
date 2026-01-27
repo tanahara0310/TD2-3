@@ -237,6 +237,7 @@ SoundHandle SoundManager::LoadSound(const std::string& filename)
     }
 
     if (!loadSuccess) {
+        Logger::GetInstance().Log(std::format("Failed to load sound file: {}", resolvedPath), LogLevel::Error, LogCategory::Audio);
         return 0;
     }
 
@@ -289,23 +290,34 @@ bool SoundManager::LoadWaveFileInternal(const std::string& filename, SoundData& 
     }
 
     // チャンク本体の読み込み
-    if (static_cast<size_t>(format.chunk.size) > sizeof(format.fmt)) {
-        return false;
-    }
-    file.read(reinterpret_cast<char*>(&format.fmt), std::min<size_t>(static_cast<size_t>(format.chunk.size), sizeof(WAVEFORMATEX)));
-
-    // DateChunkの読み込み
-    ChunkHeader data;
-    file.read(reinterpret_cast<char*>(&data), sizeof(data));
-    // JUNKチャンクを検出した場合
-    if (strncmp(data.id, "JUNK", 4) == 0) {
-        // 読み取り位置をJUNKチャンクの終わりまで進める
-        file.seekg(static_cast<std::streamoff>(data.size), std::ios_base::cur);
-        // 再読み込み
-        file.read(reinterpret_cast<char*>(&data), sizeof(data));
+    // 標準的なPCMフォーマットは16バイトだが、拡張フォーマットもあるため可変長で読み込む
+    size_t readSize = std::min<size_t>(static_cast<size_t>(format.chunk.size), sizeof(WAVEFORMATEX));
+    file.read(reinterpret_cast<char*>(&format.fmt), readSize);
+    
+    // 残りのデータをスキップ（拡張データがある場合）
+    if (static_cast<size_t>(format.chunk.size) > readSize) {
+        file.seekg(static_cast<std::streamoff>(format.chunk.size - readSize), std::ios_base::cur);
     }
 
-    if (strncmp(data.id, "data", 4) != 0) {
+    // dataチャンクを探す（他のチャンクはすべてスキップ）
+    ChunkHeader data = {};
+    bool dataChunkFound = false;
+    
+    while (!dataChunkFound && file.read(reinterpret_cast<char*>(&data), sizeof(data))) {
+        if (strncmp(data.id, "data", 4) == 0) {
+            // dataチャンクを発見
+            dataChunkFound = true;
+        } else {
+            // 未知のチャンク（JUNK, fact, LIST, Fakeなど）をスキップ
+            Logger::GetInstance().Log(std::format("Skipping chunk: {}{}{}{} (size: {} bytes)", 
+                data.id[0], data.id[1], data.id[2], data.id[3], data.size), LogLevel::INFO, LogCategory::Audio);
+            file.seekg(static_cast<std::streamoff>(data.size), std::ios_base::cur);
+        }
+    }
+
+    if (!dataChunkFound || data.size == 0) {
+        std::string errorMsg = std::format("Data chunk not found or invalid in audio file: {}", filename);
+        Logger::GetInstance().Log(errorMsg, LogLevel::Error, LogCategory::Audio);
         return false;
     }
 
@@ -736,6 +748,7 @@ std::unique_ptr<SoundManager::SoundResource> SoundManager::CreateSoundResource(c
     if (handle != 0) {
         return std::make_unique<SoundResource>(this, handle);
     }
+    Logger::GetInstance().Log(std::format("CreateSoundResource failed for file: {}", filename), LogLevel::Error, LogCategory::Audio);
     return nullptr;
 }
 

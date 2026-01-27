@@ -2,6 +2,13 @@
 
 DummyEnemy::DummyEnemy() :
     IEnemy("ApplicationAssets/Model/white1x1Box.obj", "Texture/white1x1.png") {
+
+    CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    if (!soundManager) {
+        assert(false && "SoundManager not found");
+    }
+    soundResources_.clear();
+    soundResources_["Die"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_EnemyDeath.mp3");
 }
 
 void DummyEnemy::Initialize() {
@@ -29,5 +36,12 @@ void DummyEnemy::OnCollisionEnter(CoreEngine::GameObject* other) {
     if (hp_ <= 0) {
         isAlive_ = false;
         collider_->SetEnabled(false);
+    }
+}
+
+void DummyEnemy::PlaySE(const std::string& soundKey) {
+    auto it = soundResources_.find(soundKey);
+    if (it != soundResources_.end()) {
+        soundResources_[soundKey]->Play(false);
     }
 }

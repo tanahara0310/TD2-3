@@ -20,7 +20,7 @@ public:
 private:
     const float speed_;
     CoreEngine::Vector3& followPos_;
-    const CoreEngine::Vector3& offset_;
+    CoreEngine::Vector3 offset_;
     CoreEngine::CameraManager* cameraManager_;
 
 };

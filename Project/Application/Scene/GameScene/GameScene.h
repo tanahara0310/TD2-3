@@ -28,6 +28,8 @@ class Ground;
 #include "Application/SceneObject/GameRule/TimeAndEnemyCountSpawnRule.h"
 #include "Application/SceneObject/Presenters/GameClearSequence.h"
 
+#include "Application/Utility/BulletObject/BulletObjectContainer.h"
+
 namespace CoreEngine
 {
 /// @brief ゲームシーンクラス
@@ -82,6 +84,9 @@ private:
     std::unique_ptr<GameResultManager> gameResultManager_;
     std::unique_ptr<TimeAndEnemyCountSpawnRule> gameRule_;
     std::unique_ptr<GameClearSequence> gameClearSequence_;
+
+    // エフェクト
+    std::map<std::string, std::unique_ptr<BulletObjectContainer>> effectContainers_;
 
     // BGM
     std::unique_ptr<CoreEngine::SoundManager::SoundResource> bgmSoundResource_;

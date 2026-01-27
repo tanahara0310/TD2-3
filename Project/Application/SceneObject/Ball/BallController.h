@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Math/Vector/Vector3.h"
 #include <externals/nlohmann/single_include/nlohmann/json.hpp>
+#include <functional>
 
 class Player;
 class Ball;
@@ -16,6 +17,21 @@ public:
 
     bool GetIsThrowing();
 
+    void SetHitEffectFunction(
+        const std::function<int(
+            const CoreEngine::Vector3&,
+            const CoreEngine::Vector3&,
+            const CoreEngine::Vector3&)>& func) {
+        hitEffectFunc_ = func;
+    }
+    void SetSlashEffectFunction(
+        const std::function<int(
+            const CoreEngine::Vector3&,
+            const CoreEngine::Vector3&,
+            const CoreEngine::Vector3&)>& func) {
+        slashEffectFunc_ = func;
+    }
+
 private:
     Ball* ball_;
     Player* player_;
@@ -23,6 +39,7 @@ private:
     CoreEngine::Vector3 anchorPos_;
     CoreEngine::Vector3 cartesianPos_;
 
+    bool canSwitch_;
     bool isReturning_ = false;
     nlohmann::json config_;
 
@@ -30,4 +47,7 @@ private:
     float nowRadius_;
 
     float switchCooldown_;
+
+    std::function<int(const CoreEngine::Vector3&, const CoreEngine::Vector3&, const CoreEngine::Vector3&)> hitEffectFunc_;
+    std::function<int(const CoreEngine::Vector3&, const CoreEngine::Vector3&, const CoreEngine::Vector3&)> slashEffectFunc_;
 };

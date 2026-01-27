@@ -17,10 +17,11 @@ BallController::BallController(Ball* ball, Player* player) :
     config_.emplace("ShotSpeed", 0.1f);
     config_.emplace("MoveSpeed", 0.1f);
     config_.emplace("ReturnSpeed", 0.1f);
-    config_.emplace("ShotRadius", 5.0f);
+    config_.emplace("ShotRadius", 10.0f);
     config_.emplace("HangTime", 1.5f);
     config_.emplace("SwitchCooldown", 0.2f);
 
+    canSwitch_ = true;
     isReturning_ = false;
     nowRadius_ = 0.0f;
     switchCooldown_ = 0.0f;
@@ -59,7 +60,7 @@ void BallController::Update() {
             player_->PlaySE("throw");
 
         } else {// 球が出ていればプレイヤーと球の位置を変えてスイッチ
-            if (switchCooldown_ <= 0.0f) {
+            if (switchCooldown_ <= 0.0f && canSwitch_) {
                 CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
                 CoreEngine::Vector3 playerPos = player_->GetWorldPosition();
                 // ボールとプレイヤーの位置を入れ替え
@@ -77,6 +78,7 @@ void BallController::Update() {
                 cartesianPos_.y = atan2f(playerLookDir.x, playerLookDir.z);
                 cartesianPos_.z = acosf(playerLookDir.y / 1.0f);
 
+                canSwitch_ = false;
                 player_->PlaySE("switch");
             }
         }
@@ -114,10 +116,33 @@ void BallController::Update() {
             CoreEngine::Vector3 newPos = MatsumotoUtility::SphericalToCartesian(nowRadius_, cartesianPos_.y, cartesianPos_.z);
             ball_->GetTransform() = (anchorPos_ + newPos);
         }
+    }else{
+        canSwitch_ = true;
     }
 
     // ボールが敵に当たったら引き戻しor反射
     if (ball_->isHitEnemy_) {
+        ball_->PlaySE("Hit");
+
+        if (hitEffectFunc_) {
+            CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(ball_->GetWorldPosition() - ball_->hitPos_);
+            CoreEngine::Vector3 rotate = MatsumotoUtility::DirectionToEulerAngle(direction);
+            hitEffectFunc_(
+                ball_->hitPos_,
+                rotate,
+                CoreEngine::Vector3(1.0f, 1.0f, 1.0f));
+        }
+        if (slashEffectFunc_) {
+            CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(ball_->GetWorldPosition() - ball_->hitPos_);
+            CoreEngine::Vector3 rotate = MatsumotoUtility::DirectionToEulerAngle(direction);
+            rotate.x = 0.0f;
+            rotate.z = 0.0f;
+            slashEffectFunc_(
+                ball_->hitPos_,
+                rotate,
+                CoreEngine::Vector3(5.0f, 0.1f, 50.0f));
+        }
+
         // ボールより敵が近いなら反射
         CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
         CoreEngine::Vector3 hitPos = ball_->hitPos_;
@@ -133,6 +158,7 @@ void BallController::Update() {
             hangTimeCounter_ = 0.0f;
         }
         ball_->isHitEnemy_ = false;
+        canSwitch_ = true;
     }
 }
 

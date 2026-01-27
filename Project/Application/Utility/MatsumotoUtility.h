@@ -30,4 +30,6 @@ namespace MatsumotoUtility {
     void LoadSceneObjectConfig(nlohmann::json& json,const std::string& fileName);
 
     CoreEngine::Vector4 ColorCodeToVector4(const std::string& colorCode);
+
+    CoreEngine::Vector3 DirectionToEulerAngle(const CoreEngine::Vector3& direction);
 }

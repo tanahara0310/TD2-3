@@ -1,5 +1,4 @@
 #include "Player.h"
-#include <EngineSystem.h>
 #include "Engine/Camera/ICamera.h"
 
 #include "Application/Utility/KeyBindConfig.h"
@@ -16,7 +15,7 @@ Player::Player() {
     }
 
     // 静的モデルとして作成
-    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/white1x1Box.obj");
+    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/Player.obj");
     model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
 
     // トランスフォームの初期化
@@ -46,6 +45,16 @@ Player::Player() {
     collider_->SetLayer(CoreEngine::CollisionLayer::Player);
 
     velocity_ = { 0.0f, 0.0f, 0.0f };
+
+    // サウンドリソースの読み込み
+    CoreEngine::SoundManager * soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    if (!soundManager) {
+        assert(false && "SoundManager not found");
+    }
+    soundResources_.clear();
+    //soundResources_["DamageSound"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/PlayerDamage.wav");
+    soundResources_["switch"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_switch.mp3");
+    soundResources_["throw"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_throw.mp3");
 }
 
 void Player::Initialize() {
@@ -89,6 +98,10 @@ void Player::Update() {
         lookDir_.z = moveDir.x;
     }
 
+    // プレイヤーの向きを移動方向に合わせる
+    float targetAngle = atan2f(lookDir_.x, -lookDir_.z);
+    transform_.rotate.y = targetAngle;
+
     // 移動速度の取得
     float speed = config_["Speed"].get<float>();
     // 移動処理
@@ -128,5 +141,14 @@ void Player::OnCollisionEnter(GameObject* other) {
         damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
         isDamaged_ = true;
         //velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
+
+        
+    }
+}
+
+void Player::PlaySE(const std::string& soundKey) {
+    auto it = soundResources_.find(soundKey);
+    if (it != soundResources_.end()) {
+        soundResources_[soundKey]->Play(false);
     }
 }

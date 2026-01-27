@@ -24,6 +24,7 @@ BallController::BallController(Ball* ball, Player* player) :
     isReturning_ = false;
     nowRadius_ = 0.0f;
     switchCooldown_ = 0.0f;
+
 }
 
 void BallController::Initialize() {
@@ -55,6 +56,8 @@ void BallController::Update() {
             cartesianPos_.z = acosf(playerLookDir.y / 1.0f); // 半径1で正規化されているので
             CoreEngine::Vector3 newPos = MatsumotoUtility::SphericalToCartesian(0.1f, cartesianPos_.y, cartesianPos_.z);
             ball_->GetTransform() = (anchorPos_ + newPos);
+            player_->PlaySE("throw");
+
         } else {// 球が出ていればプレイヤーと球の位置を変えてスイッチ
             if (switchCooldown_ <= 0.0f) {
                 CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
@@ -73,6 +76,8 @@ void BallController::Update() {
                 CoreEngine::Vector3 playerLookDir = player_->lookDir_;
                 cartesianPos_.y = atan2f(playerLookDir.x, playerLookDir.z);
                 cartesianPos_.z = acosf(playerLookDir.y / 1.0f);
+
+                player_->PlaySE("switch");
             }
         }
     }

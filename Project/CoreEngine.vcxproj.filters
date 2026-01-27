@@ -303,6 +303,8 @@
     <ClCompile Include="Application\SceneObject\GameRule\GameResultManager.cpp" />
     <ClCompile Include="Application\Utility\Stopwatch.cpp" />
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
+    <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
+    <ClCompile Include="Application\SceneObject\BackGround\Ground.cpp" />
     <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\Utility\Debug\NotificationManager.cpp" />
     <ClCompile Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.cpp" />
@@ -780,6 +782,8 @@
     <ClInclude Include="Application\SceneObject\GameRule\GameResultManager.h" />
     <ClInclude Include="Application\Utility\Stopwatch.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
+    <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
+    <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
     <ClInclude Include="Engine\Utility\Debug\NotificationManager.h" />
     <ClInclude Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.h" />
   </ItemGroup>

@@ -6,6 +6,7 @@
 
 class Player;
 class Ball;
+class WhiteSkyDome;
 #include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/Ball/BallController.h"
 
@@ -32,6 +33,7 @@ private:
 
     Player* player_;
     Ball* ball_;
+    WhiteSkyDome* skyDome_;
     std::unique_ptr<BallController> ballController_;
 };
 }

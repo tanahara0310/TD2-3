@@ -7,6 +7,8 @@
 #include <memory>
 #include "Application/Utility/KeyBindConfig.h"
 #include "Application/Utility/Command/SceneAllCommand.h"
+#include "Application/SceneObject/SkyDome/WhiteSkyDome.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 namespace CoreEngine
 {
@@ -24,6 +26,9 @@ void ResultScene::Initialize(EngineSystem* engine)
 
 	// リザルトシーンの初期化処理
     sceneCommandExecutor_.Initialize();
+
+    skyDome_ = CreateObject<WhiteSkyDome>();
+    skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
 }
 
 void ResultScene::OnUpdate()

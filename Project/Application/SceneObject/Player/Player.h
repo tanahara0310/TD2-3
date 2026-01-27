@@ -1,4 +1,5 @@
 #pragma once
+#include <EngineSystem.h>
 #include "Engine/ObjectCommon/GameObject.h"
 #include "Engine/Collider/SphereCollider.h"
 #include <externals/nlohmann/single_include/nlohmann/json.hpp>
@@ -24,6 +25,7 @@ public:
     bool isDamaged_;
     CoreEngine::Vector3 lookDir_;
     
+    void PlaySE(const std::string& soundKey);
 
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
@@ -35,4 +37,6 @@ private:
 
     float animTimer_;
     float damageInvincibilityTimer_;
+
+    std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };

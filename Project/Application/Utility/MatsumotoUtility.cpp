@@ -143,3 +143,20 @@ void MatsumotoUtility::LoadSceneObjectConfig(nlohmann::json& json, const std::st
             
     }
 }
+
+CoreEngine::Vector4 MatsumotoUtility::ColorCodeToVector4(const std::string& colorCode) {
+    CoreEngine::Vector4 result;
+
+    if (colorCode.length() != 7 || colorCode[0] != '#') {
+        // 無効なカラーコードの場合、白色を返す
+        return { 1.0f, 1.0f, 1.0f, 1.0f };
+    }
+    int r = std::stoi(colorCode.substr(1, 2), nullptr, 16);
+    int g = std::stoi(colorCode.substr(3, 2), nullptr, 16);
+    int b = std::stoi(colorCode.substr(5, 2), nullptr, 16);
+    result.x = static_cast<float>(r) / 255.0f;
+    result.y = static_cast<float>(g) / 255.0f;
+    result.z = static_cast<float>(b) / 255.0f;
+    result.w = 1.0f;
+    return result;
+}

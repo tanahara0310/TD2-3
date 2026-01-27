@@ -53,7 +53,8 @@ Player::Player() {
     }
     soundResources_.clear();
     //soundResources_["DamageSound"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/PlayerDamage.wav");
-    //soundResources_["switch"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/BGM_InGame.mp3");
+    soundResources_["switch"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_switch.mp3");
+    soundResources_["throw"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_throw.mp3");
 }
 
 void Player::Initialize() {

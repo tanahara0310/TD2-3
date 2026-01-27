@@ -17,7 +17,7 @@ Ball::Ball() {
     }
 
     // 静的モデルとして作成
-    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/white1x1Box.obj");
+    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/Yoyo.obj");
     model_->SetMaterialColor({ 1.0f, 1.0f, 0.0f, 1.0f });
 
     // トランスフォームの初期化

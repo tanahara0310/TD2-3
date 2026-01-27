@@ -16,7 +16,7 @@ Player::Player() {
     }
 
     // 静的モデルとして作成
-    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/white1x1Box.obj");
+    model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/Player.obj");
     model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
 
     // トランスフォームの初期化
@@ -88,6 +88,10 @@ void Player::Update() {
         lookDir_.x = moveDir.y;
         lookDir_.z = moveDir.x;
     }
+
+    // プレイヤーの向きを移動方向に合わせる
+    float targetAngle = atan2f(lookDir_.x, -lookDir_.z);
+    transform_.rotate.y = targetAngle;
 
     // 移動速度の取得
     float speed = config_["Speed"].get<float>();

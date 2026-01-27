@@ -94,6 +94,16 @@ void EnemyKillMotionManager::Update() {
                         CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
                 }
 
+                // 半径2の範囲内にいる敵を消す
+                for (auto enemy : enemyList) {
+                    if (enemy == furthestEnemy) continue;
+                    CoreEngine::Vector3 toEnemy = enemy->GetTransform() - furthestEnemyPos;
+                    float distance = CoreEngine::Math::Vector::Length(toEnemy);
+                    if (distance <= 2.0f) {
+                        enemy->SetActive(false);
+                    }
+                }
+
             } else {
                 currentEraseCooldown_ -= 1.0f / 60.0f;
             }

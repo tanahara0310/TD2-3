@@ -16,6 +16,7 @@
 
 class Player;
 class Ball;
+class WhiteSkyDome;
 #include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
@@ -64,6 +65,7 @@ private:
     // ゲームのオブジェクト
     Player* player_;
     Ball* ball_;
+    WhiteSkyDome* skyDome_;
     std::unique_ptr<MenuView> menuView_;
     
     // ゲームオブジェクトの制御
@@ -78,5 +80,8 @@ private:
     std::unique_ptr<GameResultManager> gameResultManager_;
     std::unique_ptr<TimeAndEnemyCountSpawnRule> gameRule_;
     std::unique_ptr<GameClearSequence> gameClearSequence_;
+
+    // BGM
+    std::unique_ptr<CoreEngine::SoundManager::SoundResource> bgmSoundResource_;
 };
 }

@@ -1,5 +1,4 @@
 #include "Player.h"
-#include <EngineSystem.h>
 #include "Engine/Camera/ICamera.h"
 
 #include "Application/Utility/KeyBindConfig.h"
@@ -46,6 +45,15 @@ Player::Player() {
     collider_->SetLayer(CoreEngine::CollisionLayer::Player);
 
     velocity_ = { 0.0f, 0.0f, 0.0f };
+
+    // サウンドリソースの読み込み
+    CoreEngine::SoundManager * soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    if (!soundManager) {
+        assert(false && "SoundManager not found");
+    }
+    soundResources_.clear();
+    //soundResources_["DamageSound"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/PlayerDamage.wav");
+    //soundResources_["switch"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/BGM_InGame.mp3");
 }
 
 void Player::Initialize() {
@@ -132,5 +140,14 @@ void Player::OnCollisionEnter(GameObject* other) {
         damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
         isDamaged_ = true;
         //velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
+
+        
+    }
+}
+
+void Player::PlaySE(const std::string& soundKey) {
+    auto it = soundResources_.find(soundKey);
+    if (it != soundResources_.end()) {
+        soundResources_[soundKey]->Play(false);
     }
 }

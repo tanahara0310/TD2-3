@@ -304,6 +304,7 @@
     <ClCompile Include="Application\SceneObject\GameRule\GameResultManager.cpp" />
     <ClCompile Include="Application\Utility\Stopwatch.cpp" />
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
+    <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -778,6 +779,7 @@
     <ClInclude Include="Application\SceneObject\GameRule\GameResultManager.h" />
     <ClInclude Include="Application\Utility\Stopwatch.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
+    <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

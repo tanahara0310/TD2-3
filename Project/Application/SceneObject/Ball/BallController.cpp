@@ -24,6 +24,7 @@ BallController::BallController(Ball* ball, Player* player) :
     isReturning_ = false;
     nowRadius_ = 0.0f;
     switchCooldown_ = 0.0f;
+
 }
 
 void BallController::Initialize() {
@@ -73,6 +74,8 @@ void BallController::Update() {
                 CoreEngine::Vector3 playerLookDir = player_->lookDir_;
                 cartesianPos_.y = atan2f(playerLookDir.x, playerLookDir.z);
                 cartesianPos_.z = acosf(playerLookDir.y / 1.0f);
+
+                player_->PlaySE("switch");
             }
         }
     }

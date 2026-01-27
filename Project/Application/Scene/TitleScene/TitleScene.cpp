@@ -10,6 +10,8 @@
 
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/Ball/Ball.h"
+#include "Application/SceneObject/SkyDome/WhiteSkyDome.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 namespace CoreEngine
 {
@@ -33,6 +35,9 @@ void TitleScene::Initialize(EngineSystem* engine)
     player_->Initialize();
     ball_->Initialize();
     ballController_ = std::make_unique<BallController>(ball_, player_);
+
+    skyDome_ = CreateObject<WhiteSkyDome>();
+    skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
 
 }
 

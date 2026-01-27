@@ -4,6 +4,8 @@
 #include "Engine/Graphics/Render/RenderManager.h"
 #include "Engine/Graphics/TextureManager.h"
 
+#include "Application/Utility/MatsumotoUtility.h"
+
 // アプリケーションのユーティリティ
 #include "Application/Utility/KeyBindConfig.h"
 #include "Application/SceneObject/CameraController/AllCameraWork.h"
@@ -11,11 +13,12 @@
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/Ball/Ball.h"
 #include "Application/SceneObject/Enemy/AllEnemy.h"
+#include "Application/SceneObject/SkyDome/WhiteSkyDome.h"
 
 #include "Application/Utility/Command/SceneAllCommand.h"
 
 namespace {
-    const double GAME_CLEAR_TIME_MS = 30000.0;
+    const double GAME_CLEAR_TIME_MS = 60000.0;
 }
 
 namespace CoreEngine
@@ -47,6 +50,9 @@ void GameScene::Initialize(EngineSystem* engine)
     player_->SetAutoUpdate(false);
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
+
+    skyDome_ = CreateObject<WhiteSkyDome>();
+    skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
 
     // プレイヤーの初期化
     player_->Initialize();
@@ -116,6 +122,16 @@ void GameScene::Initialize(EngineSystem* engine)
     // ゲームクリアシーケンスの生成
     gameClearSequence_ = std::make_unique<GameClearSequence>(this, sceneManager_, &sceneCommandExecutor_);
     gameClearSequence_->Initialize();
+
+    // BGM
+    auto soundManager = engine_->GetComponent<SoundManager>();
+    if (soundManager) {
+        bgmSoundResource_ = soundManager->CreateSoundResource("ApplicationAssets/Sound/BGM_InGame.mp3");
+        if (bgmSoundResource_) {
+            bgmSoundResource_->Play(true);
+            bgmSoundResource_->SetVolume(0.2f);
+        }
+    }
 }
 
 void GameScene::OnUpdate()

@@ -4,6 +4,7 @@
 
 #include "Application/Utility/Command/SceneCommandExecutor.h"
 
+class WhiteSkyDome;
 namespace CoreEngine
 {
 /// @brief リザルトシーンクラス
@@ -23,5 +24,6 @@ protected:
 	void OnUpdate() override;
 private:
     SceneCommandExecutor sceneCommandExecutor_;
+    WhiteSkyDome* skyDome_;
 };
 }

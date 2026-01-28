@@ -7,20 +7,20 @@
 
 namespace CoreEngine
 {
-struct Material {
-    Vector4 color;
-    int32_t enableLighting;
-    float padding[3];
-    Matrix4x4 uvTransform;
-    float shininess; // 光沢度
-    int shadingMode; // シェーディングモード(0: None, 1: Lambert, 2: Half-Lambert, 3: Toon)
-    float toonThreshold; // トゥーンシェーディングの閾値 (0.0-1.0)
-    float toonSmoothness; // トゥーンシェーディングの滑らかさ (0.0-0.5)
-    int32_t enableDithering; // ディザリング有効化フラグ (0: 無効, 1: 有効)
-    float ditheringScale; // ディザリングのスケール（デフォルト: 1.0f）
-    int32_t enableEnvironmentMap; // 環境マップ有効化フラグ (0: 無効, 1: 有効)
-    float environmentMapIntensity; // 環境マップの反射強度 (0.0-1.0)
-    
-    float padding2[2]; // パディング調整
-};
+    struct Material {
+        Vector4 color;
+        int32_t enableLighting;
+        float padding[3];
+        Matrix4x4 uvTransform;
+        float shininess; // 光沢度
+        int shadingMode; // シェーディングモード(0: None, 1: Lambert, 2: Half-Lambert, 3: Toon)
+        float toonThreshold; // トゥーンシェーディングの閾値 (0.0-1.0)
+        float toonSmoothness; // トゥーンシェーディングの滑らかさ (0.0-0.5)
+        int32_t enableDithering; // ディザリング有効化フラグ (0: 無効, 1: 有効)
+        float ditheringScale; // ディザリングのスケール（デフォルト: 1.0f）
+        int32_t enableEnvironmentMap; // 環境マップ有効化フラグ (0: 無効, 1: 有効)
+        float environmentMapIntensity; // 環境マップの反射強度 (0.0-1.0)
+
+        float padding2[2]; // パディング調整
+    };
 }

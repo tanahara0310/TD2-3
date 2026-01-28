@@ -1,4 +1,4 @@
-﻿#include "ColorGrading.h"
+#include "ColorGrading.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 

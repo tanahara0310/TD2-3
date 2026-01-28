@@ -38,9 +38,11 @@ private:
 
     CoreEngine::Vector3 anchorPos_;
     CoreEngine::Vector3 cartesianPos_;
+    CoreEngine::Vector3 ballVelocity_;
 
     bool canSwitch_;
     bool isReturning_ = false;
+    bool wasReturning_ = false;
     nlohmann::json config_;
 
     float hangTimeCounter_;

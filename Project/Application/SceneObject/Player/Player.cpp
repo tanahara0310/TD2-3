@@ -149,7 +149,7 @@ void Player::OnCollisionEnter(GameObject* other) {
         // ダメージ処理
         damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
         isDamaged_ = true;
-        velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
+        velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition());
     }
 }
 

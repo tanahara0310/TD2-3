@@ -59,6 +59,7 @@ void Ball::Initialize() {
 
     LoadConfigFromFile("BallConfig.json");
     oldPosition_ = transform_.translate;
+    velocity_ = { 0.0f, 0.0f, 0.0f };
 }
 
 void Ball::Update() {
@@ -66,13 +67,12 @@ void Ball::Update() {
         return;
     }
 
-    // 移動方向の計算
-    CoreEngine::Vector3 diff = transform_.translate - oldPosition_;
-    if (CoreEngine::Math::Vector::Length(diff) > 0.0001f) {
-        moveDir = CoreEngine::Math::Vector::Normalize(diff);
-    } else {
-        // 移動していない場合は前回の方向を維持するか、ゼロを避ける
-        // ここでは前回値を維持する
+    float dt = 1.0f / 60.0f;
+    transform_.translate += velocity_ * dt;
+
+    // 移動方向の計算 (速度から求める)
+    if (CoreEngine::Math::Vector::Length(velocity_) > 0.0001f) {
+        moveDir = CoreEngine::Math::Vector::Normalize(velocity_);
     }
 
     oldPosition_ = transform_.translate;

@@ -37,7 +37,7 @@ Ball::Ball() {
     SetActive(false);
     rotateSpeed_ = 0.1f;
 
-    collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.8f);
+    collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 1.6f);
     collider_->SetLayer(CoreEngine::CollisionLayer::Item);
 
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();

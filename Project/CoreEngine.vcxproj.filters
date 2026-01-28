@@ -302,6 +302,9 @@
     <ClCompile Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.cpp" />
     <ClCompile Include="Application\SceneObject\GameRule\GameResultManager.cpp" />
     <ClCompile Include="Application\Utility\Stopwatch.cpp" />
+    <ClCompile Include="Application\Utility\StringRenderer.cpp">
+      <Filter>Source Files\Application\Utility</Filter>
+    </ClCompile>
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
     <ClCompile Include="Application\SceneObject\BackGround\Ground.cpp" />
@@ -785,6 +788,9 @@
     <ClInclude Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.h" />
     <ClInclude Include="Application\SceneObject\GameRule\GameResultManager.h" />
     <ClInclude Include="Application\Utility\Stopwatch.h" />
+    <ClInclude Include="Application\Utility\StringRenderer.h">
+      <Filter>Header Files\Application\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
     <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />

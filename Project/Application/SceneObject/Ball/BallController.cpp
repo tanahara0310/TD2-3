@@ -2,6 +2,8 @@
 
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/Ball/Ball.h"
+#include "Application/Utility/StringRenderer.h"
+#include "Engine/Scene/BaseScene.h"
 
 #include "Application/Utility/KeyBindConfig.h"
 #include "Application/Utility/MatsumotoUtility.h"
@@ -10,10 +12,12 @@ namespace {
     float deltaTime = 1.0f / 60.0f; // 仮のデルタタイム
 }
 
-BallController::BallController(Ball* ball, Player* player) :
+BallController::BallController(Ball* ball, Player* player, CoreEngine::BaseScene* scene) :
     player_(player),
     ball_(ball) {
 
+    // ... (config initialization)
+    // 17-30
     config_.emplace("ShotSpeed", 0.1f);
     config_.emplace("MoveSpeed", 0.1f);
     config_.emplace("ReturnSpeed", 0.1f);
@@ -33,7 +37,13 @@ BallController::BallController(Ball* ball, Player* player) :
     nowRadius_ = 0.0f;
     switchCooldown_ = 0.0f;
 
+    // StringRendererをシーンに登録
+    stringRenderer_ = scene->CreateObject<StringRenderer>();
+    stringRenderer_->Initialize(16);
+    stringRenderer_->SetAutoUpdate(false); // 手動で更新するため自動更新をオフ
 }
+
+BallController::~BallController() {}
 
 void BallController::Initialize() {
     MatsumotoUtility::LoadSceneObjectConfig(config_, "BallControllerConfig.json");
@@ -193,6 +203,14 @@ void BallController::Update() {
         wasReturning_ = false;
     }
 
+    // ひもの更新
+    if (ball_->IsActive()) {
+        stringRenderer_->Update(player_->GetWorldPosition(), ball_->GetWorldPosition(), player_->lookDir_, ball_->GetVelocity());
+        stringRenderer_->SetActive(true);
+    } else {
+        stringRenderer_->SetActive(false);
+    }
+
     // ボールが敵に当たったら引き戻しor反射
     if (ball_->isHitEnemy_) {
         ball_->PlaySE("Hit");
@@ -232,6 +250,9 @@ void BallController::Update() {
         ball_->isHitEnemy_ = false;
         canSwitch_ = true;
     }
+}
+void BallController::Draw(const CoreEngine::ICamera* camera) {
+    (void)camera; 
 }
 
 bool BallController::GetIsThrowing() {

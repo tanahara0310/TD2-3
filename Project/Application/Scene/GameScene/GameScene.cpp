@@ -89,7 +89,7 @@ void GameScene::Initialize(EngineSystem* engine)
     enemyManager_ = std::make_unique<EnemyContainer>(this);
 
     // ボールコントローラーの生成
-    ballController_ = std::make_unique<BallController>(ball_, player_);
+    ballController_ = std::make_unique<BallController>(ball_, player_, this);
     ballController_->Initialize();
     ballController_->SetHitEffectFunction(
         std::bind(&BulletObjectContainer::Spawn,

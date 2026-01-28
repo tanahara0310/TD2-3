@@ -34,7 +34,7 @@ void TitleScene::Initialize(EngineSystem* engine)
     ball_ = CreateObject<Ball>();
     player_->Initialize();
     ball_->Initialize();
-    ballController_ = std::make_unique<BallController>(ball_, player_);
+    ballController_ = std::make_unique<BallController>(ball_, player_, this);
 
     skyDome_ = CreateObject<WhiteSkyDome>();
     skyDome_->SetColor(MatsumotoUtility::ColorEggplant);

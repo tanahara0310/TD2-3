@@ -32,6 +32,9 @@ public:
     void SetDamageInvincibilityTime(float time) { damageInvincibilityTimer_ = time; }
     float GetDamageInvincibilityTime() const { return damageInvincibilityTimer_; }
 
+    CoreEngine::Vector2 GetMoveAxis() const;
+    CoreEngine::Vector3 GetVelocity() const { return velocity_; }
+
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
 

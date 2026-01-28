@@ -159,3 +159,19 @@ void Player::PlaySE(const std::string& soundKey) {
         soundResources_[soundKey]->Play(false);
     }
 }
+
+CoreEngine::Vector2 Player::GetMoveAxis() const {
+    CoreEngine::Vector2 moveDir = { 0.0f, 0.0f };
+    KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
+    moveDir.x = keyBindConfig.GetHorizontalAxis();
+    moveDir.y = keyBindConfig.GetVerticalAxis();
+
+    moveDir.x += velocity_.x;
+    moveDir.y += velocity_.z;
+
+    if (moveDir.Length() > 1.0f) {
+        moveDir = moveDir.Normalize();
+    }
+
+    return moveDir;
+}

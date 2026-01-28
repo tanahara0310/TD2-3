@@ -71,7 +71,7 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
-    screenUI_ = std::make_unique<ScreenUI>(this);
+    screenUI_ = std::make_unique<ScreenUI>(this,player_);
     screenUI_->Initialize();
 
     //cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);

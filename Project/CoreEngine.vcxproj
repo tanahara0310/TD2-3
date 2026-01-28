@@ -174,6 +174,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\CameraController\TowPointFramingCameraWork.cpp" />
     <ClCompile Include="Application\SceneObject\Combo\EnemyKillComboCounter.cpp" />
     <ClCompile Include="Application\SceneObject\Combo\EnemyKillMotionManager.cpp" />
+    <ClCompile Include="Application\SceneObject\CosmicTunnel\CosmicTunnelObject.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\HitEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\ShockWaveEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\SlashEffect.cpp" />
@@ -234,8 +235,10 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Bloom.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Dissolve.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\PostEffectPresetManager.cpp" />
+    <ClCompile Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\PrimitivePlane.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\YoYoGeometry.cpp" />
+    <ClCompile Include="Engine\Graphics\Render\CosmicTunnel\CosmicTunnelRenderer.cpp" />
     <ClCompile Include="Engine\Graphics\Render\Line\LineRendererPipeline.cpp" />
     <ClCompile Include="Engine\Graphics\Render\Model\ModelRenderer.cpp" />
     <ClCompile Include="Engine\Graphics\Render\Model\SkinnedModelRenderer.cpp" />
@@ -402,6 +405,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\CameraController\TowPointFramingCameraWork.h" />
     <ClInclude Include="Application\SceneObject\Combo\EnemyKillComboCounter.h" />
     <ClInclude Include="Application\SceneObject\Combo\EnemyKillMotionManager.h" />
+    <ClInclude Include="Application\SceneObject\CosmicTunnel\CosmicTunnelObject.h" />
     <ClInclude Include="Application\SceneObject\Effect\AllEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\ExplosionEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\HitEffect.h" />
@@ -481,8 +485,10 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\Dissolve.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\PostEffectNames.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\PostEffectPresetManager.h" />
+    <ClInclude Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.h" />
     <ClInclude Include="Engine\Graphics\Primitive\PrimitivePlane.h" />
     <ClInclude Include="Engine\Graphics\Primitive\YoYoGeometry.h" />
+    <ClInclude Include="Engine\Graphics\Render\CosmicTunnel\CosmicTunnelRenderer.h" />
     <ClInclude Include="Engine\Graphics\Render\IRenderer.h" />
     <ClInclude Include="Engine\Graphics\Render\Line\LineRendererPipeline.h" />
     <ClInclude Include="Engine\Graphics\Render\Model\ModelRenderer.h" />

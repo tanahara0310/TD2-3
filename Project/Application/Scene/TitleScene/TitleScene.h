@@ -8,6 +8,9 @@
 class Player;
 class Ball;
 class WhiteSkyDome;
+namespace CoreEngine {
+    class CosmicTunnelObject;
+}
 #include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/YoYo/YoYoObject.h"
@@ -59,5 +62,8 @@ namespace CoreEngine
         // タイトル画像
         CoreEngine::SpriteObject* titleSprite_;
         CoreEngine::SpriteObject* spaceStartSprite_;
+        
+        // 宇宙トンネル演出
+        CoreEngine::CosmicTunnelObject* cosmicTunnel_;
     };
 }

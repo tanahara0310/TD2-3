@@ -312,6 +312,9 @@
     <ClCompile Include="Engine\Graphics\Primitive\YoYoGeometry.cpp" />
     <ClCompile Include="Application\SceneObject\YoYo\YoYoObject.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\BlackHole.cpp" />
+    <ClCompile Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.cpp" />
+    <ClCompile Include="Engine\Graphics\Render\CosmicTunnel\CosmicTunnelRenderer.cpp" />
+    <ClCompile Include="Application\SceneObject\CosmicTunnel\CosmicTunnelObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -794,6 +797,9 @@
     <ClInclude Include="Engine\Graphics\Primitive\YoYoGeometry.h" />
     <ClInclude Include="Application\SceneObject\YoYo\YoYoObject.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\BlackHole.h" />
+    <ClInclude Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.h" />
+    <ClInclude Include="Engine\Graphics\Render\CosmicTunnel\CosmicTunnelRenderer.h" />
+    <ClInclude Include="Application\SceneObject\CosmicTunnel\CosmicTunnelObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

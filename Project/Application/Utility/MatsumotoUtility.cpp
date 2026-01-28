@@ -168,3 +168,11 @@ CoreEngine::Vector3 MatsumotoUtility::DirectionToEulerAngle(const CoreEngine::Ve
     eulerAngle.z = 0.0f; // Roll
     return eulerAngle;
 }
+
+float MatsumotoUtility::DegreesToRadians(float degrees) {
+    return degrees * (std::numbers::pi_v<float> / 180.0f);
+}
+
+float MatsumotoUtility::Lerp(float a, float b, float t) {
+    return a + (b - a) * t;
+}

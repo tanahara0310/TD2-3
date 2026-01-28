@@ -7,6 +7,7 @@ class Player;
 class EnemyContainer;
 class CameraController;
 class BallController;
+class Stopwatch;
 
 class EnemyKillMotionManager final {
 public:
@@ -16,7 +17,8 @@ public:
         Player* player,
         EnemyContainer* enemyContainer,
         CameraController* cameraController,
-        BallController* ballController);
+        BallController* ballController,
+        Stopwatch* gameTimer);
     ~EnemyKillMotionManager() = default;
 
     void Update();
@@ -39,6 +41,7 @@ private:
     Player* player_;
     CameraController* cameraController_;
     BallController* ballController_;
+    Stopwatch* gameTimer_;
 
     float eraseCooldown_;
     float currentEraseCooldown_;

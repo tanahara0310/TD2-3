@@ -1,4 +1,5 @@
 #include "ShockWaveEffect.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 ShockWaveEffect::ShockWaveEffect() :
     BulletModel("ApplicationAssets/Model/umbrella.obj", "Texture/white1x1.png"),
@@ -11,7 +12,9 @@ void ShockWaveEffect::Initialize() {
     SetActive(false);
     transform_.scale = CoreEngine::Vector3{ 0.3f, 0.3f, 0.3f };
 
-    model_->SetMaterialColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+    model_->SetMaterialColor(MatsumotoUtility::ColorYellow);
+    model_->GetMaterialManager()->SetEnableLighting(false);
+    model_->GetMaterialManager()->SetShadingMode(0);
 }
 
 void ShockWaveEffect::Update() {
@@ -33,8 +36,8 @@ void ShockWaveEffect::Update() {
         0.0f,
         -sinf(transform_.rotate.y + 3.14f * 0.5f) * speed_ * speed_ * 0.3f
     };
-
-    model_->SetMaterialColor({ 1.0f, 1.0f, 1.0f, 1.0f - (lifeTimer_ / maxLifeTime_) });
+    CoreEngine::Vector4 color = model_->GetMaterialColor();
+    model_->SetMaterialColor({ color.x, color.y, color.z, 1.0f - (lifeTimer_ / maxLifeTime_) });
 
     transform_.TransferMatrix();
 }

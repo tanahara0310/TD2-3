@@ -19,6 +19,7 @@ class Ball;
 class WhiteSkyDome;
 class Ground;
 #include "Application/SceneObject/Menu/MenuView.h"
+#include "Application/SceneObject/ScreenUI/ScreenUI.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/EnemyMapLoader.h"
@@ -71,6 +72,7 @@ private:
     WhiteSkyDome* skyDome_;
     Ground* ground_;
     std::unique_ptr<MenuView> menuView_;
+    std::unique_ptr<ScreenUI> screenUI_;
     
     // ゲームオブジェクトの制御
     std::unique_ptr<Stopwatch> gameStopwatch_;

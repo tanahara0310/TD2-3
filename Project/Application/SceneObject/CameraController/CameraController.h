@@ -20,8 +20,6 @@ public:
     // FOVリセット
     void ResetFov();
 
-    // デフォルトのカメラワーク設定
-    void SetDefaultCameraWork(std::unique_ptr<ICameraWork> defaultCameraWork);
     // デフォルトのカメラワークにリセット
     void ResetDefaultCameraWork();
 
@@ -32,6 +30,12 @@ public:
             defaultCameraWork_ = std::move(cameraWork_);
         }
         cameraWork_ = std::make_unique<T>(cameraManager_,std::forward<Args>(args)...);
+    }
+
+    // デフォルトカメラワークの設定
+    template<typename T, typename... Args>
+    void SetDefaultCameraWork(Args&&... args) {
+        defaultCameraWork_ = std::make_unique<T>(cameraManager_, std::forward<Args>(args)...);
     }
 
 private:

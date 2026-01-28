@@ -1,4 +1,5 @@
 #include "HitEffect.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 HitEffect::HitEffect() :
     BulletModel("ApplicationAssets/Model/ring.obj", "Texture/white1x1.png"),
@@ -10,7 +11,9 @@ void HitEffect::Initialize() {
     speed_ = 0.5f;
     SetActive(false);
     transform_.scale = CoreEngine::Vector3{ 0.3f, 0.3f, 0.3f };
-    model_->SetMaterialColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+    model_->SetMaterialColor(MatsumotoUtility::ColorYellow);
+    model_->GetMaterialManager()->SetEnableLighting(false);
+    model_->GetMaterialManager()->SetShadingMode(0);
 }
 
 void HitEffect::Update() {
@@ -27,7 +30,8 @@ void HitEffect::Update() {
         SetActive(false);
     }
 
-    model_->SetMaterialColor({ 1.0f, 1.0f, 1.0f, 1.0f - (lifeTimer_ / maxLifeTime_) });
+    CoreEngine::Vector4 color = model_->GetMaterialColor();
+    model_->SetMaterialColor({ color.x, color.y, color.z, 1.0f - (lifeTimer_ / maxLifeTime_) });
 
     transform_.TransferMatrix();
 }

@@ -4,6 +4,7 @@
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/CameraController/CameraController.h"
 #include "Application/SceneObject/Ball/BallController.h"
+#include "Application/Utility/Stopwatch.h"
 
 #include "Application/SceneObject/CameraController/AllCameraWork.h"
 
@@ -12,12 +13,14 @@ EnemyKillMotionManager::EnemyKillMotionManager(
     Player* player,
     EnemyContainer* enemyContainer,
     CameraController* cameraController,
-    BallController* ballController) :
+    BallController* ballController,
+    Stopwatch* gameTimer) :
     container_(enemyContainer),
     comboCounter_(comboCounter),
     player_(player),
     cameraController_(cameraController),
-    ballController_(ballController) {
+    ballController_(ballController),
+    gameTimer_(gameTimer){
     isPlayingMotion_ = false;
     eraseCooldown_ = 0.5f;
     currentEraseCooldown_ = 0.0f;
@@ -39,7 +42,7 @@ void EnemyKillMotionManager::Update() {
     if (player_->isDamaged_) {
         isPlayingMotion_ = false;
         player_->isDamaged_ = false;
-        cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+        cameraController_->ResetDefaultCameraWork();
         // 全ての死んだ敵を非アクティブ化
         for (auto enemy : enemyList) {
             enemy->SetActive(false);
@@ -60,6 +63,7 @@ void EnemyKillMotionManager::Update() {
             isPlayingMotion_ = true;
             currentEraseCooldown_ = static_cast<float>(enemyList.size())*0.05f; // 最初の消去までの猶予
             eraseCooldownFactor_ = 1.0f;
+            gameTimer_->Pause();
         }
     }
 
@@ -115,6 +119,7 @@ void EnemyKillMotionManager::Update() {
         } else {
             isPlayingMotion_ = false;
             cameraController_->ResetDefaultCameraWork();
+            gameTimer_->Resume();
         }
     }
 

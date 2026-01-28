@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -308,6 +308,10 @@
     <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\Utility\Debug\NotificationManager.cpp" />
     <ClCompile Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.cpp" />
+    <ClCompile Include="Engine\Graphics\Render\YoYo\YoYoRenderer.cpp" />
+    <ClCompile Include="Engine\Graphics\Primitive\YoYoGeometry.cpp" />
+    <ClCompile Include="Application\SceneObject\YoYo\YoYoObject.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\BlackHole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -786,6 +790,10 @@
     <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
     <ClInclude Include="Engine\Utility\Debug\NotificationManager.h" />
     <ClInclude Include="Engine\Utility\NumberDisplay\NumberDisplayUtility.h" />
+    <ClInclude Include="Engine\Graphics\Render\YoYo\YoYoRenderer.h" />
+    <ClInclude Include="Engine\Graphics\Primitive\YoYoGeometry.h" />
+    <ClInclude Include="Application\SceneObject\YoYo\YoYoObject.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\BlackHole.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

@@ -167,7 +167,8 @@ private:
         PostEffectNames::GrayScale, 
         PostEffectNames::Vignette,
         PostEffectNames::Bloom,
-        PostEffectNames::Dissolve
+        PostEffectNames::Dissolve,
+        PostEffectNames::BlackHole
     };
     
     std::unique_ptr<PostEffectPresetManager> presetManager_;

@@ -1,11 +1,11 @@
-#include "Bloom.h"
+#include "BlackHole.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
 
 
 namespace CoreEngine
 {
-void Bloom::Initialize(DirectXCommon* dxCommon)
+void BlackHole::Initialize(DirectXCommon* dxCommon)
 {
     // 基底クラスの初期化
     PostEffectBase::Initialize(dxCommon);
@@ -14,54 +14,39 @@ void Bloom::Initialize(DirectXCommon* dxCommon)
     CreateConstantBuffer();
 }
 
-const std::wstring& Bloom::GetPixelShaderPath() const
+void BlackHole::Update(float deltaTime)
 {
-    static const std::wstring path = L"Assets/Shaders/PostProcess/Bloom.PS.hlsl";
-    return path;
+    // 時間を進める
+    params_.time += deltaTime * params_.speed;
+    UpdateConstantBuffer();
 }
 
-void Bloom::DrawImGui()
+void BlackHole::DrawImGui()
 {
 #ifdef _DEBUG
-    ImGui::PushID("BloomParams");
+    ImGui::PushID("BlackHoleParams");
     
     ImGui::Text("状態: %s", IsEnabled() ? "有効" : "無効");
+    ImGui::Text("ブラックホール/渦巻きエフェクト");
     ImGui::Separator();
     
     bool paramsChanged = false;
     
     // パラメータ設定
     if (ImGui::TreeNode("パラメータ")) {
-        // 輝度閾値の調整
-        if (ImGui::SliderFloat("輝度しきい値", &params_.threshold, 0.0f, 2.0f)) {
-            paramsChanged = true;
-        }
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("この値より明るいピクセルがブルームの対象になります");
-        }
+        // エフェクト強度の調整
+        paramsChanged |= ImGui::SliderFloat("強度", &params_.intensity, 0.0f, 2.0f);
         
-        // ブルーム強度の調整
-        if (ImGui::SliderFloat("強度", &params_.intensity, 0.0f, 3.0f)) {
-            paramsChanged = true;
-        }
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("ブルーム効果の強さを調整します");
-        }
+        // 回転速度の調整
+        paramsChanged |= ImGui::SliderFloat("回転速度", &params_.speed, 1.0f, 20.0f);
         
-        // ブラー半径の調整
-        if (ImGui::SliderFloat("ブラー半径", &params_.blurRadius, 0.5f, 5.0f)) {
-            paramsChanged = true;
-        }
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("光の広がりの範囲を調整します");
-        }
+        // 歪み強度の調整
+        paramsChanged |= ImGui::SliderFloat("歪み強度", &params_.distortion, 1.0f, 5.0f);
         
-        // ソフトニーの調整
-        if (ImGui::SliderFloat("ソフトニー", &params_.softKnee, 0.0f, 1.0f)) {
+        // 時間のリセットボタン
+        if (ImGui::Button("時間をリセット")) {
+            params_.time = 0.0f;
             paramsChanged = true;
-        }
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("閾値付近の滑らかさを調整します (0=ハード, 1=ソフト)");
         }
         
         ImGui::TreePop();
@@ -75,10 +60,10 @@ void Bloom::DrawImGui()
     ImGui::Separator();
     
     if (ImGui::Button("デフォルトに戻す")) {
-        params_.threshold = 0.8f;
         params_.intensity = 1.0f;
-        params_.blurRadius = 2.0f;
-        params_.softKnee = 0.5f;
+        params_.speed = 7.0f;
+        params_.distortion = 2.1f;
+        params_.time = 0.0f;
         UpdateConstantBuffer();
     }
     
@@ -86,22 +71,24 @@ void Bloom::DrawImGui()
         ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "注意: エフェクトは無効ですが、パラメータは調整可能です");
     }
     
+    ImGui::Separator();
+    
     ImGui::PopID();
 #endif // _DEBUG
 }
 
-void Bloom::SetParams(const BloomParams& params)
+void BlackHole::SetParams(const BlackHoleParams& params)
 {
     params_ = params;
     UpdateConstantBuffer();
 }
 
-void Bloom::ForceUpdateConstantBuffer()
+void BlackHole::ForceUpdateConstantBuffer()
 {
     UpdateConstantBuffer();
 }
 
-void Bloom::BindOptionalCBVs(ID3D12GraphicsCommandList* commandList)
+void BlackHole::BindOptionalCBVs(ID3D12GraphicsCommandList* commandList)
 {
     // 定数バッファをピクセルシェーダーにバインド
     if (constantBuffer_) {
@@ -109,7 +96,7 @@ void Bloom::BindOptionalCBVs(ID3D12GraphicsCommandList* commandList)
     }
 }
 
-void Bloom::UpdateConstantBuffer()
+void BlackHole::UpdateConstantBuffer()
 {
     // 定数バッファにデータをコピー
     if (mappedData_) {
@@ -117,12 +104,12 @@ void Bloom::UpdateConstantBuffer()
     }
 }
 
-void Bloom::CreateConstantBuffer()
+void BlackHole::CreateConstantBuffer()
 {
     assert(directXCommon_);
     
     // 定数バッファのサイズを256バイトアライメントに調整
-    UINT bufferSize = (sizeof(BloomParams) + 255) & ~255;
+    UINT bufferSize = (sizeof(BlackHoleParams) + 255) & ~255;
     
     // ヒーププロパティ
     D3D12_HEAP_PROPERTIES heapProps = {};

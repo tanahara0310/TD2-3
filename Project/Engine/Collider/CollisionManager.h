@@ -69,10 +69,10 @@ bool IsFastMoving(Collider* collider);
    // 前フレームの位置を記録（トンネリング防止用）
    std::unordered_map<Collider*, Vector3> previousPositions_;
 
-   // トンネリング防止のしきい値（速度がこれを超えると連続衝突検出を行う）
-   float tunnelingThreshold_ = 5.0f;
+    // トンネリング防止のしきい値（速度がこれを超えると連続衝突検出を行う）
+    float tunnelingThreshold_ = 5.0f;
 
-   // トンネリング防止機能の有効/無効フラグ
-   bool tunnelingPreventionEnabled_ = true;
+    // トンネリング防止機能の有効/無効フラグ
+    bool tunnelingPreventionEnabled_ = false;
 };
 }

@@ -47,7 +47,7 @@ Player::Player() {
     velocity_ = { 0.0f, 0.0f, 0.0f };
 
     // サウンドリソースの読み込み
-    CoreEngine::SoundManager * soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
         assert(false && "SoundManager not found");
     }
@@ -77,8 +77,8 @@ void Player::Update() {
         damageInvincibilityTimer_ -= 1.0f / 60.0f;
         model_->SetMaterialColor({
             1.0f,
-            fabsf(sinf(damageInvincibilityTimer_*10.0f)),
-            fabsf(sinf(damageInvincibilityTimer_*10.0f)),
+            fabsf(sinf(damageInvincibilityTimer_ * 10.0f)),
+            fabsf(sinf(damageInvincibilityTimer_ * 10.0f)),
             1.0f });
     } else {
         model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
@@ -132,7 +132,8 @@ CoreEngine::Vector3& Player::GetTransform() {
 
 void Player::OnCollisionEnter(GameObject* other) {
     (void)other;
-    if (other->GetName() == std::string("IEnemy")) {
+
+    if (other->GetTag() == std::string("Enemy")) {
         if (damageInvincibilityTimer_ > 0.0f) {
             return;
         }
@@ -140,9 +141,7 @@ void Player::OnCollisionEnter(GameObject* other) {
         // ダメージ処理
         damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
         isDamaged_ = true;
-        //velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
-
-        
+        velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
     }
 }
 

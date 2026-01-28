@@ -39,7 +39,7 @@ void EnemyKillMotionManager::Update() {
     if (player_->isDamaged_) {
         isPlayingMotion_ = false;
         player_->isDamaged_ = false;
-        cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+        cameraController_->ResetDefaultCameraWork();
         // 全ての死んだ敵を非アクティブ化
         for (auto enemy : enemyList) {
             enemy->SetActive(false);

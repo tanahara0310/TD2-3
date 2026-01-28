@@ -69,7 +69,9 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
 
-    cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
+    //cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
+    cameraController_->SetDefaultCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
+    cameraController_->ResetDefaultCameraWork();
 
     skyDome_ = CreateObject<WhiteSkyDome>();
     skyDome_->SetColor(MatsumotoUtility::ColorEggplant);

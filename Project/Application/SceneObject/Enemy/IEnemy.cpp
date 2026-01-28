@@ -31,6 +31,8 @@ IEnemy::IEnemy(const std::string& modelPath, const std::string& texturePath) {
     collider_->SetLayer(CoreEngine::CollisionLayer::Enemy);
     
     isAlive_ = true;
+
+    SetTag("Enemy");
 }
 
 void IEnemy::Update() {

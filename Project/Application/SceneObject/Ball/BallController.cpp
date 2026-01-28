@@ -41,6 +41,11 @@ void BallController::Update() {
         switchCooldown_ -= deltaTime;
     }
 
+    // アンカーポイント更新
+    if (!isReturning_) {
+        anchorPos_ = player_->GetWorldPosition();
+    }
+
     // 発射処理
     if (KeyBindConfig::Instance().IsTrigger("Shot")) {
         if (!ball_->IsActive()) {// 球が出ていなければ発射

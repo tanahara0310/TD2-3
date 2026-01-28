@@ -4,7 +4,8 @@
 
 CameraController::CameraController(CoreEngine::CameraManager* cameraManager) :
     cameraManager_(cameraManager),
-    cameraWork_(nullptr) {}
+    cameraWork_(nullptr) {
+}
 
 void CameraController::Initialize() {
     if (cameraWork_) {
@@ -14,7 +15,7 @@ void CameraController::Initialize() {
         defaultCameraWork_ = nullptr;
     }
 
-    CoreEngine::Camera* camera = 
+    CoreEngine::Camera* camera =
         static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
     defaultCameraPos_ = camera->GetPosition();
     defaultCameraRotate_ = camera->GetRotate();
@@ -34,11 +35,11 @@ void CameraController::ResetFov() {
     camera->SetParameters(params);
 }
 
-void CameraController::SetDefaultCameraWork(std::unique_ptr<ICameraWork> defaultCameraWork) {
-    defaultCameraWork_ = std::move(defaultCameraWork);
-}
-
 void CameraController::ResetDefaultCameraWork() {
+    if (defaultCameraWork_ == nullptr) {
+        return;
+    }
+
     cameraWork_ = std::move(defaultCameraWork_);
     defaultCameraWork_ = nullptr;
 }

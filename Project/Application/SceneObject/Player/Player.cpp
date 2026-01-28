@@ -2,6 +2,7 @@
 #include "Engine/Camera/ICamera.h"
 
 #include "Application/Utility/KeyBindConfig.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 Player::Player() {
     // 必須コンポーネントの取得
@@ -16,7 +17,7 @@ Player::Player() {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/Player.obj");
-    model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#e3e3e3"));
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());
@@ -47,7 +48,7 @@ Player::Player() {
     velocity_ = { 0.0f, 0.0f, 0.0f };
 
     // サウンドリソースの読み込み
-    CoreEngine::SoundManager * soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
         assert(false && "SoundManager not found");
     }
@@ -60,12 +61,20 @@ Player::Player() {
 void Player::Initialize() {
     canMove_ = true;
     velocity_ = { 0.0f, 0.0f, 0.0f };
+
+    warpInvincibilityTimer_ = 0.0f;
 }
 
 void Player::Update() {
     if (!IsActive() || !model_) {
         return;
     }
+
+    // ワープ無敵時間の更新
+    if (warpInvincibilityTimer_ > 0.0f) {
+        warpInvincibilityTimer_ -= 1.0f / 60.0f;
+    }
+
     // アニメーション
     animTimer_ += 0.1f;
     localScaleAnimValue_.y = sinf(animTimer_) * 0.1f;
@@ -77,8 +86,8 @@ void Player::Update() {
         damageInvincibilityTimer_ -= 1.0f / 60.0f;
         model_->SetMaterialColor({
             1.0f,
-            fabsf(sinf(damageInvincibilityTimer_*10.0f)),
-            fabsf(sinf(damageInvincibilityTimer_*10.0f)),
+            fabsf(sinf(damageInvincibilityTimer_ * 10.0f)),
+            fabsf(sinf(damageInvincibilityTimer_ * 10.0f)),
             1.0f });
     } else {
         model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
@@ -110,6 +119,16 @@ void Player::Update() {
         transform_.translate.z += moveDir.y * speed;
     }
 
+    // プレイヤーを半径32の円の中に収める
+    float radius = 25.0f;
+    float distanceFromCenter = sqrtf(transform_.translate.x * transform_.translate.x + transform_.translate.z * transform_.translate.z);
+    if (distanceFromCenter > radius) {
+        float clampedX = (transform_.translate.x / distanceFromCenter) * radius;
+        float clampedZ = (transform_.translate.z / distanceFromCenter) * radius;
+        transform_.translate.x = clampedX;
+        transform_.translate.z = clampedZ;
+    }
+
     // 力の減衰
     velocity_ *= 0.9f;
     transform_.translate += velocity_;
@@ -131,18 +150,15 @@ CoreEngine::Vector3& Player::GetTransform() {
 }
 
 void Player::OnCollisionEnter(GameObject* other) {
-    (void)other;
-    if (other->GetName() == std::string("IEnemy")) {
-        if (damageInvincibilityTimer_ > 0.0f) {
+    if (other->GetTag() == std::string("Enemy")) {
+        if (damageInvincibilityTimer_ > 0.0f || warpInvincibilityTimer_ > 0.0f) {
             return;
         }
 
         // ダメージ処理
         damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
         isDamaged_ = true;
-        //velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition()) * 0.5f;
-
-        
+        velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition());
     }
 }
 
@@ -151,4 +167,20 @@ void Player::PlaySE(const std::string& soundKey) {
     if (it != soundResources_.end()) {
         soundResources_[soundKey]->Play(false);
     }
+}
+
+CoreEngine::Vector2 Player::GetMoveAxis() const {
+    CoreEngine::Vector2 moveDir = { 0.0f, 0.0f };
+    KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
+    moveDir.x = keyBindConfig.GetHorizontalAxis();
+    moveDir.y = keyBindConfig.GetVerticalAxis();
+
+    moveDir.x += velocity_.x;
+    moveDir.y += velocity_.z;
+
+    if (moveDir.Length() > 1.0f) {
+        moveDir = moveDir.Normalize();
+    }
+
+    return moveDir;
 }

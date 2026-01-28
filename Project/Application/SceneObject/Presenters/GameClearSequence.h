@@ -27,6 +27,4 @@ private:
     float animTimer_;
 
     CoreEngine::SpriteObject* gameClearSprite_;
-    CoreEngine::SpriteObject* titleSprite_;
-    CoreEngine::SpriteObject* retrySprite_;
 };

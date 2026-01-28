@@ -88,9 +88,9 @@ Vector3 Camera::GetForward() const
 {
 	// カメラ行列から前方向ベクトルを抽出（-Z軸方向）
 	return Vector::Normalize(Vector3{
-		-cameraMatrix_.m[2][0],
-		-cameraMatrix_.m[2][1],
-		-cameraMatrix_.m[2][2]
+		cameraMatrix_.m[2][0],
+		cameraMatrix_.m[2][1],
+		cameraMatrix_.m[2][2]
 	});
 }
 

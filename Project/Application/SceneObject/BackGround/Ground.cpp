@@ -15,7 +15,7 @@ Ground::Ground() {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/disk.obj");
-    model_->SetMaterialColor(MatsumotoUtility::ColorBrass);
+    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#1C1C1C"));
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());
@@ -26,6 +26,8 @@ Ground::Ground() {
 
     // アクティブ状態に設定
     SetActive(true);
+    model_->GetMaterialManager()->SetEnableLighting(false);
+    model_->GetMaterialManager()->SetShadingMode(0);
 
     float radius = 50.0f;
     transform_.scale = { radius, 1.0f, radius };

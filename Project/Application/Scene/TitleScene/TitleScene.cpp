@@ -16,9 +16,64 @@
 
 namespace CoreEngine
 {
-    void TitleScene::Initialize(EngineSystem* engine)
-    {
-        BaseScene::Initialize(engine);
+void TitleScene::Initialize(EngineSystem* engine)
+{
+	BaseScene::Initialize(engine);
+
+	// コンポーネントを直接取得
+	auto dxCommon = engine_->GetComponent<DirectXCommon>();
+	auto renderManager = engine_->GetComponent<RenderManager>();
+
+	if (!dxCommon || !renderManager) {
+		return;
+	}
+
+	// タイトルシーンの初期化処理
+    sceneCommandExecutor_.Initialize();
+
+    player_ = CreateObject<Player>();
+    ball_ = CreateObject<Ball>();
+    player_->Initialize();
+    ball_->Initialize();
+    ballController_ = std::make_unique<BallController>(ball_, player_, this);
+
+    skyDome_ = CreateObject<WhiteSkyDome>();
+    skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
+
+    // タイトル画像の作成
+    titleSprite_ = CreateObject<CoreEngine::SpriteObject>();
+    titleSprite_->Initialize("Assets/Texture/Title/title.png", "TitleLogo");
+    titleSprite_->GetSpriteTransform().translate = { 0.0f, 200.0f, 0.0f };
+    titleSprite_->SetAnchor({ 0.5f, 0.5f });
+    titleSprite_->GetSpriteTransform().scale = { 1.0f, 1.0f, 1.0f };
+
+    // スペーススタート画像の作成
+    spaceStartSprite_ = CreateObject<CoreEngine::SpriteObject>();
+    spaceStartSprite_->Initialize("Assets/Texture/Title/spaceStart.png", "SpaceStart");
+    spaceStartSprite_->GetSpriteTransform().translate = { 0.0f, -200.0f, 0.0f };
+    spaceStartSprite_->SetAnchor({ 0.5f, 0.5f });
+    spaceStartSprite_->GetSpriteTransform().scale = { 1.0f, 1.0f, 1.0f };
+
+    // ヨーヨーオブジェクトを作成
+    yoyo_ = CreateObject<CoreEngine::YoYoObject>();
+    yoyo_->Initialize();
+    
+    // 演出用の初期設定
+    yoyoState_ = YoYoAnimationState::Descending;
+    yoyoAnimationTime_ = 0.0f;
+    yoyoRotationSpeed_ = 1.0f;
+    yoyoTargetPosition_ = { 0.0f, 0.0f, 5.0f };
+    
+    // 初期位置（画面左上奥）
+    yoyo_->SetPosition({ -8.0f, 6.0f, 12.0f });
+    yoyo_->SetScale({ 3.0f, 3.0f, 3.0f });
+
+}
+
+void TitleScene::OnUpdate()
+{
+    // 入力処理更新
+    KeyBindConfig::Instance().Update();
 
         // コンポーネントを直接取得
         auto dxCommon = engine_->GetComponent<DirectXCommon>();

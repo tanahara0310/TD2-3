@@ -160,3 +160,19 @@ CoreEngine::Vector4 MatsumotoUtility::ColorCodeToVector4(const std::string& colo
     result.w = 1.0f;
     return result;
 }
+
+CoreEngine::Vector3 MatsumotoUtility::DirectionToEulerAngle(const CoreEngine::Vector3& direction) {
+    CoreEngine::Vector3 eulerAngle;
+    eulerAngle.y = atan2f(direction.x, direction.z); // Yaw
+    eulerAngle.x = asinf(-direction.y / CoreEngine::Length(direction)); // Pitch
+    eulerAngle.z = 0.0f; // Roll
+    return eulerAngle;
+}
+
+float MatsumotoUtility::DegreesToRadians(float degrees) {
+    return degrees * (std::numbers::pi_v<float> / 180.0f);
+}
+
+float MatsumotoUtility::Lerp(float a, float b, float t) {
+    return a + (b - a) * t;
+}

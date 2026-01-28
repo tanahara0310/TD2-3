@@ -4,6 +4,7 @@
 SlashEffect::SlashEffect() :
     BulletModel("ApplicationAssets/Model/white1x1Box.obj", "Texture/white1x1.png"),
     lifeTimer_(0.0f) {
+
 }
 
 void SlashEffect::Initialize() {
@@ -11,6 +12,10 @@ void SlashEffect::Initialize() {
     speed_ = 0.5f;
     SetActive(false);
     transform_.scale = CoreEngine::Vector3{ 0.5f, 1.0f, 50.0f };
+
+    model_->SetMaterialColor(MatsumotoUtility::ColorYellow);
+    model_->GetMaterialManager()->SetEnableLighting(false);
+    model_->GetMaterialManager()->SetShadingMode(0);
 }
 
 void SlashEffect::Update() {

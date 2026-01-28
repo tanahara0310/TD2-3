@@ -1,6 +1,7 @@
 #include "IEnemy.h"
 #include <EngineSystem.h>
 #include "Engine/Camera/ICamera.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 IEnemy::IEnemy(const std::string& modelPath, const std::string& texturePath) {
     // 必須コンポーネントの取得
@@ -15,7 +16,7 @@ IEnemy::IEnemy(const std::string& modelPath, const std::string& texturePath) {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel(modelPath);
-    model_->SetMaterialColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#e33636"));
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());

@@ -15,7 +15,6 @@ WhiteSkyDome::WhiteSkyDome() {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/skyDome300.obj");
-    model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
     model_->GetMaterialManager()->SetEnableLighting(false);
     model_->GetMaterialManager()->SetShadingMode(0);
 

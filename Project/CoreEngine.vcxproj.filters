@@ -302,9 +302,6 @@
     <ClCompile Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.cpp" />
     <ClCompile Include="Application\SceneObject\GameRule\GameResultManager.cpp" />
     <ClCompile Include="Application\Utility\Stopwatch.cpp" />
-    <ClCompile Include="Application\Utility\StringRenderer.cpp">
-      <Filter>Source Files\Application\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
     <ClCompile Include="Application\SceneObject\BackGround\Ground.cpp" />
@@ -315,6 +312,8 @@
     <ClCompile Include="Application\SceneObject\Effect\ShockWaveEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\SlashEffect.cpp" />
     <ClCompile Include="Application\SceneObject\ScreenUI\ScreenUI.cpp" />
+    <ClCompile Include="Application\Utility\StringRenderer.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\FollowEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -788,9 +787,6 @@
     <ClInclude Include="Application\SceneObject\GameRule\TimeAndEnemyCountSpawnRule.h" />
     <ClInclude Include="Application\SceneObject\GameRule\GameResultManager.h" />
     <ClInclude Include="Application\Utility\Stopwatch.h" />
-    <ClInclude Include="Application\Utility\StringRenderer.h">
-      <Filter>Header Files\Application\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
     <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
@@ -802,6 +798,9 @@
     <ClInclude Include="Application\SceneObject\Effect\SlashEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\ExplosionEffect.h" />
     <ClInclude Include="Application\SceneObject\ScreenUI\ScreenUI.h" />
+    <ClInclude Include="Application\Utility\StringRenderer.h" />
+    <ClInclude Include="Application\Utility\ApplicationGlobalValue.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\FollowEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

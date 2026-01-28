@@ -1,35 +1,35 @@
 {
   "enemies": [
     [
-      "class DummyEnemy",
+      "class FollowEnemy",
       [
-        10.0,
+        25.0,
         0.0,
         0.0
       ]
     ],
     [
-      "class DummyEnemy",
+      "class FollowEnemy",
       [
-        -10.0,
+        -25.0,
         0.0,
         0.0
       ]
     ],
     [
-      "class DummyEnemy",
+      "class FollowEnemy",
       [
         0.0,
         0.0,
-        10.0
+        25.0
       ]
     ],
     [
-      "class DummyEnemy",
+      "class FollowEnemy",
       [
         0.0,
         0.0,
-        -10.0
+        -25.0
       ]
     ]
   ]

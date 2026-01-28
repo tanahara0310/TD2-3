@@ -2,6 +2,7 @@
 #include "Engine/Camera/ICamera.h"
 
 #include "Application/Utility/KeyBindConfig.h"
+#include "Application/Utility/MatsumotoUtility.h"
 
 Player::Player() {
     // 必須コンポーネントの取得
@@ -16,7 +17,7 @@ Player::Player() {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/Player.obj");
-    model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#e3e3e3"));
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());
@@ -118,6 +119,16 @@ void Player::Update() {
         transform_.translate.z += moveDir.y * speed;
     }
 
+    // プレイヤーを半径32の円の中に収める
+    float radius = 25.0f;
+    float distanceFromCenter = sqrtf(transform_.translate.x * transform_.translate.x + transform_.translate.z * transform_.translate.z);
+    if (distanceFromCenter > radius) {
+        float clampedX = (transform_.translate.x / distanceFromCenter) * radius;
+        float clampedZ = (transform_.translate.z / distanceFromCenter) * radius;
+        transform_.translate.x = clampedX;
+        transform_.translate.z = clampedZ;
+    }
+
     // 力の減衰
     velocity_ *= 0.9f;
     transform_.translate += velocity_;
@@ -139,8 +150,6 @@ CoreEngine::Vector3& Player::GetTransform() {
 }
 
 void Player::OnCollisionEnter(GameObject* other) {
-    (void)other;
-
     if (other->GetTag() == std::string("Enemy")) {
         if (damageInvincibilityTimer_ > 0.0f || warpInvincibilityTimer_ > 0.0f) {
             return;

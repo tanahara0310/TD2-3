@@ -20,9 +20,7 @@
 
 #include "Application/SceneObject/Effect/AllEffect.h"
 
-namespace {
-    const double GAME_CLEAR_TIME_MS = 60000.0;
-}
+#include "Application/Utility/ApplicationGlobalValue.h"
 
 namespace CoreEngine
 {
@@ -80,7 +78,7 @@ void GameScene::Initialize(EngineSystem* engine)
     cameraController_->ResetDefaultCameraWork();
 
     skyDome_ = CreateObject<WhiteSkyDome>();
-    skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
+    skyDome_->SetColor(MatsumotoUtility::ColorYellow);
 
     // プレイヤーの初期化
     player_->Initialize();
@@ -108,7 +106,9 @@ void GameScene::Initialize(EngineSystem* engine)
     menuView_ = std::make_unique<MenuView>(this, menuController_.get());
     menuView_->Initialize();
     // 敵配置データのロード
-    enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get());
+    enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get(),player_);
+
+    enemyMapLoader_->LoadEnemyMap("testD.json");
     enemyMapLoader_->LoadEnemyMap("testA.json");
     enemyMapLoader_->LoadEnemyMap("testB.json");
     enemyMapLoader_->LoadEnemyMap("testC.json");
@@ -154,9 +154,12 @@ void GameScene::Initialize(EngineSystem* engine)
     // ゲーム結果マネージャーの生成
     gameResultManager_ = std::make_unique<GameResultManager>();
     gameResultManager_->Initialize();
-    // 時間経過でクリア
+    // 時間経過&&死んでる敵がしっかり非アクティブでクリア
     std::function<bool()> timeUpCondition = [this]() {
-        return gameStopwatch_->ElapsedMilliseconds() >= GAME_CLEAR_TIME_MS;
+        if (enemyManager_->DeathEnemyList().size() > 0) {
+            return false;
+        }
+        return gameStopwatch_->ElapsedMilliseconds() >= ApplicationGlobalValue::GAME_CLEAR_TIME_MS;
         };
     gameResultManager_->AddGameClearCondition(timeUpCondition);
     
@@ -187,7 +190,7 @@ void GameScene::OnUpdate()
     // 時間の表示
     ImGui::Text("Elapsed Time: %.2f ms", gameStopwatch_->ElapsedMilliseconds());
     // バーで表示
-    float timeRatio = static_cast<float>(gameStopwatch_->ElapsedMilliseconds() / GAME_CLEAR_TIME_MS);
+    float timeRatio = static_cast<float>(gameStopwatch_->ElapsedMilliseconds() / ApplicationGlobalValue::GAME_CLEAR_TIME_MS);
     ImGui::ProgressBar(timeRatio, ImVec2(0.0f, 0.0f), "Time to Clear");
     ImGui::End();
 #endif

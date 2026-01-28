@@ -4,6 +4,7 @@
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/CameraController/CameraController.h"
 #include "Application/SceneObject/Ball/BallController.h"
+#include "Application/Utility/Stopwatch.h"
 
 #include "Application/SceneObject/CameraController/AllCameraWork.h"
 
@@ -12,15 +13,18 @@ EnemyKillMotionManager::EnemyKillMotionManager(
     Player* player,
     EnemyContainer* enemyContainer,
     CameraController* cameraController,
-    BallController* ballController) :
+    BallController* ballController,
+    Stopwatch* gameTimer) :
     container_(enemyContainer),
     comboCounter_(comboCounter),
     player_(player),
     cameraController_(cameraController),
-    ballController_(ballController) {
+    ballController_(ballController),
+    gameTimer_(gameTimer){
     isPlayingMotion_ = false;
     eraseCooldown_ = 0.5f;
     currentEraseCooldown_ = 0.0f;
+    eraseCooldownFactor_ = 1.0f;
 }
 
 void EnemyKillMotionManager::Update() {
@@ -38,10 +42,17 @@ void EnemyKillMotionManager::Update() {
     if (player_->isDamaged_) {
         isPlayingMotion_ = false;
         player_->isDamaged_ = false;
-        cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+        cameraController_->ResetDefaultCameraWork();
         // 全ての死んだ敵を非アクティブ化
         for (auto enemy : enemyList) {
             enemy->SetActive(false);
+            if (killEffectFunc_) {
+                killEffectFunc_(
+                    enemy->GetTransform(), 
+                    CoreEngine::Vector3(0.0f,0.0f,0.0f),
+                    CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
+            }
+            enemy->PlaySE("Die");
         }
         return;
     }
@@ -50,7 +61,9 @@ void EnemyKillMotionManager::Update() {
     if (!enemyList.empty() && !ballController_->GetIsThrowing()) {
         if (!isPlayingMotion_) {
             isPlayingMotion_ = true;
-            currentEraseCooldown_ = 1.0f; // 最初の消去までの猶予
+            currentEraseCooldown_ = static_cast<float>(enemyList.size())*0.05f; // 最初の消去までの猶予
+            eraseCooldownFactor_ = 1.0f;
+            gameTimer_->Pause();
         }
     }
 
@@ -71,13 +84,32 @@ void EnemyKillMotionManager::Update() {
                 }
             }
             // カメラワーク設定
-            cameraController_->SetCameraWork<GoToCamera>(furthestEnemy->GetTransform() + CoreEngine::Vector3(0.0f, 10.0f, -10.0f), 0.1f);
+            cameraController_->SetCameraWork<TowPointFramingCameraWork>(furthestEnemy->GetTransform() ,player_->GetTransform(), 0.1f);
 
             // 外側のやつから順番に消す
             if (currentEraseCooldown_ <= 0.0f) {
                 furthestEnemy->SetActive(false);
-                currentEraseCooldown_ = eraseCooldown_;
-                // TODO: ここにエフェクトを追加
+                furthestEnemy->PlaySE("Die");
+                currentEraseCooldown_ = eraseCooldown_ * eraseCooldownFactor_;
+                eraseCooldownFactor_ *= 0.7f; // 徐々に速くする
+                // エフェクトの再生
+                if (killEffectFunc_) {
+                    killEffectFunc_(
+                        furthestEnemy->GetTransform(),
+                        CoreEngine::Vector3(0.0f, 0.0f, 0.0f),
+                        CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
+                }
+
+                // 半径3.5の範囲内にいる敵を消す
+                for (auto enemy : enemyList) {
+                    if (enemy == furthestEnemy) continue;
+                    CoreEngine::Vector3 toEnemy = enemy->GetTransform() - furthestEnemyPos;
+                    float distance = CoreEngine::Math::Vector::Length(toEnemy);
+                    if (distance <= 3.5f) {
+                        enemy->SetActive(false);
+                        enemy->PlaySE("Die");
+                    }
+                }
 
             } else {
                 currentEraseCooldown_ -= 1.0f / 60.0f;
@@ -86,7 +118,8 @@ void EnemyKillMotionManager::Update() {
             return;
         } else {
             isPlayingMotion_ = false;
-            cameraController_->SetCameraWork<GoToCamera>(CoreEngine::Vector3(0.0f, 24.0f, -24.0f), 0.1f);
+            cameraController_->ResetDefaultCameraWork();
+            gameTimer_->Resume();
         }
     }
 

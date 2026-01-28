@@ -18,9 +18,9 @@
 
 #include "Application/Utility/Command/SceneAllCommand.h"
 
-namespace {
-    const double GAME_CLEAR_TIME_MS = 60000.0;
-}
+#include "Application/SceneObject/Effect/AllEffect.h"
+
+#include "Application/Utility/ApplicationGlobalValue.h"
 
 namespace CoreEngine
 {
@@ -42,9 +42,26 @@ void GameScene::Initialize(EngineSystem* engine)
 	// ゲームシーンの初期化処理
     sceneCommandExecutor_.Initialize();
     cameraController_ = std::make_unique<CameraController>(cameraManager_.get());
+    CoreEngine::Camera* camera =
+        static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
+    camera->SetTranslate({ 0.0f, 30.0f, 0.0f });
+    camera->SetRotate({3.14f*0.4f,0.0f,0.0f});
+    CameraParameters params = camera->GetParameters();
+    params.fov = MatsumotoUtility::DegreesToRadians(40.0f);
+    camera->SetParameters(params);
     cameraController_->Initialize();
+
     gameStopwatch_ = std::make_unique<Stopwatch>();
     gameStopwatch_->Start();
+
+    // エフェクトの生成
+    effectContainers_.clear();
+    effectContainers_["HitEffect"] = std::make_unique<BulletObjectContainer>(20);
+    effectContainers_["HitEffect"]->ApplyToScene<HitEffect>(this);
+    effectContainers_["ShockWaveEffect"] = std::make_unique<BulletObjectContainer>(20);
+    effectContainers_["ShockWaveEffect"]->ApplyToScene<ShockWaveEffect>(this);
+    effectContainers_["SlashEffect"] = std::make_unique<BulletObjectContainer>(20);
+    effectContainers_["SlashEffect"]->ApplyToScene<SlashEffect>(this);
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
@@ -52,9 +69,16 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
+    screenUI_ = std::make_unique<ScreenUI>(this,player_,gameStopwatch_.get());
+    screenUI_->Initialize();
+
+    //cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
+    cameraController_->SetDefaultCameraWork<FollowCamera>(
+        player_->GetTransform(), CoreEngine::Vector3(-7.5f, 60.0f, -21.0f), 0.1f);
+    cameraController_->ResetDefaultCameraWork();
 
     skyDome_ = CreateObject<WhiteSkyDome>();
-    skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
+    skyDome_->SetColor(MatsumotoUtility::ColorYellow);
 
     // プレイヤーの初期化
     player_->Initialize();
@@ -63,15 +87,28 @@ void GameScene::Initialize(EngineSystem* engine)
     enemyManager_ = std::make_unique<EnemyContainer>(this);
 
     // ボールコントローラーの生成
-    ballController_ = std::make_unique<BallController>(ball_, player_);
+    ballController_ = std::make_unique<BallController>(ball_, player_, this);
     ballController_->Initialize();
+    ballController_->SetHitEffectFunction(
+        std::bind(&BulletObjectContainer::Spawn,
+            effectContainers_["ShockWaveEffect"].get(),
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+    );
+    ballController_->SetSlashEffectFunction(
+        std::bind(&BulletObjectContainer::Spawn,
+            effectContainers_["SlashEffect"].get(),
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+    );
+
     // メニューコントローラーの生成
     menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
     menuController_->Initialize();
     menuView_ = std::make_unique<MenuView>(this, menuController_.get());
     menuView_->Initialize();
     // 敵配置データのロード
-    enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get());
+    enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get(),player_);
+
+    enemyMapLoader_->LoadEnemyMap("testD.json");
     enemyMapLoader_->LoadEnemyMap("testA.json");
     enemyMapLoader_->LoadEnemyMap("testB.json");
     enemyMapLoader_->LoadEnemyMap("testC.json");
@@ -85,8 +122,15 @@ void GameScene::Initialize(EngineSystem* engine)
         player_,
         enemyManager_.get(),
         cameraController_.get(),
-        ballController_.get());
+        ballController_.get(),
+        gameStopwatch_.get());
     enemyKillMotionManager_->isPlayingMotion_ = false;
+    // キルエフェクト関数の設定
+    enemyKillMotionManager_->SetKillEffectFunction(
+        std::bind(&BulletObjectContainer::Spawn,
+            effectContainers_["HitEffect"].get(),
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+    );
 
     // 敵ウェーブマネージャーの生成
     enemyWaveManager_ = std::make_unique<EnemyWaveManager>(enemyMapLoader_.get());
@@ -110,9 +154,12 @@ void GameScene::Initialize(EngineSystem* engine)
     // ゲーム結果マネージャーの生成
     gameResultManager_ = std::make_unique<GameResultManager>();
     gameResultManager_->Initialize();
-    // 時間経過でクリア
+    // 時間経過&&死んでる敵がしっかり非アクティブでクリア
     std::function<bool()> timeUpCondition = [this]() {
-        return gameStopwatch_->ElapsedMilliseconds() >= GAME_CLEAR_TIME_MS;
+        if (enemyManager_->DeathEnemyList().size() > 0) {
+            return false;
+        }
+        return gameStopwatch_->ElapsedMilliseconds() >= ApplicationGlobalValue::GAME_CLEAR_TIME_MS;
         };
     gameResultManager_->AddGameClearCondition(timeUpCondition);
     
@@ -143,7 +190,7 @@ void GameScene::OnUpdate()
     // 時間の表示
     ImGui::Text("Elapsed Time: %.2f ms", gameStopwatch_->ElapsedMilliseconds());
     // バーで表示
-    float timeRatio = static_cast<float>(gameStopwatch_->ElapsedMilliseconds() / GAME_CLEAR_TIME_MS);
+    float timeRatio = static_cast<float>(gameStopwatch_->ElapsedMilliseconds() / ApplicationGlobalValue::GAME_CLEAR_TIME_MS);
     ImGui::ProgressBar(timeRatio, ImVec2(0.0f, 0.0f), "Time to Clear");
     ImGui::End();
 #endif
@@ -161,6 +208,7 @@ void GameScene::OnUpdate()
     // メニューコントローラーの更新
     menuController_->Update();
     menuView_->Update();
+    screenUI_->Update();
 
     // メニューが閉じている場合のみゲームシーンを更新
     if (!menuController_->IsMenuOpen()) {

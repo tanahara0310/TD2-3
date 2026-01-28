@@ -1,28 +1,28 @@
 {
-    "enemies": [
-        [
-            "class DummyEnemy",
-            [
-                0.0,
-                0.0,
-                5.0
-            ]
-        ],
-        [
-            "class DummyEnemy",
-            [
-                -5.0,
-                0.0,
-                5.0
-            ]
-        ],
-        [
-            "class DummyEnemy",
-            [
-                5.0,
-                0.0,
-                5.0
-            ]
-        ]
+  "enemies": [
+    [
+      "class DummyEnemy",
+      [
+        0.0,
+        0.0,
+        5.0
+      ]
+    ],
+    [
+      "class FollowEnemy",
+      [
+        -5.0,
+        0.0,
+        5.0
+      ]
+    ],
+    [
+      "class DummyEnemy",
+      [
+        5.0,
+        0.0,
+        5.0
+      ]
     ]
+  ]
 }

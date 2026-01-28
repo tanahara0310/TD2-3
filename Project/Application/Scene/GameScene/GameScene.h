@@ -19,6 +19,7 @@ class Ball;
 class WhiteSkyDome;
 class Ground;
 #include "Application/SceneObject/Menu/MenuView.h"
+#include "Application/SceneObject/ScreenUI/ScreenUI.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/EnemyMapLoader.h"
@@ -27,6 +28,8 @@ class Ground;
 #include "Application/SceneObject/GameRule/GameResultManager.h"
 #include "Application/SceneObject/GameRule/TimeAndEnemyCountSpawnRule.h"
 #include "Application/SceneObject/Presenters/GameClearSequence.h"
+
+#include "Application/Utility/BulletObject/BulletObjectContainer.h"
 
 namespace CoreEngine
 {
@@ -69,6 +72,7 @@ private:
     WhiteSkyDome* skyDome_;
     Ground* ground_;
     std::unique_ptr<MenuView> menuView_;
+    std::unique_ptr<ScreenUI> screenUI_;
     
     // ゲームオブジェクトの制御
     std::unique_ptr<Stopwatch> gameStopwatch_;
@@ -82,6 +86,9 @@ private:
     std::unique_ptr<GameResultManager> gameResultManager_;
     std::unique_ptr<TimeAndEnemyCountSpawnRule> gameRule_;
     std::unique_ptr<GameClearSequence> gameClearSequence_;
+
+    // エフェクト
+    std::map<std::string, std::unique_ptr<BulletObjectContainer>> effectContainers_;
 
     // BGM
     std::unique_ptr<CoreEngine::SoundManager::SoundResource> bgmSoundResource_;

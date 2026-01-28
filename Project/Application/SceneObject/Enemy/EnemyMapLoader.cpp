@@ -1,4 +1,5 @@
 #include "EnemyMapLoader.h"
+#include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/AllEnemy.h"
 #include <fstream>
@@ -8,8 +9,9 @@ namespace {
     const std::string kEnemyMapFilePath = "Assets/ApplicationAssets/EnemySpawnMapData/";
 }
 
-EnemyMapLoader::EnemyMapLoader(EnemyContainer* enemyManager)
-    : enemyManager_(enemyManager) {
+EnemyMapLoader::EnemyMapLoader(EnemyContainer* enemyManager, Player* player) :
+    enemyManager_(enemyManager),
+    player_(player) {
     enemyMapStack_.clear();
 }
 
@@ -64,6 +66,9 @@ void EnemyMapLoader::RespawnEnemies() {
             // 敵の再配置
             if (enemyType == typeid(DummyEnemy).name()) {
                 enemyManager_->SpawnEnemy<DummyEnemy>(position);
+            } else if (enemyType == typeid(FollowEnemy).name()) {
+                // 仮にターゲット位置を原点に設定
+                enemyManager_->SpawnEnemy<FollowEnemy>(position,player_->GetPosPtr());
             }
             // 他の敵タイプもここに追加
         }

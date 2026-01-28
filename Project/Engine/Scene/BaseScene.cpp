@@ -35,7 +35,7 @@ namespace CoreEngine
 
 #ifdef _DEBUG
         //グリッド（デバッグビルドのみ）
-        SetupGrid();
+        //SetupGrid();
 #endif
     }
 

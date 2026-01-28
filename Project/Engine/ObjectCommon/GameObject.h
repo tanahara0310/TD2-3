@@ -95,6 +95,14 @@ namespace CoreEngine
         /// @return 設定された名前（空の場合はクラス名）
         const std::string& GetName() const { return name_; }
 
+        /// @brief タグを取得
+        /// @return タグ文字列
+        const std::string& GetTag() const { return tag_; }
+
+        /// @brief タグを設定
+        /// @param tag タグ文字列
+        void SetTag(const std::string& tag) { tag_ = tag; }
+
 #ifdef _DEBUG
         /// @brief ImGuiデバッグUI描画（基本パラメータ：Transform、Active）
         /// @return ImGuiで変更があった場合 true
@@ -143,6 +151,9 @@ namespace CoreEngine
 
         /// @brief オブジェクト名（ImGui表示用）
         std::string name_;
+
+        /// @brief タグ
+        std::string tag_;
 
         /// @brief アクティブ状態フラグ
         bool isActive_ = true;

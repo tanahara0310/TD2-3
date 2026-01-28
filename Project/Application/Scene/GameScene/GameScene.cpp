@@ -48,6 +48,9 @@ void GameScene::Initialize(EngineSystem* engine)
         static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
     camera->SetTranslate({ 0.0f, 30.0f, 0.0f });
     camera->SetRotate({3.14f*0.4f,0.0f,0.0f});
+    CameraParameters params = camera->GetParameters();
+    params.fov = MatsumotoUtility::DegreesToRadians(40.0f);
+    camera->SetParameters(params);
     cameraController_->Initialize();
 
     gameStopwatch_ = std::make_unique<Stopwatch>();
@@ -68,9 +71,12 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
+    screenUI_ = std::make_unique<ScreenUI>(this);
+    screenUI_->Initialize();
 
     //cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
-    cameraController_->SetDefaultCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
+    cameraController_->SetDefaultCameraWork<FollowCamera>(
+        player_->GetTransform(), CoreEngine::Vector3(-7.5f, 60.0f, -21.0f), 0.1f);
     cameraController_->ResetDefaultCameraWork();
 
     skyDome_ = CreateObject<WhiteSkyDome>();
@@ -116,7 +122,8 @@ void GameScene::Initialize(EngineSystem* engine)
         player_,
         enemyManager_.get(),
         cameraController_.get(),
-        ballController_.get());
+        ballController_.get(),
+        gameStopwatch_.get());
     enemyKillMotionManager_->isPlayingMotion_ = false;
     // キルエフェクト関数の設定
     enemyKillMotionManager_->SetKillEffectFunction(
@@ -198,6 +205,7 @@ void GameScene::OnUpdate()
     // メニューコントローラーの更新
     menuController_->Update();
     menuView_->Update();
+    screenUI_->Update();
 
     // メニューが閉じている場合のみゲームシーンを更新
     if (!menuController_->IsMenuOpen()) {

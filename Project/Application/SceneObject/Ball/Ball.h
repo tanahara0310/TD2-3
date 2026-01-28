@@ -23,6 +23,7 @@ public:
 
     void SetConfig(const nlohmann::json& config) override;
     nlohmann::json GetConfig() const override;
+    CoreEngine::Vector3 GetMoveDir() const { return moveDir; }
 
     void PlaySE(const std::string& soundKey);
 
@@ -35,6 +36,9 @@ private:
 
     float speed_;
     CoreEngine::Vector3 direction_;
+
+    CoreEngine::Vector3 oldPosition_;
+    CoreEngine::Vector3 moveDir;
 
     std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };

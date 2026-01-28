@@ -29,6 +29,9 @@ public:
 
     void SetInvincibilityTimeAfterWarp(float time) { warpInvincibilityTimer_ = time; }
 
+    void SetDamageInvincibilityTime(float time) { damageInvincibilityTimer_ = time; }
+    float GetDamageInvincibilityTime() const { return damageInvincibilityTimer_; }
+
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
 

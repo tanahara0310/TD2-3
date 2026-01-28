@@ -311,6 +311,7 @@
     <ClCompile Include="Application\SceneObject\Effect\HitEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\ShockWaveEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\SlashEffect.cpp" />
+    <ClCompile Include="Application\SceneObject\ScreenUI\ScreenUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -794,6 +795,7 @@
     <ClInclude Include="Application\SceneObject\Effect\ShockWaveEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\SlashEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\ExplosionEffect.h" />
+    <ClInclude Include="Application\SceneObject\ScreenUI\ScreenUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

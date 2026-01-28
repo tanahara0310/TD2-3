@@ -188,6 +188,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Menu\MenuView.cpp" />
     <ClCompile Include="Application\SceneObject\Player\Player.cpp" />
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
+    <ClCompile Include="Application\SceneObject\ScreenUI\ScreenUI.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
     <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Application\Scene\ResultScene\ResultScene.cpp" />
@@ -412,6 +413,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Menu\MenuView.h" />
     <ClInclude Include="Application\SceneObject\Player\Player.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
+    <ClInclude Include="Application\SceneObject\ScreenUI\ScreenUI.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
     <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Application\Scene\ResultScene\ResultScene.h" />

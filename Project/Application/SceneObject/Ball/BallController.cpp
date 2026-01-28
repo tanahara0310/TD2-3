@@ -20,6 +20,7 @@ BallController::BallController(Ball* ball, Player* player) :
     config_.emplace("ShotRadius", 10.0f);
     config_.emplace("HangTime", 1.5f);
     config_.emplace("SwitchCooldown", 0.2f);
+    config_.emplace("ReturnThreshold", 0.0f);
 
     canSwitch_ = true;
     isReturning_ = false;
@@ -41,14 +42,22 @@ void BallController::Update() {
         switchCooldown_ -= deltaTime;
     }
 
-    // アンカーポイント更新
-    if (!isReturning_) {
-        anchorPos_ = player_->GetWorldPosition();
+    // アンカーポイント更新（常にプレイヤーに追従させる）
+    anchorPos_ = player_->GetWorldPosition();
+
+    // プレイヤーがダメージを受けたら強制引き戻し
+    if (player_->GetDamageInvincibilityTime() > 0.0f) {
+        isReturning_ = true;
     }
 
     // 発射処理
     if (KeyBindConfig::Instance().IsTrigger("Shot")) {
         if (!ball_->IsActive()) {// 球が出ていなければ発射
+            // プレイヤーがダメージ無敵時間内に攻撃しようとしたらすぐに無敵時間を終了させる
+            if (player_->GetDamageInvincibilityTime() > 0.0f) {
+                player_->SetDamageInvincibilityTime(0.0f);
+            }
+
             ball_->SetActive(true);
             anchorPos_ = player_->GetWorldPosition();
             isReturning_ = false;
@@ -122,7 +131,7 @@ void BallController::Update() {
             CoreEngine::Vector3 newPos = MatsumotoUtility::SphericalToCartesian(nowRadius_, cartesianPos_.y, cartesianPos_.z);
             ball_->GetTransform() = (anchorPos_ + newPos);
         }
-    }else{
+    } else {
         canSwitch_ = true;
     }
 
@@ -131,7 +140,7 @@ void BallController::Update() {
         ball_->PlaySE("Hit");
 
         if (hitEffectFunc_) {
-            CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(ball_->GetWorldPosition() - ball_->hitPos_);
+            CoreEngine::Vector3 direction = -ball_->GetMoveDir();
             CoreEngine::Vector3 rotate = MatsumotoUtility::DirectionToEulerAngle(direction);
             hitEffectFunc_(
                 ball_->hitPos_,
@@ -139,7 +148,7 @@ void BallController::Update() {
                 CoreEngine::Vector3(1.0f, 1.0f, 1.0f));
         }
         if (slashEffectFunc_) {
-            CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(ball_->GetWorldPosition() - ball_->hitPos_);
+            CoreEngine::Vector3 direction = ball_->GetMoveDir();
             CoreEngine::Vector3 rotate = MatsumotoUtility::DirectionToEulerAngle(direction);
             rotate.x = 0.0f;
             rotate.z = 0.0f;
@@ -149,19 +158,15 @@ void BallController::Update() {
                 CoreEngine::Vector3(5.0f, 0.1f, 50.0f));
         }
 
-        // ボールより敵が近いなら反射
-        CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
-        CoreEngine::Vector3 hitPos = ball_->hitPos_;
-        if ((CoreEngine::Math::Vector::Length(ballPos - hitPos) < nowRadius_)) {
-            // 反射処理
-            isReturning_ = false;
-            ball_->isHitEnemy_ = false;
-            hangTimeCounter_ = config_["HangTime"].get<float>();
-
-        } else {
+        float dot = CoreEngine::Math::Vector::Dot(ball_->GetMoveDir(), player_->GetTransform() - ball_->GetTransform());
+        if (dot <= config_["ReturnThreshold"].get<float>()) {
             // 引き戻し処理
             isReturning_ = true;
             hangTimeCounter_ = 0.0f;
+        } else {
+            // 反射処理
+            isReturning_ = false;
+            hangTimeCounter_ = config_["HangTime"].get<float>();
         }
         ball_->isHitEnemy_ = false;
         canSwitch_ = true;

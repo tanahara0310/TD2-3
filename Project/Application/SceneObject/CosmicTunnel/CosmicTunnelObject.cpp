@@ -80,15 +80,22 @@ void CosmicTunnelObject::Draw(const ICamera* camera) {
     Matrix4x4 projectionMatrix = camera->GetProjectionMatrix();
     Matrix4x4 viewProjectionMatrix = MathCore::Matrix::Multiply(viewMatrix, projectionMatrix);
     
+    // ビュー行列の逆行列を計算（ビルボード用）
+    Matrix4x4 viewInverse = MathCore::Matrix::Inverse(viewMatrix);
+    
     // ワールド行列を取得
     Matrix4x4 worldMatrix = transform_.GetWorldMatrix();
     
     // WVP行列を計算
     transformData_->WVP = MathCore::Matrix::Multiply(worldMatrix, viewProjectionMatrix);
     transformData_->World = worldMatrix;
+    transformData_->ViewInverse = viewInverse;
     
     // カメラ位置を設定
-    sceneData_->cameraPosition = camera->GetPosition();
+    Vector3 camPos = camera->GetPosition();
+    transformData_->cameraPosition = { camPos.x, camPos.y, camPos.z, 1.0f };
+    
+    sceneData_->cameraPosition = camPos;
     
     // 解像度を設定（WinAppから取得）
     auto* winApp = engine->GetComponent<WinApp>();

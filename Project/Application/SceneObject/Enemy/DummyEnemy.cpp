@@ -30,12 +30,18 @@ void DummyEnemy::EnemyUpdate() {
 }
 
 void DummyEnemy::OnCollisionEnter(CoreEngine::GameObject* other) {
-    other;
+    // 無効状態または非生存状態なら処理しない
+    if (!isActive_ || !isAlive_) {
+        return;
+    }
 
-    hp_--;
-    if (hp_ <= 0) {
-        isAlive_ = false;
-        collider_->SetEnabled(false);
+    // ダメージ判定
+    if (other->GetTag() == std::string("PlayerAttack")) {
+        hp_--;
+        if (hp_ <= 0) {
+            isAlive_ = false;
+            collider_->SetEnabled(false);
+        }
     }
 }
 

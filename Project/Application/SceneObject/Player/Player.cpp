@@ -60,12 +60,20 @@ Player::Player() {
 void Player::Initialize() {
     canMove_ = true;
     velocity_ = { 0.0f, 0.0f, 0.0f };
+
+    warpInvincibilityTimer_ = 0.0f;
 }
 
 void Player::Update() {
     if (!IsActive() || !model_) {
         return;
     }
+
+    // ワープ無敵時間の更新
+    if (warpInvincibilityTimer_ > 0.0f) {
+        warpInvincibilityTimer_ -= 1.0f / 60.0f;
+    }
+
     // アニメーション
     animTimer_ += 0.1f;
     localScaleAnimValue_.y = sinf(animTimer_) * 0.1f;
@@ -134,7 +142,7 @@ void Player::OnCollisionEnter(GameObject* other) {
     (void)other;
 
     if (other->GetTag() == std::string("Enemy")) {
-        if (damageInvincibilityTimer_ > 0.0f) {
+        if (damageInvincibilityTimer_ > 0.0f || warpInvincibilityTimer_ > 0.0f) {
             return;
         }
 

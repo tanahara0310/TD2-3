@@ -27,6 +27,8 @@ public:
     
     void PlaySE(const std::string& soundKey);
 
+    void SetInvincibilityTimeAfterWarp(float time) { warpInvincibilityTimer_ = time; }
+
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
 
@@ -37,6 +39,8 @@ private:
 
     float animTimer_;
     float damageInvincibilityTimer_;
+    // ワープ後の無敵時間タイマー
+    float warpInvincibilityTimer_;
 
     std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };

@@ -66,6 +66,7 @@ void BallController::Update() {
 
         } else {// 球が出ていればプレイヤーと球の位置を変えてスイッチ
             if (switchCooldown_ <= 0.0f && canSwitch_) {
+                player_->SetInvincibilityTimeAfterWarp(0.5f);
                 CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
                 CoreEngine::Vector3 playerPos = player_->GetWorldPosition();
                 // ボールとプレイヤーの位置を入れ替え

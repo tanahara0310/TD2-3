@@ -44,6 +44,8 @@ Ball::Ball() {
     }
     soundResources_.clear();
     soundResources_["Hit"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_BallHit.mp3");
+
+    SetTag("PlayerAttack");
 }
 
 void Ball::Initialize() {

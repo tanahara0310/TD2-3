@@ -258,3 +258,7 @@ void BallController::Draw(const CoreEngine::ICamera* camera) {
 bool BallController::GetIsThrowing() {
     return ball_->IsActive();
 }
+
+bool BallController::GetIsCanSwitch() {
+    return canSwitch_;
+}

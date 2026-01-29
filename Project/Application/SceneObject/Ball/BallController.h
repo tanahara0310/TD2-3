@@ -23,6 +23,7 @@ public:
     void Draw(const CoreEngine::ICamera* camera);
 
     bool GetIsThrowing();
+    bool GetIsCanSwitch();
 
     void SetHitEffectFunction(
         const std::function<int(

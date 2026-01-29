@@ -41,6 +41,10 @@ void GameScene::Initialize(EngineSystem* engine)
 
 	// ゲームシーンの初期化処理
     sceneCommandExecutor_.Initialize();
+    // メニューコントローラーの生成
+    menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
+    menuController_->Initialize();
+
     cameraController_ = std::make_unique<CameraController>(cameraManager_.get());
     CoreEngine::Camera* camera =
         static_cast<CoreEngine::Camera*>(cameraManager_->GetActiveCamera(CoreEngine::CameraType::Camera3D));
@@ -69,7 +73,9 @@ void GameScene::Initialize(EngineSystem* engine)
     ball_ = CreateObject<Ball>();
     ball_->SetAutoUpdate(false);
     ground_ = CreateObject<Ground>();
-    screenUI_ = std::make_unique<ScreenUI>(this,player_,gameStopwatch_.get());
+    ballController_ = std::make_unique<BallController>(ball_, player_, this);
+    screenUI_ = std::make_unique<ScreenUI>(
+        this,player_,gameStopwatch_.get(),ballController_.get(), menuController_.get());
     screenUI_->Initialize();
 
     //cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
@@ -87,7 +93,7 @@ void GameScene::Initialize(EngineSystem* engine)
     enemyManager_ = std::make_unique<EnemyContainer>(this);
 
     // ボールコントローラーの生成
-    ballController_ = std::make_unique<BallController>(ball_, player_, this);
+    
     ballController_->Initialize();
     ballController_->SetHitEffectFunction(
         std::bind(&BulletObjectContainer::Spawn,
@@ -100,11 +106,7 @@ void GameScene::Initialize(EngineSystem* engine)
             std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
     );
 
-    // メニューコントローラーの生成
-    menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
-    menuController_->Initialize();
-    menuView_ = std::make_unique<MenuView>(this, menuController_.get());
-    menuView_->Initialize();
+    
     // 敵配置データのロード
     enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get(),player_);
 
@@ -150,6 +152,10 @@ void GameScene::Initialize(EngineSystem* engine)
             collisionManager_->RegisterCollider(enemy->GetCollider());
         }
     }
+
+    // メニューViewの生成
+    menuView_ = std::make_unique<MenuView>(this, menuController_.get());
+    menuView_->Initialize();
 
     // ゲーム結果マネージャーの生成
     gameResultManager_ = std::make_unique<GameResultManager>();

@@ -15,7 +15,7 @@ Ground::Ground() {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel("ApplicationAssets/Model/disk.obj");
-    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#1C1C1C"));
+    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#000000"));
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());

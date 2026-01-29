@@ -16,7 +16,7 @@ IEnemy::IEnemy(const std::string& modelPath, const std::string& texturePath) {
 
     // 静的モデルとして作成
     model_ = modelManager->CreateStaticModel(modelPath);
-    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#e33636"));
+    model_->SetMaterialColor(MatsumotoUtility::ColorCodeToVector4("#880000"));
 
     // トランスフォームの初期化
     transform_.Initialize(dxCommon->GetDevice());

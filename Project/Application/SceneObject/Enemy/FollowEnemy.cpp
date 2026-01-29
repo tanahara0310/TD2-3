@@ -27,7 +27,7 @@ void FollowEnemy::EnemyUpdate() {
         CoreEngine::Vector3 direction = (*targetPos_) - transform_.translate;
         direction = CoreEngine::Math::Vector::Normalize(direction);
         
-        transform_.translate += direction * (1.0f / 60.0f);
+        transform_.translate += direction * (2.0f / 60.0f);
         CoreEngine::Vector3 toTarget = (*targetPos_) - transform_.translate;
         toTarget.y = 0.0f; // 水平方向のみ考慮
         toTarget = CoreEngine::Math::Vector::Normalize(toTarget);

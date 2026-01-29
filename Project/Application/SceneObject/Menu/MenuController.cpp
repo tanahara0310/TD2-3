@@ -29,14 +29,12 @@ void MenuController::Update() {
 
     // メニューが開いている場合、選択肢の変更を受け付ける
     if (isMenuOpen_) {
-        if (KeyBindConfig::Instance().IsTrigger("MoveForward") || KeyBindConfig::Instance().IsTrigger("MoveBack")) {
-            // 選択肢を切り替える
-            if (selectedOption_ == MenuOption::ReturnToGame) {
-                selectedOption_ = MenuOption::ExitToTitle;
-            } else {
-                selectedOption_ = MenuOption::ReturnToGame;
-            }
+        if (KeyBindConfig::Instance().GetVerticalAxis() > 0.0f) {
+            selectedOption_ = MenuOption::ReturnToGame;
+        } else if(KeyBindConfig::Instance().GetVerticalAxis() < 0.0f) {
+            selectedOption_ = MenuOption::ExitToTitle;
         }
+
     } else {
         // メニューが閉じている場合、選択肢をデフォルトに戻す
         if (selectedOption_ != MenuOption::ReturnToGame) {

@@ -9,10 +9,11 @@
 #include "Application/Utility/Command/SceneAllCommand.h"
 
 #include "Application/SceneObject/Player/Player.h"
-#include "Application/SceneObject/Ball/Ball.h"
-#include "Application/SceneObject/SkyDome/WhiteSkyDome.h"
 #include "Application/SceneObject/CosmicTunnel/CosmicTunnelObject.h"
+#include "Application/SceneObject/UIFrame/UIFrameObject.h"
 #include "Application/Utility/MatsumotoUtility.h"
+#include "Engine/Graphics/PostEffect/PostEffectManager.h"
+#include "Engine/Graphics/PostEffect/PostEffectNames.h"
 
 namespace CoreEngine
 {
@@ -34,13 +35,10 @@ namespace CoreEngine
         player_ = CreateObject<Player>();
         player_->SetActive(false); // 最初は非アクティブ
 
-        ball_ = CreateObject<Ball>();
         player_->Initialize();
-        ball_->Initialize();
-        ballController_ = std::make_unique<BallController>(ball_, player_, this);
 
-        skyDome_ = CreateObject<WhiteSkyDome>();
-        skyDome_->SetColor(MatsumotoUtility::ColorEggplant);
+
+
 
         // タイトル画像の作成
         titleSprite_ = CreateObject<CoreEngine::SpriteObject>();
@@ -72,11 +70,24 @@ namespace CoreEngine
         yoyo_->SetScale({ 3.0f, 3.0f, 3.0f });
 
         // 宇宙トンネルオブジェクトを作成
-        cosmicTunnel_ = CreateObject<CoreEngine::CosmicTunnelObject>();
-        cosmicTunnel_->Initialize();
-        cosmicTunnel_->SetPosition({ 0.0f, 0.0f, 0.0f });
-        cosmicTunnel_->SetScale({ 1.5f, 1.5f, 1.5f });
-        cosmicTunnel_->SetIntensity(0.8f); // 強度を調整
+        //cosmicTunnel_ = CreateObject<CoreEngine::CosmicTunnelObject>();
+        //cosmicTunnel_->Initialize();
+        //cosmicTunnel_->SetPosition({ 0.0f, 0.0f, 0.0f });
+        //cosmicTunnel_->SetScale({ 1.5f, 1.5f, 1.5f });
+        //cosmicTunnel_->SetIntensity(0.8f); // 強度を調整
+
+        // UIフレームオブジェクトを作成（使用しないのでコメントアウト）
+        //uiFrame_ = CreateObject<CoreEngine::UIFrameObject>();
+        //uiFrame_->Initialize();
+        //uiFrame_->SetPosition({ 0.0f, 0.0f, 5.0f });
+        //uiFrame_->SetScale({ 1.0f, 1.0f, 1.0f });
+        //uiFrame_->SetIntensity(1.0f); // 強度を調整
+
+        // UIフレームポストエフェクトを有効化
+        /*auto* postEffectManager = engine_->GetComponent<PostEffectManager>();
+        if (postEffectManager) {
+            postEffectManager->SetEffectEnabled(PostEffectNames::UIFrame, true);
+        }*/
 
     }
 
@@ -93,8 +104,7 @@ namespace CoreEngine
         }
 
         player_->Update();
-        ball_->Update();
-        ballController_->Update();
+
 
         // ヨーヨー演出の更新
         UpdateYoYoAnimation();

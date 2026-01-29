@@ -1,6 +1,12 @@
-﻿#include "SphereCollider.h"
+#include "SphereCollider.h"
 #include "AABBCollider.h"
 #include "Engine/Utility/Collision/CollisionUtils.h"
+
+#ifdef _DEBUG
+#include "Engine/Graphics/Render/Line/LineRendererPipeline.h"
+#include "Engine/Graphics/Line/LineManager.h"
+#include "Engine/Camera/ICamera.h"
+#endif
 
 
 namespace CoreEngine
@@ -31,4 +37,14 @@ bool SphereCollider::CheckCollision(Collider* other) const {
 void SphereCollider::SetRadius(float radius) {
    radius_ = radius;
 }
+
+#ifdef _DEBUG
+void SphereCollider::DrawDebug(CoreEngine::LineRendererPipeline* pipeline, const CoreEngine::ICamera* camera, const CoreEngine::Vector3& color) const {
+   if (!pipeline || !camera) return;
+
+   CoreEngine::Vector3 center = GetPosition();
+   auto lines = CoreEngine::LineManager::GenerateSphereLines(center, radius_, color, 1.0f);
+   pipeline->AddLines(lines);
+}
+#endif
 }

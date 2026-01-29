@@ -10,6 +10,7 @@ class Ball;
 class WhiteSkyDome;
 namespace CoreEngine {
     class CosmicTunnelObject;
+    class UIFrameObject;
 }
 #include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/Ball/BallController.h"
@@ -48,9 +49,6 @@ namespace CoreEngine
         SceneCommandExecutor sceneCommandExecutor_;
 
         Player* player_;
-        Ball* ball_;
-        WhiteSkyDome* skyDome_;
-        std::unique_ptr<BallController> ballController_;
         CoreEngine::YoYoObject* yoyo_;
 
         // ヨーヨー演出用
@@ -65,5 +63,6 @@ namespace CoreEngine
         
         // 宇宙トンネル演出
         CoreEngine::CosmicTunnelObject* cosmicTunnel_;
+        CoreEngine::UIFrameObject* uiFrame_;
     };
 }

@@ -90,7 +90,7 @@ void Player::Update() {
             fabsf(sinf(damageInvincibilityTimer_ * 10.0f)),
             1.0f });
     } else {
-        model_->SetMaterialColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+        model_->SetMaterialColor({ 0.98f, 0.78f, 0.0f, 1.0f });
     }
 
     // 入力処理（移動）

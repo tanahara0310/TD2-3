@@ -21,7 +21,7 @@ BallController::BallController(Ball* ball, Player* player, CoreEngine::BaseScene
     config_.emplace("ShotSpeed", 0.1f);
     config_.emplace("MoveSpeed", 0.1f);
     config_.emplace("ReturnSpeed", 0.1f);
-    config_.emplace("ShotRadius", 10.0f);
+    config_.emplace("ShotRadius", 11.0f);
     config_.emplace("HangTime", 1.5f);
     config_.emplace("SwitchCooldown", 0.2f);
     config_.emplace("ReturnThreshold", 0.0f);

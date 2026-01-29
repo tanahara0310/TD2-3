@@ -2,7 +2,7 @@
 
 TimeAndEnemyCountSpawnRule::TimeAndEnemyCountSpawnRule(
     std::function<void()> spawnFunction, std::function<size_t()> enemyCountFunction) {
-    spawnInterval_ = 5.0f; // 5秒ごとに出現
+    spawnInterval_ = 4.0f; // 4秒ごとに出現
     timeSinceLastSpawn_ = 0.0f;
     maxEnemyCount_ = 3; // 最大3体まで
     spawnFunction_ = spawnFunction;

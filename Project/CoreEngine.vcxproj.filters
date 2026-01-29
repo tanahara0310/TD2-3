@@ -321,6 +321,10 @@
     <ClCompile Include="Application\SceneObject\ScreenUI\ScreenUI.cpp" />
     <ClCompile Include="Application\Utility\StringRenderer.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\FollowEnemy.cpp" />
+    <ClCompile Include="Engine\Graphics\Primitive\UIFrameGeometry.cpp" />
+    <ClCompile Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.cpp" />
+    <ClCompile Include="Application\SceneObject\UIFrame\UIFrameObject.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -815,6 +819,10 @@
     <ClInclude Include="Application\Utility\StringRenderer.h" />
     <ClInclude Include="Application\Utility\ApplicationGlobalValue.h" />
     <ClInclude Include="Application\SceneObject\Enemy\FollowEnemy.h" />
+    <ClInclude Include="Engine\Graphics\Primitive\UIFrameGeometry.h" />
+    <ClInclude Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.h" />
+    <ClInclude Include="Application\SceneObject\UIFrame\UIFrameObject.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

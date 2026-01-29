@@ -21,5 +21,6 @@ namespace PostEffectNames {
     constexpr const char* Bloom = "Bloom";
     constexpr const char* Dissolve = "Dissolve";
     constexpr const char* BlackHole = "BlackHole";
+    constexpr const char* UIFrame = "UIFrame";
 }
 }

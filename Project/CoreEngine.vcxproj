@@ -192,6 +192,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\ScreenUI\ScreenUI.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
+    <ClCompile Include="Application\SceneObject\UIFrame\UIFrameObject.cpp" />
     <ClCompile Include="Application\SceneObject\YoYo\YoYoObject.cpp" />
     <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Application\Scene\ResultScene\ResultScene.cpp" />
@@ -234,9 +235,11 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\BlackHole.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Bloom.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Dissolve.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\PostEffectPresetManager.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\PrimitivePlane.cpp" />
+    <ClCompile Include="Engine\Graphics\Primitive\UIFrameGeometry.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\YoYoGeometry.cpp" />
     <ClCompile Include="Engine\Graphics\Render\CosmicTunnel\CosmicTunnelRenderer.cpp" />
     <ClCompile Include="Engine\Graphics\Render\Line\LineRendererPipeline.cpp" />
@@ -248,6 +251,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Graphics\Render\RenderManager.cpp" />
     <ClCompile Include="Engine\Graphics\Render\SkyBox\SkyBoxRenderer.cpp" />
     <ClCompile Include="Engine\Graphics\Render\Sprite\SpriteRenderer.cpp" />
+    <ClCompile Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.cpp" />
     <ClCompile Include="Engine\Graphics\Render\YoYo\YoYoRenderer.cpp" />
     <ClCompile Include="Engine\ObjectCommon\GameObject.cpp" />
     <ClCompile Include="Engine\ObjectCommon\GameObjectManager.cpp" />
@@ -426,6 +430,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\ScreenUI\ScreenUI.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
+    <ClInclude Include="Application\SceneObject\UIFrame\UIFrameObject.h" />
     <ClInclude Include="Application\SceneObject\YoYo\YoYoObject.h" />
     <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Application\Scene\ResultScene\ResultScene.h" />
@@ -483,10 +488,12 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\BlackHole.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\Bloom.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\Dissolve.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\PostEffectNames.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\PostEffectPresetManager.h" />
     <ClInclude Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.h" />
     <ClInclude Include="Engine\Graphics\Primitive\PrimitivePlane.h" />
+    <ClInclude Include="Engine\Graphics\Primitive\UIFrameGeometry.h" />
     <ClInclude Include="Engine\Graphics\Primitive\YoYoGeometry.h" />
     <ClInclude Include="Engine\Graphics\Render\CosmicTunnel\CosmicTunnelRenderer.h" />
     <ClInclude Include="Engine\Graphics\Render\IRenderer.h" />
@@ -500,6 +507,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Engine\Graphics\Render\RenderPassType.h" />
     <ClInclude Include="Engine\Graphics\Render\SkyBox\SkyBoxRenderer.h" />
     <ClInclude Include="Engine\Graphics\Render\Sprite\SpriteRenderer.h" />
+    <ClInclude Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.h" />
     <ClInclude Include="Engine\Graphics\Render\YoYo\YoYoRenderer.h" />
     <ClInclude Include="Engine\Graphics\Structs\Node.h" />
     <ClInclude Include="Engine\Graphics\Structs\SkinCluster.h" />

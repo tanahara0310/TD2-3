@@ -1,4 +1,4 @@
-﻿#include "PostEffectPresetManager.h"
+#include "PostEffectPresetManager.h"
 #include "PostEffectManager.h"
 #include "Effect/Blur.h"
 #include "Effect/RadialBlur.h"
@@ -9,6 +9,7 @@
 #include "Effect/RasterScroll.h"
 #include "Effect/FadeEffect.h"
 #include "Effect/Bloom.h"
+#include "Effect/UIFrameEffect.h"
 #include <filesystem>
 #include <iostream>
 
@@ -148,6 +149,14 @@ bool PostEffectPresetManager::SavePreset(const PostEffectManager* postEffectMana
         bloomJson["blurRadius"] = params.blurRadius;
         bloomJson["softKnee"] = params.softKnee;
         presetData["bloom"] = bloomJson;
+    }
+
+    // UIFrameのパラメータ保存
+    if (auto* uiFrame = const_cast<PostEffectManager*>(postEffectManager)->GetEffect<UIFrameEffect>("UIFrame")) {
+        auto params = uiFrame->GetParams();
+        json uiFrameJson;
+        uiFrameJson["time"] = params.time;
+        presetData["uiFrame"] = uiFrameJson;
     }
 
     presetData["version"] = "1.0";

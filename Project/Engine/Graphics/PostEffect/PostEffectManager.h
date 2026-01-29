@@ -168,7 +168,8 @@ private:
         PostEffectNames::Vignette,
         PostEffectNames::Bloom,
         PostEffectNames::Dissolve,
-        PostEffectNames::BlackHole
+        PostEffectNames::BlackHole,
+        PostEffectNames::UIFrame
     };
     
     std::unique_ptr<PostEffectPresetManager> presetManager_;

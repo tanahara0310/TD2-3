@@ -1,4 +1,4 @@
-﻿#include "SpriteRenderer.h"
+#include "SpriteRenderer.h"
 #include "Engine/Camera/ICamera.h"
 #include "Engine/Graphics/Structs/SpriteMaterial.h"
 #include "WinApp/WinApp.h"
@@ -49,7 +49,11 @@ void SpriteRenderer::Initialize(ID3D12Device* device) {
         .AddInputElement("POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, D3D12_APPEND_ALIGNED_ELEMENT)
         .AddInputElement("TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, D3D12_APPEND_ALIGNED_ELEMENT)
         .AddInputElement("NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, D3D12_APPEND_ALIGNED_ELEMENT)
-        .SetRasterizer(D3D12_CULL_MODE_NONE, D3D12_FILL_MODE_SOLID)
+        .SetRasterizerEx(
+            D3D12_CULL_MODE_NONE,      // カリングなし（両面描画）
+            D3D12_FILL_MODE_SOLID,      // ソリッド描画
+            FALSE,                      // 時計回りを表面とする（DirectXの標準）
+            FALSE)                      // 深度クリッピング無効（near/farの外も描画）
         .SetDepthStencil(false, false) // スプライトは深度テスト無効
         .SetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE)
         .BuildAllBlendModes(device, vertexShaderBlob, pixelShaderBlob, rootSignatureMg_->GetRootSignature());
@@ -135,26 +139,47 @@ size_t SpriteRenderer::GetAvailableConstantBuffer() {
 }
 
 Matrix4x4 SpriteRenderer::CalculateWVPMatrix(const Vector3& position, const Vector3& scale, const Vector3& rotation) const {
-    // ワールド変換
-    Matrix4x4 worldMatrix = MathCore::Matrix::MakeAffine(scale, rotation, position);
+    // スプライト用のワールド変換（Z→Y→X順で回転）
+    Matrix4x4 scaleMatrix = MathCore::Matrix::Scale(scale);
+    Matrix4x4 rotateZMatrix = MathCore::Matrix::RotationZ(rotation.z);
+    Matrix4x4 rotateYMatrix = MathCore::Matrix::RotationY(rotation.y);
+    Matrix4x4 rotateXMatrix = MathCore::Matrix::RotationX(rotation.x);
+    Matrix4x4 translateMatrix = MathCore::Matrix::Translation(position);
+    
+    // S * Rz * Ry * Rx * T の順で合成
+    Matrix4x4 worldMatrix = MathCore::Matrix::Multiply(scaleMatrix, rotateZMatrix);
+    worldMatrix = MathCore::Matrix::Multiply(worldMatrix, rotateYMatrix);
+    worldMatrix = MathCore::Matrix::Multiply(worldMatrix, rotateXMatrix);
+    worldMatrix = MathCore::Matrix::Multiply(worldMatrix, translateMatrix);
     
     // ビュー変換（2Dなので単位行列）
     Matrix4x4 viewMatrix = MathCore::Matrix::Identity();
     
     // 射影変換（正射影）- スプライト用座標系
     // 左上原点(0,0)から右下(width,height)の座標系
+    // nearClip/farClipを広範囲にすることで、大きなスプライトの回転にも対応
     Matrix4x4 projectionMatrix = MathCore::Rendering::Orthographic(
         0.0f, 0.0f, 
         static_cast<float>(WinApp::kClientWidth), 
         static_cast<float>(WinApp::kClientHeight), 
-        0.0f, 100.0f);
+        -1000.0f, 1000.0f);
     
     return MathCore::Matrix::Multiply(worldMatrix, MathCore::Matrix::Multiply(viewMatrix, projectionMatrix));
 }
 
 Matrix4x4 SpriteRenderer::CalculateWVPMatrix(const Vector3& position, const Vector3& scale, const Vector3& rotation, const ICamera* camera) const {
-    // ワールド変換
-    Matrix4x4 worldMatrix = MathCore::Matrix::MakeAffine(scale, rotation, position);
+    // スプライト用のワールド変換（Z→Y→X順で回転）
+    Matrix4x4 scaleMatrix = MathCore::Matrix::Scale(scale);
+    Matrix4x4 rotateZMatrix = MathCore::Matrix::RotationZ(rotation.z);
+    Matrix4x4 rotateYMatrix = MathCore::Matrix::RotationY(rotation.y);
+    Matrix4x4 rotateXMatrix = MathCore::Matrix::RotationX(rotation.x);
+    Matrix4x4 translateMatrix = MathCore::Matrix::Translation(position);
+    
+    // S * Rz * Ry * Rx * T の順で合成
+    Matrix4x4 worldMatrix = MathCore::Matrix::Multiply(scaleMatrix, rotateZMatrix);
+    worldMatrix = MathCore::Matrix::Multiply(worldMatrix, rotateYMatrix);
+    worldMatrix = MathCore::Matrix::Multiply(worldMatrix, rotateXMatrix);
+    worldMatrix = MathCore::Matrix::Multiply(worldMatrix, translateMatrix);
     
     if (camera) {
         // カメラのビュー・プロジェクション行列を使用
@@ -165,11 +190,12 @@ Matrix4x4 SpriteRenderer::CalculateWVPMatrix(const Vector3& position, const Vect
     else {
         // カメラがない場合は従来の方式（スクリーン座標固定）
         Matrix4x4 viewMatrix = MathCore::Matrix::Identity();
+        // nearClipを負の値にすることで、回転時にカメラの後ろ側も描画可能にする
         Matrix4x4 projectionMatrix = MathCore::Rendering::Orthographic(
             0.0f, 0.0f,
             static_cast<float>(WinApp::kClientWidth),
             static_cast<float>(WinApp::kClientHeight),
-            0.0f, 100.0f);
+            -100.0f, 100.0f);
         return MathCore::Matrix::Multiply(worldMatrix, MathCore::Matrix::Multiply(viewMatrix, projectionMatrix));
     }
 }

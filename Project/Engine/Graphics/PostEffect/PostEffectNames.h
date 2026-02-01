@@ -22,5 +22,9 @@ namespace PostEffectNames {
     constexpr const char* Dissolve = "Dissolve";
     constexpr const char* BlackHole = "BlackHole";
     constexpr const char* UIFrame = "UIFrame";
+    constexpr const char* Neon = "Neon";
+    constexpr const char* RetroGrid = "RetroGrid";
+    constexpr const char* TransitionEffect = "TransitionEffect";
+    constexpr const char* Scanline = "Scanline";
 }
 }

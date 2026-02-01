@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -49,6 +49,18 @@ public:
     PipelineStateBuilder& SetRasterizer(
         D3D12_CULL_MODE cullMode = D3D12_CULL_MODE_BACK,
         D3D12_FILL_MODE fillMode = D3D12_FILL_MODE_SOLID);
+
+    /// @brief ラスタライザの詳細設定
+    /// @param cullMode カリングモード
+    /// @param fillMode フィルモード
+    /// @param frontCounterClockwise 反時計回りを表面とするか
+    /// @param depthClipEnable 深度クリッピングを有効にするか
+    /// @return ビルダー自身
+    PipelineStateBuilder& SetRasterizerEx(
+        D3D12_CULL_MODE cullMode,
+        D3D12_FILL_MODE fillMode,
+        BOOL frontCounterClockwise,
+        BOOL depthClipEnable);
 
     /// @brief 深度ステンシルの設定
     /// @param enableDepth 深度テストの有効化

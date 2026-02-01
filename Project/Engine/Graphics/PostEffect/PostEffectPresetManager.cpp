@@ -10,6 +10,10 @@
 #include "Effect/FadeEffect.h"
 #include "Effect/Bloom.h"
 #include "Effect/UIFrameEffect.h"
+#include "Effect/Neon.h"
+#include "Effect/RetroGrid.h"
+#include "Effect/TransitionEffect.h"
+#include "Effect/Scanline.h"
 #include <filesystem>
 #include <iostream>
 
@@ -38,6 +42,7 @@ bool PostEffectPresetManager::SavePreset(const PostEffectManager* postEffectMana
     enabledStates["RasterScroll"] = postEffectManager->IsEffectEnabled("RasterScroll");
     enabledStates["FadeEffect"] = postEffectManager->IsEffectEnabled("FadeEffect");
     enabledStates["Bloom"] = postEffectManager->IsEffectEnabled("Bloom");
+    enabledStates["Neon"] = postEffectManager->IsEffectEnabled("Neon");
     presetData["enabledStates"] = enabledStates;
 
     // Blurのパラメータ保存
@@ -151,6 +156,21 @@ bool PostEffectPresetManager::SavePreset(const PostEffectManager* postEffectMana
         presetData["bloom"] = bloomJson;
     }
 
+    // Neonのパラメータ保存
+    if (auto* neon = const_cast<PostEffectManager*>(postEffectManager)->GetEffect<Neon>("Neon")) {
+        auto params = neon->GetParams();
+        json neonJson;
+        neonJson["edgeThreshold"] = params.edgeThreshold;
+        neonJson["glowIntensity"] = params.glowIntensity;
+        neonJson["edgeWidth"] = params.edgeWidth;
+        neonJson["colorSaturation"] = params.colorSaturation;
+        neonJson["brightness"] = params.brightness;
+        neonJson["neonColorR"] = params.neonColorR;
+        neonJson["neonColorG"] = params.neonColorG;
+        neonJson["neonColorB"] = params.neonColorB;
+        presetData["neon"] = neonJson;
+    }
+
     // UIFrameのパラメータ保存
     if (auto* uiFrame = const_cast<PostEffectManager*>(postEffectManager)->GetEffect<UIFrameEffect>("UIFrame")) {
         auto params = uiFrame->GetParams();
@@ -203,6 +223,7 @@ bool PostEffectPresetManager::LoadPreset(PostEffectManager* postEffectManager, c
         postEffectManager->SetEffectEnabled("RasterScroll", JsonManager::SafeGet(enabledStates, "RasterScroll", false));
         postEffectManager->SetEffectEnabled("FadeEffect", JsonManager::SafeGet(enabledStates, "FadeEffect", true));
         postEffectManager->SetEffectEnabled("Bloom", JsonManager::SafeGet(enabledStates, "Bloom", false));
+        postEffectManager->SetEffectEnabled("Neon", JsonManager::SafeGet(enabledStates, "Neon", false));
     }
 
     // Blurのパラメータ読み込み
@@ -359,6 +380,23 @@ bool PostEffectPresetManager::LoadPreset(PostEffectManager* postEffectManager, c
             params.blurRadius = JsonManager::SafeGet(bloomJson, "blurRadius", 1.0f);
             params.softKnee = JsonManager::SafeGet(bloomJson, "softKnee", 1.0f);
             bloom->SetParams(params);
+        }
+    }
+
+    // Neonのパラメータ読み込み
+    if (presetData.contains("neon")) {
+        auto neonJson = presetData["neon"];
+        if (auto* neon = postEffectManager->GetEffect<Neon>("Neon")) {
+            Neon::NeonParams params;
+            params.edgeThreshold = JsonManager::SafeGet(neonJson, "edgeThreshold", 0.3f);
+            params.glowIntensity = JsonManager::SafeGet(neonJson, "glowIntensity", 2.0f);
+            params.edgeWidth = JsonManager::SafeGet(neonJson, "edgeWidth", 1.0f);
+            params.colorSaturation = JsonManager::SafeGet(neonJson, "colorSaturation", 1.5f);
+            params.brightness = JsonManager::SafeGet(neonJson, "brightness", 1.2f);
+            params.neonColorR = JsonManager::SafeGet(neonJson, "neonColorR", 0.0f);
+            params.neonColorG = JsonManager::SafeGet(neonJson, "neonColorG", 1.0f);
+            params.neonColorB = JsonManager::SafeGet(neonJson, "neonColorB", 1.0f);
+            neon->SetParams(params);
         }
     }
 

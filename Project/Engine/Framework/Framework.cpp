@@ -1,4 +1,4 @@
-﻿#include "Framework.h"
+#include "Framework.h"
 
 
 namespace CoreEngine
@@ -25,7 +25,7 @@ void Framework::Run()
 
 	// ウィンドウアプリケーションの生成・初期化
 	winApp_ = std::make_unique<WinApp>();
-	winApp_->Initialize(WinApp::kClientWidth, WinApp::kClientHeight, L"ガンガガン");
+	winApp_->Initialize(WinApp::kClientWidth, WinApp::kClientHeight, L"2306_swapYo");
 
 	// エンジンシステムの生成・初期化
 	engineSystem_ = std::make_unique<EngineSystem>();

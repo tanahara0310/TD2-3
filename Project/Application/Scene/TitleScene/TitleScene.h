@@ -1,20 +1,19 @@
 #pragma once
+#include <memory>
 #include "Scene/BaseScene.h"
 #include "EngineSystem/EngineSystem.h"
-#include "ObjectCommon/SpriteObject.h"
 
 #include "Application/Utility/Command/SceneCommandExecutor.h"
+#include "Application/SceneObject/Menu/MenuView.h"
+#include "Application/SceneObject/TitleUI/TitleUIManager.h"
+#include "Engine/Camera/CameraShake.h"
 
-class Player;
-class Ball;
-class WhiteSkyDome;
 namespace CoreEngine {
     class CosmicTunnelObject;
     class UIFrameObject;
+    class SoundManager;
+    class ParticleSystem;
 }
-#include "Application/SceneObject/Menu/MenuView.h"
-#include "Application/SceneObject/Ball/BallController.h"
-#include "Application/SceneObject/YoYo/YoYoObject.h"
 
 namespace CoreEngine
 {
@@ -35,34 +34,31 @@ namespace CoreEngine
         void OnUpdate() override;
 
     private:
-        /// @brief ヨーヨー演出のアニメーション状態
-        enum class YoYoAnimationState {
-            Descending,      // 降下中
-            Spinning,        // 高速スピン中
-            Bursting,        // 火花爆発中
-            Idle             // 待機
-        };
-
-        /// @brief ヨーヨー演出の更新
-        void UpdateYoYoAnimation();
-
         SceneCommandExecutor sceneCommandExecutor_;
 
-        Player* player_;
-        CoreEngine::YoYoObject* yoyo_;
+        // UI管理
+        std::unique_ptr<TitleUIManager> uiManager_;
 
-        // ヨーヨー演出用
-        YoYoAnimationState yoyoState_;
-        float yoyoAnimationTime_;
-        float yoyoRotationSpeed_;
-        Vector3 yoyoTargetPosition_;
+        // 背景演出オブジェクト
+        std::unique_ptr<CoreEngine::CosmicTunnelObject*> cosmicTunnel_;
 
-        // タイトル画像
-        CoreEngine::SpriteObject* titleSprite_;
-        CoreEngine::SpriteObject* spaceStartSprite_;
-        
-        // 宇宙トンネル演出
-        CoreEngine::CosmicTunnelObject* cosmicTunnel_;
-        CoreEngine::UIFrameObject* uiFrame_;
+        // パーティクルシステム
+        CoreEngine::ParticleSystem* floatingParticles_ = nullptr;
+        CoreEngine::ParticleSystem* sparkleParticles_ = nullptr;
+        CoreEngine::ParticleSystem* celebrationParticles_ = nullptr;  // お祝いパーティクル（指が回転させたとき）
+
+        // カメラシェイク
+        std::unique_ptr<CoreEngine::CameraShake> cameraShake_;
+        CoreEngine::Vector3 originalCamera2DPosition_;  // 2Dカメラの元の位置
+        bool isShaking_ = false;  // シェイク中かどうか
+
+        // サウンドリソース
+        std::unique_ptr<CoreEngine::SoundManager::SoundResource> bgm_;
+        std::unique_ptr<CoreEngine::SoundManager::SoundResource> decideSE_;
+
+        // シーン遷移用
+        float transitionProgress_ = 0.0f;
+        float transitionDuration_ = 1.0f;  // トランジション時間（秒）
+        bool isTransitioning_ = false;
     };
 }

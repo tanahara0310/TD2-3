@@ -49,6 +49,14 @@ void ScreenUI::Initialize() {
     spriteObjects_["SwapGuide"]->Initialize("Texture/UI_swapGuide.png", "SwapGuideUI");
     spriteObjects_["SwapGuide"]->GetSpriteTransform().scale = { 1.0f,1.0f,1.0f };
 
+    spriteObjects_["GunGuide"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
+    spriteObjects_["GunGuide"]->Initialize("Texture/UI_gun.png", "GunGuideUI");
+    spriteObjects_["GunGuide"]->GetSpriteTransform().scale = { 1.0f,1.0f,1.0f };
+    spriteObjects_["YoyoGuide"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
+    spriteObjects_["YoyoGuide"]->Initialize("Texture/UI_yoyo.png", "GunGuideUI");
+    spriteObjects_["YoyoGuide"]->GetSpriteTransform().scale = { 1.0f,1.0f,1.0f };
+
+
     // 時間表示用ヨーヨー
     spriteObjects_["YoYoTargetPos"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
     spriteObjects_["YoYoTargetPos"]->Initialize("Texture/yoyoTargetPos.png", "YoYoTargetPosUI");
@@ -61,6 +69,7 @@ void ScreenUI::Initialize() {
 
 
     isOldActiveBall_ = ball_->GetIsThrowing();
+    previousPlayerMode_ = player_->GetPlayerMode();
 
     frameTimer_ = 0.0f;
 }
@@ -76,29 +85,69 @@ void ScreenUI::Update() {
     float velocity = CoreEngine::Math::Vector::Length(player_->GetVelocity()) * 10.0f;
 
     // shotとswapの入れ替え
-    if (ball_->GetIsThrowing()) {
-        if (!ball_->GetIsCanSwitch()) {
-            // スワップ不可なら両方すごい下に下げる
+    if (previousPlayerMode_ != player_->GetPlayerMode()) {
+        // モードチェンジした直後は両方下げる
+        spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y = -80.0f;
+        spriteObjects_["SwapGuide"]->GetSpriteTransform().translate.y = -80.0f;
+    }
+    if (player_->GetPlayerMode() == PlayerMode::Gun) {
+        spriteObjects_["GunGuide"]->SetActive(true);
+        spriteObjects_["YoyoGuide"]->SetActive(false);
+        
+
+        spriteObjects_["ShotGuide"]->SetActive(true);
+        spriteObjects_["SwapGuide"]->SetActive(false);
+
+        // 弾があるならショットガイド表示、無いなら両方下げる
+        if (ball_->GetBulletCount() > 0) {
+            spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y =
+                MatsumotoUtility::SimpleEaseIn(
+                    spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y,
+                    0.0f,
+                    0.1f);
+            // 下げる
+            if (player_->shootingBullet_) {
+                spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y = -30.0f;
+            }
+
+        } else {
             spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y =
                 MatsumotoUtility::SimpleEaseIn(
                     spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y,
                     -80.0f,
                     0.5f);
-            spriteObjects_["SwapGuide"]->GetSpriteTransform().translate.y =
-                MatsumotoUtility::SimpleEaseIn(
-                    spriteObjects_["SwapGuide"]->GetSpriteTransform().translate.y,
-                    -80.0f,
-                    0.5f);
-            
-        } else {
-            // スワップ可能ならスワップガイド表示
-            spriteObjects_["ShotGuide"]->SetActive(false);
-            spriteObjects_["SwapGuide"]->SetActive(true);
         }
+
     } else {
-        spriteObjects_["ShotGuide"]->SetActive(true);
-        spriteObjects_["SwapGuide"]->SetActive(false);
+        spriteObjects_["GunGuide"]->SetActive(false);
+        spriteObjects_["YoyoGuide"]->SetActive(true);
+
+        if (ball_->GetIsThrowing()) {
+            if (!ball_->GetIsCanSwitch()) {
+                // 引き戻し不可なら両方すごい下に下げる
+                spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y =
+                    MatsumotoUtility::SimpleEaseIn(
+                        spriteObjects_["ShotGuide"]->GetSpriteTransform().translate.y,
+                        -80.0f,
+                        0.5f);
+                spriteObjects_["SwapGuide"]->GetSpriteTransform().translate.y =
+                    MatsumotoUtility::SimpleEaseIn(
+                        spriteObjects_["SwapGuide"]->GetSpriteTransform().translate.y,
+                        -80.0f,
+                        0.5f);
+
+            } else {
+                // 引き戻し可能ならスワップガイド表示
+                spriteObjects_["ShotGuide"]->SetActive(false);
+                spriteObjects_["SwapGuide"]->SetActive(true);
+            }
+        } else {
+            spriteObjects_["ShotGuide"]->SetActive(true);
+            spriteObjects_["SwapGuide"]->SetActive(false);
+        }
     }
+
+    
 
     // ボールのアクティブ状態が変化したらガイドを少し動かす
     if (isOldActiveBall_ != ball_->GetIsThrowing()) {
@@ -107,18 +156,26 @@ void ScreenUI::Update() {
     }
 
     // プレイヤーが移動操作をしている時はMoveガイドを少し下に移動
-    if (horizontalAxis != 0.0f || verticalAxis != 0.0f) {
+    if (player_->GetPlayerMode() == PlayerMode::YoYo && !ball_->GetIsThrowing()){
+        if (horizontalAxis != 0.0f || verticalAxis != 0.0f) {
+            spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y =
+                MatsumotoUtility::SimpleEaseIn(
+                    spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y,
+                    -30.0f,
+                    0.3f);
+        } else {
+            spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y =
+                MatsumotoUtility::SimpleEaseIn(
+                    spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y,
+                    0.0f,
+                    0.1f);
+        }
+    } else {// 操作できないので思いっきり下げる
         spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y =
             MatsumotoUtility::SimpleEaseIn(
                 spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y,
-                -30.0f,
-                0.3f);
-    } else {
-        spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y =
-            MatsumotoUtility::SimpleEaseIn(
-                spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y,
-                0.0f,
-                0.1f);
+                -80.0f,
+                0.5f);
     }
 
     // メニューを開いている時はMenuガイドを少し下に移動
@@ -179,4 +236,5 @@ void ScreenUI::Update() {
     }
 
     isOldActiveBall_ = ball_->GetIsThrowing();
+    previousPlayerMode_ = player_->GetPlayerMode();
 }

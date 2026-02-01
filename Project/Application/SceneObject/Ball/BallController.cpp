@@ -16,8 +16,6 @@ BallController::BallController(Ball* ball, Player* player, CoreEngine::BaseScene
     player_(player),
     ball_(ball) {
 
-    // ... (config initialization)
-    // 17-30
     config_.emplace("ShotSpeed", 0.1f);
     config_.emplace("MoveSpeed", 0.1f);
     config_.emplace("ReturnSpeed", 0.1f);
@@ -75,6 +73,11 @@ void BallController::Update() {
     // 発射処理
     if (KeyBindConfig::Instance().IsTrigger("Shot")) {
         if (!ball_->IsActive()) {// 球が出ていなければ発射
+            // ヨーヨーモードでなければ発射しない
+            if (player_->GetPlayerMode() != PlayerMode::YoYo) {
+                return;
+            }
+
             // プレイヤーがダメージ無敵時間内に攻撃しようとしたらすぐに無敵時間を終了させる
             if (player_->GetDamageInvincibilityTime() > 0.0f) {
                 player_->SetDamageInvincibilityTime(0.0f);
@@ -213,4 +216,8 @@ bool BallController::GetIsThrowing() {
 
 bool BallController::GetIsCanSwitch() {
     return canSwitch_;
+}
+
+int BallController::GetBulletCount() {
+    return ball_->bulletCount_;
 }

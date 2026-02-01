@@ -21,6 +21,7 @@ class Ground;
 #include "Application/SceneObject/Menu/MenuView.h"
 #include "Application/SceneObject/ScreenUI/ScreenUI.h"
 #include "Application/SceneObject/Ball/BallController.h"
+#include "Application/SceneObject/Player/BulletShotController.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/EnemyMapLoader.h"
 #include "Application/SceneObject/Enemy/EnemyWaveManager.h"

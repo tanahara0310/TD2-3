@@ -48,6 +48,9 @@ Ball::Ball() {
     soundResources_["Hit"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_BallHit.mp3");
 
     SetTag("PlayerAttack");
+
+    bulletCount_ = 0;
+    maxBulletCount_ = 6;
 }
 
 void Ball::Initialize() {
@@ -60,6 +63,8 @@ void Ball::Initialize() {
     LoadConfigFromFile("BallConfig.json");
     oldPosition_ = transform_.translate;
     velocity_ = { 0.0f, 0.0f, 0.0f };
+
+    bulletCount_ = 0;
 }
 
 void Ball::Update() {
@@ -102,6 +107,10 @@ void Ball::OnCollisionEnter(GameObject* other) {
         if (enemy->IsAlive()) {
             isHitEnemy_ = true;
             hitPos_ = other->GetWorldPosition();
+            bulletCount_++;
+            if (bulletCount_ > maxBulletCount_) {
+                bulletCount_ = maxBulletCount_;
+            }
         }
     }
 }

@@ -47,6 +47,9 @@ Player::Player() {
 
     velocity_ = { 0.0f, 0.0f, 0.0f };
 
+    playerMode_ = PlayerMode::YoYo;
+    shootCooldownDuration_ = 0.1f;
+
     // サウンドリソースの読み込み
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
@@ -56,6 +59,8 @@ Player::Player() {
     //soundResources_["DamageSound"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/PlayerDamage.wav");
     soundResources_["switch"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_switch.mp3");
     soundResources_["throw"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_throw.mp3");
+
+    shootingBullet_ = false;
 }
 
 void Player::Initialize() {
@@ -68,6 +73,11 @@ void Player::Initialize() {
 void Player::Update() {
     if (!IsActive() || !model_) {
         return;
+    }
+
+    // 射撃クールダウンの更新
+    if (shootCooldownTimer_ > 0.0f) {
+        shootCooldownTimer_ -= 1.0f / 60.0f;
     }
 
     // ワープ無敵時間の更新
@@ -93,9 +103,22 @@ void Player::Update() {
         model_->SetMaterialColor({ 0.98f, 0.78f, 0.0f, 1.0f });
     }
 
+    // モードチェンジ
+    KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
+    if (keyBindConfig.IsPress("ChangeMode") || keyBindConfig.isLeftTriggerPress()) {
+        if (playerMode_ == PlayerMode::YoYo) {
+            playerMode_ = PlayerMode::Gun;
+            PlaySE("switch");
+        }
+    } else {
+        if (playerMode_ == PlayerMode::Gun) {
+            playerMode_ = PlayerMode::YoYo;
+            PlaySE("switch");
+        }
+    }
+
     // 入力処理（移動）
     CoreEngine::Vector2 moveDir = { 0.0f, 0.0f };
-    KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
     // 4方向いずれかの入力があれば移動開始
     moveDir.x = keyBindConfig.GetHorizontalAxis();
     moveDir.y = keyBindConfig.GetVerticalAxis();
@@ -114,7 +137,7 @@ void Player::Update() {
     // 移動速度の取得
     float speed = config_["Speed"].get<float>();
     // 移動処理
-    if (canMove_) {
+    if (canMove_ && playerMode_ == PlayerMode::YoYo) {
         transform_.translate.x += moveDir.x * speed;
         transform_.translate.z += moveDir.y * speed;
     }
@@ -135,6 +158,10 @@ void Player::Update() {
 
     // トランスフォームの更新
     transform_.scale = defaultScale_ + localScaleAnimValue_;
+    transform_.TransferMatrix();
+}
+
+void Player::UpdateTransform() {
     transform_.TransferMatrix();
 }
 
@@ -183,4 +210,16 @@ CoreEngine::Vector2 Player::GetMoveAxis() const {
     }
 
     return moveDir;
+}
+
+CoreEngine::Vector3 Player::GetLookDir() const {
+    CoreEngine::Vector3 dir = lookDir_;
+    dir.y = 0.0f;
+    // XZ平面上で正規化（長さ0の場合はそのまま返す）
+    float len = sqrtf(dir.x * dir.x + dir.z * dir.z);
+    if (len > 0.0001f) {
+        dir.x /= len;
+        dir.z /= len;
+    }
+    return dir;
 }

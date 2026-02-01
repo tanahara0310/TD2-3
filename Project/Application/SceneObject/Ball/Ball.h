@@ -34,6 +34,8 @@ public:
     bool isHitEnemy_;
     CoreEngine::Vector3 hitPos_;
 
+    int bulletCount_;
+
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
 
@@ -43,6 +45,8 @@ private:
 
     CoreEngine::Vector3 oldPosition_;
     CoreEngine::Vector3 moveDir;
+
+    int maxBulletCount_;
 
 
     std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;

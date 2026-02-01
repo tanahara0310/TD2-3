@@ -325,6 +325,8 @@
     <ClCompile Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.cpp" />
     <ClCompile Include="Application\SceneObject\UIFrame\UIFrameObject.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.cpp" />
+    <ClCompile Include="Application\SceneObject\Bullet\SmallBullet.cpp" />
+    <ClCompile Include="Application\SceneObject\Player\BulletShotController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -823,6 +825,9 @@
     <ClInclude Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.h" />
     <ClInclude Include="Application\SceneObject\UIFrame\UIFrameObject.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.h" />
+    <ClInclude Include="Application\SceneObject\Bullet\SmallBullet.h" />
+    <ClInclude Include="Application\SceneObject\Bullet\AllBullet.h" />
+    <ClInclude Include="Application\SceneObject\Player\BulletShotController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

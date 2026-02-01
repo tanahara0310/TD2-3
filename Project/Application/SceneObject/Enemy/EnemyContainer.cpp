@@ -41,3 +41,15 @@ size_t EnemyContainer::GetAliveEnemyCount() const {
     }
     return count;
 }
+
+std::vector<IEnemy*> EnemyContainer::GetAliveEnemies() const {
+    std::vector<IEnemy*> aliveEnemies;
+    for (const auto& [typeName, enemyList] : enemyMap_) {
+        for (const auto& enemy : enemyList) {
+            if (enemy->IsAlive() && enemy->IsActive()) {
+                aliveEnemies.push_back(enemy);
+            }
+        }
+    }
+    return aliveEnemies;
+}

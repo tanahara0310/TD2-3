@@ -23,7 +23,9 @@ KeyBindConfig::KeyBindConfig() {
     keyBinds_["Menu"].keyboardKeys.push_back(DIK_ESCAPE);
     keyBinds_["Menu"].keyboardKeys.push_back(DIK_E);
     keyBinds_["Shot"].keyboardKeys.push_back(DIK_SPACE);
+    keyBinds_["ChangeMode"].keyboardKeys.push_back(DIK_LSHIFT);
 
+    keyBinds_["ChangeMode"].controllerButtons.push_back(XINPUT_GAMEPAD_LEFT_SHOULDER);
     keyBinds_["Start"].controllerButtons.push_back(XINPUT_GAMEPAD_A);
     keyBinds_["Start"].controllerButtons.push_back(XINPUT_GAMEPAD_B);
     keyBinds_["MoveLeft"].controllerButtons.push_back(XINPUT_GAMEPAD_DPAD_LEFT);
@@ -124,4 +126,18 @@ float KeyBindConfig::GetVerticalAxis() {
 
     y = inputManager_->GetGamepad()->GetLeftStick().y;
     return y;
+}
+
+bool KeyBindConfig::isLeftTriggerPress() {
+    if (inputManager_->GetGamepad()->GetLeftTrigger() > 0.5f) {
+        return true;
+    }
+    return false;
+}
+
+bool KeyBindConfig::isRightTriggerPress() {
+    if (inputManager_->GetGamepad()->GetRightTrigger() > 0.5f) {
+        return true;
+    }
+    return false;
 }

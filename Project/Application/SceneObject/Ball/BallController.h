@@ -24,6 +24,7 @@ public:
 
     bool GetIsThrowing();
     bool GetIsCanSwitch();
+    int GetBulletCount();
 
     void SetHitEffectFunction(
         const std::function<int(

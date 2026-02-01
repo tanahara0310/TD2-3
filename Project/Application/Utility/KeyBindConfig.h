@@ -38,6 +38,9 @@ public:
     float GetHorizontalAxis();
     float GetVerticalAxis();
 
+    bool isLeftTriggerPress();
+    bool isRightTriggerPress();
+
 private:
 	std::unordered_map<std::string, InputDevice> keyBinds_;
     KeyBindConfig();

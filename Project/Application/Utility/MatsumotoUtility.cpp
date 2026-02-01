@@ -169,6 +169,14 @@ CoreEngine::Vector3 MatsumotoUtility::DirectionToEulerAngle(const CoreEngine::Ve
     return eulerAngle;
 }
 
+CoreEngine::Vector3 MatsumotoUtility::EulerAngleToDirection(const CoreEngine::Vector3& eulerAngle) {
+    CoreEngine::Vector3 direction;
+    direction.x = cosf(eulerAngle.x) * sinf(eulerAngle.y); // X
+    direction.y = -sinf(eulerAngle.x); // Y
+    direction.z = cosf(eulerAngle.x) * cosf(eulerAngle.y); // Z
+    return CoreEngine::Normalize(direction);
+}
+
 float MatsumotoUtility::DegreesToRadians(float degrees) {
     return degrees * (std::numbers::pi_v<float> / 180.0f);
 }

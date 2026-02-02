@@ -828,6 +828,7 @@
     <ClInclude Include="Application\SceneObject\Bullet\SmallBullet.h" />
     <ClInclude Include="Application\SceneObject\Bullet\AllBullet.h" />
     <ClInclude Include="Application\SceneObject\Player\BulletShotController.h" />
+    <ClInclude Include="Application\SceneObject\Bullet\BulletState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">

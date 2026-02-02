@@ -403,6 +403,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Ball\Ball.h" />
     <ClInclude Include="Application\SceneObject\Ball\BallController.h" />
     <ClInclude Include="Application\SceneObject\Bullet\AllBullet.h" />
+    <ClInclude Include="Application\SceneObject\Bullet\BulletState.h" />
     <ClInclude Include="Application\SceneObject\Bullet\SmallBullet.h" />
     <ClInclude Include="Application\SceneObject\CameraController\AllCameraWork.h" />
     <ClInclude Include="Application\SceneObject\CameraController\CameraController.h" />

@@ -6,7 +6,7 @@ SmallBullet::SmallBullet() :
     lifeTime_(0.0f),
     maxLifeTime_(5.0f) // 小弾丸の最大寿命を5秒に設定
 {
-    collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 0.5f);
+    collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 1.5f);
     collider_->SetLayer(CoreEngine::CollisionLayer::PlayerBullet);
     SetTag("PlayerAttack");
 }
@@ -22,7 +22,7 @@ void SmallBullet::Initialize() {
 
     collider_->SetLayer(CoreEngine::CollisionLayer::PlayerBullet);
 
-    speed_ = 15.0f; // 小弾丸の速度を設定
+    speed_ = 60.0f; // 小弾丸の速度を設定
 }
 
 void SmallBullet::Update() {
@@ -49,7 +49,5 @@ void SmallBullet::Draw(const CoreEngine::ICamera* camera) {
 
 void SmallBullet::OnCollisionEnter(CoreEngine::GameObject* other) {
     if (other->GetTag() == std::string("Enemy")) {
-        // 敵に当たったら非アクティブ化
-        SetActive(false);
     }
 }

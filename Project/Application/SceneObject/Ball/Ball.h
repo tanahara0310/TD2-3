@@ -4,6 +4,8 @@
 #include "Engine/ObjectCommon/GameObject.h"
 #include "Engine/Collider/SphereCollider.h"
 #include <externals/nlohmann/single_include/nlohmann/json.hpp>
+#include "Application/SceneObject/Bullet/BulletState.h"
+#include <stack>
 
 class Ball final : public CoreEngine::GameObject {
 public:
@@ -35,6 +37,10 @@ public:
     CoreEngine::Vector3 hitPos_;
 
     int bulletCount_;
+    int maxBulletCount_;
+
+    BulletState PopBulletState();
+    std::vector<BulletState> GetAllBulletStates() const;
 
 private:
     std::unique_ptr<CoreEngine::SphereCollider> collider_;
@@ -46,8 +52,6 @@ private:
     CoreEngine::Vector3 oldPosition_;
     CoreEngine::Vector3 moveDir;
 
-    int maxBulletCount_;
-
-
+    std::stack<BulletState> bulletStateStack_;
     std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };

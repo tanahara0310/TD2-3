@@ -196,6 +196,10 @@ void GameScene::Initialize(EngineSystem* engine)
             bgmSoundResource_->SetVolume(0.2f);
         }
     }
+
+    // 謎の音声リソース読み込めないバグ
+    /*shotSoundResources_
+        = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_BulletShot.mp3");*/
 }
 
 void GameScene::OnUpdate()
@@ -296,20 +300,34 @@ void GameScene::OnUpdate()
                         effectContainers_["PlayerBullet"]->Spawn(
                             player_->GetWorldPosition(),
                             shotRotate,
-                            CoreEngine::Vector3(1.0f, 1.0f, 1.0f));
+                            CoreEngine::Vector3(0.1f, 0.1f, 0.1f));
                     result;
                     ball_->bulletCount_--;
                     player_->shootingBullet_ = true;
 
-                    /*player_->SetVelocity(
-                        -CoreEngine::Math::Vector::Normalize(player_->GetLookDir()) * 0.5f);*/
+                    // プレイヤーの目の前から向いている向きに発生
+                    CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(player_->lookDir_);
+                    direction.x *= -1.0f;
+                    // directionを90度回転させる
+                    direction = CoreEngine::Math::Vector::Normalize(
+                        CoreEngine::Math::Vector::Cross(direction, CoreEngine::Vector3(0.0f, -1.0f, 0.0f)));
+
+                    effectContainers_["SlashEffect"]->Spawn(
+                        player_->GetWorldPosition() + CoreEngine::Math::Vector::Normalize(direction) * 25.0f,
+                        MatsumotoUtility::DirectionToEulerAngle(direction),
+                        CoreEngine::Vector3(20.0f, 0.1f, 50.0f));
+
+                    player_->SetVelocity(
+                        -CoreEngine::Math::Vector::Normalize(direction * 0.5f));
+
+                    //shotSoundResources_->Play(false);
 
                     // 発射音などの効果音を再生する場合はここで行う
                     /*if (result != -1) {
                         player_->PlaySE("gun_shot");
                     }*/
                 }
-            }
+            } 
 #pragma endregion
 
             ballController_->Update();

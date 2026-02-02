@@ -221,3 +221,7 @@ bool BallController::GetIsCanSwitch() {
 int BallController::GetBulletCount() {
     return ball_->bulletCount_;
 }
+
+int BallController::GetMaxBulletCount() {
+    return ball_->maxBulletCount_;
+}

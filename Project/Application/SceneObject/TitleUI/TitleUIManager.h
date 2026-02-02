@@ -2,6 +2,7 @@
 #include <memory>
 #include "ObjectCommon/SpriteObject.h"
 #include "Utility/Timer/GameTimer.h"
+#include "Engine/Audio/SoundManager.h"
 
 
 /// @brief タイトルシーンのUI管理クラス
@@ -35,6 +36,16 @@ public:
     /// @param callback パーティクルを発生させるコールバック関数
     void SetParticleSpawnCallback(std::function<void()> callback) {
         particleSpawnCallback_ = callback;
+    }
+
+    /// @brief サウンドリソースを設定
+    /// @param rotateSE 回転時のSE
+    /// @param returnSE 元に戻る時のSE
+    void SetSoundResources(
+        std::unique_ptr<CoreEngine::SoundManager::SoundResource> rotateSE,
+        std::unique_ptr<CoreEngine::SoundManager::SoundResource> returnSE) {
+        rotateSE_ = std::move(rotateSE);
+        returnSE_ = std::move(returnSE);
     }
 
     /// @brief リセット（シーン再開時用）
@@ -81,6 +92,12 @@ private:
 
     // パーティクル発生用
     std::function<void()> particleSpawnCallback_ = nullptr;  // パーティクル発生コールバック
+
+    // サウンドリソース
+    std::unique_ptr<CoreEngine::SoundManager::SoundResource> rotateSE_ = nullptr;  // 回転SE
+    std::unique_ptr<CoreEngine::SoundManager::SoundResource> returnSE_ = nullptr;  // 元に戻るSE
+    bool hasPlayedRotateSE_ = false;  // 回転SEを再生したかどうか
+    bool hasPlayedReturnSE_ = false;  // 元に戻るSEを再生したかどうか
 
     // アニメーション処理
     void UpdateIntroAnimation();

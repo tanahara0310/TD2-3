@@ -119,6 +119,8 @@ void TitleUIManager::Reset()
     isRotationDecaying_ = false;
     isExitAnimationPlaying_ = false;
     hasTriggeredShake_ = false;
+    hasPlayedRotateSE_ = false;
+    hasPlayedReturnSE_ = false;
 }
 
 void TitleUIManager::UpdateIntroAnimation()
@@ -201,6 +203,8 @@ void TitleUIManager::UpdateHandAnimation()
         isRotationDecaying_ = false;
         rotationDecayTimer_ = 0.0f;
         hasTriggeredShake_ = false;  // シェイクフラグもリセット
+        hasPlayedRotateSE_ = false;  // 回転SE再生フラグもリセット
+        hasPlayedReturnSE_ = false;  // 元に戻るSE再生フラグもリセット
     }
 
     // === 回転演出のフェーズ分け ===
@@ -279,6 +283,12 @@ void TitleUIManager::UpdateHandAnimation()
                 // パーティクルを発生
                 if (particleSpawnCallback_) {
                     particleSpawnCallback_();
+                }
+                
+                // 回転SEを再生
+                if (rotateSE_ && rotateSE_->IsValid() && !hasPlayedRotateSE_) {
+                    rotateSE_->Play(false);
+                    hasPlayedRotateSE_ = true;
                 }
                 
                 hasTriggeredShake_ = true;  // このサイクルでは1回のみ
@@ -366,6 +376,12 @@ void TitleUIManager::UpdateTitleRotation(float deltaTime)
             }
             while (normalizedRotation < -PI) {
                 normalizedRotation += TWO_PI;
+            }
+
+            // Phase 2の開始時に元に戻るSEを再生（1回のみ）
+            if (returnSE_ && returnSE_->IsValid() && !hasPlayedReturnSE_) {
+                returnSE_->Play(false);
+                hasPlayedReturnSE_ = true;
             }
 
             // 差が小さければそのまま0に

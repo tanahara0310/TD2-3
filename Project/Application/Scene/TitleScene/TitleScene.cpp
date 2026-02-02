@@ -82,7 +82,7 @@ namespace CoreEngine
                 transitionEffect->SetEnabled(false);
                 TransitionEffect::TransitionParams transitionParams;
                 transitionParams.progress = 0.0f;
-                transitionParams.transitionType = static_cast<int>(TransitionEffect::TransitionType::Circle);  // デフォルトは円形
+                transitionParams.transitionType = static_cast<int>(TransitionEffect::TransitionType::ZoomBlur);  // デフォルトは円形
                 transitionParams.centerX = 0.5f;
                 transitionParams.centerY = 0.5f;
                 transitionParams.smoothness = 0.05f;
@@ -118,29 +118,29 @@ namespace CoreEngine
             });
 
         // ショックウェーブコールバック（一時的にコメントアウト）
-        /*
+        
         // UIManagerにショックウェーブコールバックを設定
-        uiManager_->SetShockwaveCallback([this](float centerX, float centerY, float intensity) {
-            auto postEffectManager = engine_->GetComponent<PostEffectManager>();
-            if (postEffectManager) {
-                auto shockwave = postEffectManager->GetEffect<CoreEngine::Shockwave>(PostEffectNames::Shockwave);
-                if (shockwave) {
-                    // ショックウェーブを開始
-                    shockwave->StartShockwave(centerX, centerY);
-                    shockwave->SetEnabled(true);
+        //uiManager_->SetShockwaveCallback([this](float centerX, float centerY, float intensity) {
+        //    auto postEffectManager = engine_->GetComponent<PostEffectManager>();
+        //    if (postEffectManager) {
+        //        auto shockwave = postEffectManager->GetEffect<CoreEngine::Shockwave>(PostEffectNames::Shockwave);
+        //        if (shockwave) {
+        //            // ショックウェーブを開始
+        //            shockwave->StartShockwave(centerX, centerY);
+        //            shockwave->SetEnabled(true);
 
-                    // パラメータを設定
-                    CoreEngine::Shockwave::ShockwaveParams params;
-                    params.center[0] = centerX;
-                    params.center[1] = centerY;
-                    params.strength = intensity;  // 小さめの強度
-                    params.thickness = 0.08f;
-                    params.speed = 1.0f;
-                    shockwave->SetParams(params);
-                }
-            }
-            });
-        */
+        //            // パラメータを設定
+        //            CoreEngine::Shockwave::ShockwaveParams params;
+        //            params.center[0] = centerX;
+        //            params.center[1] = centerY;
+        //            params.strength = intensity;  // 小さめの強度
+        //            params.thickness = 0.08f;
+        //            params.speed = 1.0f;
+        //            shockwave->SetParams(params);
+        //        }
+        //    }
+        //    });
+        
 
         // UIManagerにパーティクル発生コールバックを設定
         uiManager_->SetParticleSpawnCallback([this]() {
@@ -440,7 +440,25 @@ namespace CoreEngine
             if (decideSE_ && decideSE_->IsValid()) {
                 decideSE_->SetVolume(0.7f);  // 音量を70%に設定
             }
+
+            // タイトルロゴ回転SEの読み込み
+            auto rotateSE = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/Title/mawasuSe.mp3");
+            if (rotateSE && rotateSE->IsValid()) {
+                rotateSE->SetVolume(0.6f);  // 音量を60%に設定
+            }
+
+            // タイトルロゴ元に戻るSEの読み込み
+            auto returnSE = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/Title/modoruSe.mp3");
+            if (returnSE && returnSE->IsValid()) {
+                returnSE->SetVolume(1.0f);  // 音量を60%に設定
+            }
+
+            // UIManagerにサウンドリソースを設定
+            if (uiManager_) {
+                uiManager_->SetSoundResources(std::move(rotateSE), std::move(returnSE));
+            }
         }
+
     }
 
 
@@ -468,6 +486,7 @@ namespace CoreEngine
         if (uiManager_) {
             uiManager_->Update(deltaTime);
         }
+
 
         // カメラシェイクの更新（2Dカメラをシェイク）
         if (cameraShake_ && cameraManager_) {
@@ -500,8 +519,8 @@ namespace CoreEngine
         }
 
         // ショックウェーブの更新（一時的にコメントアウト）
-        /*
-        {
+        
+       /* {
             auto postEffectMgr = engine_->GetComponent<PostEffectManager>();
             if (postEffectMgr) {
                 auto shockwave = postEffectMgr->GetEffect<CoreEngine::Shockwave>(PostEffectNames::Shockwave);
@@ -509,8 +528,8 @@ namespace CoreEngine
                     shockwave->Update(deltaTime);
                 }
             }
-        }
-        */
+        }*/
+        
 
         // トランジション処理
         if (isTransitioning_) {

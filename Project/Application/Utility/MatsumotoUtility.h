@@ -32,6 +32,7 @@ namespace MatsumotoUtility {
     CoreEngine::Vector4 ColorCodeToVector4(const std::string& colorCode);
 
     CoreEngine::Vector3 DirectionToEulerAngle(const CoreEngine::Vector3& direction);
+    CoreEngine::Vector3 EulerAngleToDirection(const CoreEngine::Vector3& eulerAngle);
 
     float DegreesToRadians(float degrees);
 

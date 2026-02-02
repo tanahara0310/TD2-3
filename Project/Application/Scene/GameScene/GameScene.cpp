@@ -22,6 +22,8 @@
 
 #include "Application/Utility/ApplicationGlobalValue.h"
 
+#include "Application/SceneObject/Bullet/AllBullet.h"
+
 namespace CoreEngine
 {
 void GameScene::Initialize(EngineSystem* engine)
@@ -66,6 +68,8 @@ void GameScene::Initialize(EngineSystem* engine)
     effectContainers_["ShockWaveEffect"]->ApplyToScene<ShockWaveEffect>(this);
     effectContainers_["SlashEffect"] = std::make_unique<BulletObjectContainer>(20);
     effectContainers_["SlashEffect"]->ApplyToScene<SlashEffect>(this);
+    effectContainers_["PlayerBullet"] = std::make_unique<BulletObjectContainer>(50);
+    effectContainers_["PlayerBullet"]->ApplyToScene<SmallBullet>(this);
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
@@ -93,7 +97,6 @@ void GameScene::Initialize(EngineSystem* engine)
     enemyManager_ = std::make_unique<EnemyContainer>(this);
 
     // ボールコントローラーの生成
-    
     ballController_->Initialize();
     ballController_->SetHitEffectFunction(
         std::bind(&BulletObjectContainer::Spawn,
@@ -105,7 +108,6 @@ void GameScene::Initialize(EngineSystem* engine)
             effectContainers_["SlashEffect"].get(),
             std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
     );
-
     
     // 敵配置データのロード
     enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get(),player_);
@@ -142,6 +144,7 @@ void GameScene::Initialize(EngineSystem* engine)
 
     collisionConfig_->SetCollisionEnabled(CollisionLayer::Player, CollisionLayer::Enemy, true);
     collisionConfig_->SetCollisionEnabled(CollisionLayer::Enemy, CollisionLayer::Item, true);
+    collisionConfig_->SetCollisionEnabled(CollisionLayer::PlayerBullet, CollisionLayer::Enemy, true);
 
     collisionManager_->Clear();
     collisionManager_->RegisterCollider(player_->GetCollider());
@@ -151,6 +154,12 @@ void GameScene::Initialize(EngineSystem* engine)
         for (auto& enemy : enemyList) {
             collisionManager_->RegisterCollider(enemy->GetCollider());
         }
+    }
+    
+    auto& bulletContainer = effectContainers_["PlayerBullet"];
+    for (auto & bullet : bulletContainer->GetBulletObjects()) {
+        assert(bullet->GetCollider());
+        collisionManager_->RegisterCollider(bullet->GetCollider());
     }
 
     // メニューViewの生成
@@ -187,10 +196,15 @@ void GameScene::Initialize(EngineSystem* engine)
             bgmSoundResource_->SetVolume(0.2f);
         }
     }
+
+    // 謎の音声リソース読み込めないバグ
+    /*shotSoundResources_
+        = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_BulletShot.mp3");*/
 }
 
 void GameScene::OnUpdate()
 {
+    KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
 #ifdef _DEBUG
     ImGui::Begin("Game Controller");
     // 時間の表示
@@ -202,7 +216,7 @@ void GameScene::OnUpdate()
 #endif
 
     // 入力処理更新
-    KeyBindConfig::Instance().Update();
+    keyBindConfig.Update();
 
     if (gameResultManager_->CheckGameClear()) {
         gameClearSequence_->Update();
@@ -214,7 +228,7 @@ void GameScene::OnUpdate()
     // メニューコントローラーの更新
     menuController_->Update();
     menuView_->Update();
-    screenUI_->Update();
+    
 
     // メニューが閉じている場合のみゲームシーンを更新
     if (!menuController_->IsMenuOpen()) {
@@ -226,14 +240,106 @@ void GameScene::OnUpdate()
         if (!enemyKillMotionManager_->isPlayingMotion_) {
             player_->Update();
             ball_->Update();
+
+#pragma region PlayerLockOn
+            bool canShoot = !ball_->IsActive() && player_->GetPlayerMode() == PlayerMode::Gun;
+            //if (canShoot) {
+            //    // ロックオン処理
+            //    auto enemies = enemyManager_->GetAliveEnemies();
+            //    // プレイヤーの向きと最も近い敵を探す（向き優先、次に距離）
+            //    IEnemy* bestEnemy = nullptr;
+            //    float bestScore = -1.0f; // コサイン類似度の最大値を探す
+            //    float bestDistance = 999999.9f;
+
+            //    const CoreEngine::Vector3 playerPos = player_->GetWorldPosition();
+            //    CoreEngine::Vector3 playerDir = CoreEngine::Math::Vector::Normalize(-player_->lookDir_);
+
+            //    for (auto& enemy : enemies) {
+            //        const CoreEngine::Vector3 enemyPos = enemy->GetWorldPosition();
+            //        const CoreEngine::Vector3 toEnemy = CoreEngine::Math::Vector::Normalize(enemyPos - playerPos);
+            //        float dot = CoreEngine::Math::Vector::Dot(playerDir, toEnemy); // -1.0〜1.0
+
+            //        // 距離も考慮（正面優先、同じなら近い方）
+            //        float distance = CoreEngine::Math::Vector::Length(enemyPos - playerPos);
+
+            //        // ある程度正面（15度以内）だけを対象
+            //        if (dot > 0.9659f) { // 15度以内
+            //            if (dot > bestScore || (dot == bestScore && distance < bestDistance)) {
+            //                bestScore = dot;
+            //                bestDistance = distance;
+            //                bestEnemy = enemy;
+            //            }
+            //        }
+            //    }
+
+            //    if (bestEnemy) {
+            //        CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(
+            //            bestEnemy->GetWorldPosition() - player_->GetWorldPosition());
+            //        player_->lookDir_ = direction;
+            //        // プレイヤーの向きを更新
+            //        float targetYaw = atan2f(direction.x, direction.z);
+            //        CoreEngine::Vector3 playerRotate = player_->GetRotate();
+            //        playerRotate.y = targetYaw;
+            //        player_->SetRotate(playerRotate);
+            //        player_->UpdateTransform();
+            //    }
+            //}
+#pragma endregion
+            // 謎のイテレータ破壊が起きるので、プレイヤーが弾を打つ処理をここで行う(型依存によるSTLイテレータデバッグ機構のバグの可能性)
+#pragma region PlayerBulletShot
+            // ボールがアクティブじゃなくて、プレイヤーがガンモードのときに弾を発射
+            player_->shootingBullet_ = false;
+            if (keyBindConfig.IsTrigger("Shot") && canShoot && ball_->bulletCount_ > 0) {
+                if (player_->shootCooldownTimer_ <= 0.0f) {
+                    player_->shootCooldownTimer_ = player_->shootCooldownDuration_;
+                    Vector3 shotRotate = player_->GetRotate();
+                    shotRotate.y -= 3.14f * 0.5f;
+
+                    // 弾オブジェクトをコンテナから取得して初期化
+                    int result =
+                        effectContainers_["PlayerBullet"]->Spawn(
+                            player_->GetWorldPosition(),
+                            shotRotate,
+                            CoreEngine::Vector3(0.1f, 0.1f, 0.1f));
+                    result;
+                    ball_->bulletCount_--;
+                    player_->shootingBullet_ = true;
+
+                    // プレイヤーの目の前から向いている向きに発生
+                    CoreEngine::Vector3 direction = CoreEngine::Math::Vector::Normalize(player_->lookDir_);
+                    direction.x *= -1.0f;
+                    // directionを90度回転させる
+                    direction = CoreEngine::Math::Vector::Normalize(
+                        CoreEngine::Math::Vector::Cross(direction, CoreEngine::Vector3(0.0f, -1.0f, 0.0f)));
+
+                    effectContainers_["SlashEffect"]->Spawn(
+                        player_->GetWorldPosition() + CoreEngine::Math::Vector::Normalize(direction) * 25.0f,
+                        MatsumotoUtility::DirectionToEulerAngle(direction),
+                        CoreEngine::Vector3(20.0f, 0.1f, 50.0f));
+
+                    player_->SetVelocity(
+                        -CoreEngine::Math::Vector::Normalize(direction * 0.5f));
+
+                    //shotSoundResources_->Play(false);
+
+                    // 発射音などの効果音を再生する場合はここで行う
+                    /*if (result != -1) {
+                        player_->PlaySE("gun_shot");
+                    }*/
+                }
+            } 
+#pragma endregion
+
             ballController_->Update();
             gameRule_->Update();
-            
+            enemyManager_->Update();
         }
-        enemyManager_->Update();
+        
 
         enemyKillComboCounter_->Update();
         enemyKillMotionManager_->Update();
+
+        screenUI_->Update();
 
         collisionManager_->CheckAllCollisions();
     } else {

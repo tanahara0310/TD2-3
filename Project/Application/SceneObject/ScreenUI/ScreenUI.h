@@ -9,6 +9,7 @@ class Player;
 class Stopwatch;
 class BallController;
 class MenuController;
+enum class PlayerMode;
 
 class ScreenUI {
 public:
@@ -23,6 +24,7 @@ public:
 private:
     CoreEngine::BaseScene* baseScene_;
     Player* player_;
+    PlayerMode previousPlayerMode_;
     Stopwatch* stopwatch_;
     BallController* ball_;
     MenuController* menuController_;

@@ -16,8 +16,6 @@ BallController::BallController(Ball* ball, Player* player, CoreEngine::BaseScene
     player_(player),
     ball_(ball) {
 
-    // ... (config initialization)
-    // 17-30
     config_.emplace("ShotSpeed", 0.1f);
     config_.emplace("MoveSpeed", 0.1f);
     config_.emplace("ReturnSpeed", 0.1f);
@@ -75,6 +73,11 @@ void BallController::Update() {
     // 発射処理
     if (KeyBindConfig::Instance().IsTrigger("Shot")) {
         if (!ball_->IsActive()) {// 球が出ていなければ発射
+            // ヨーヨーモードでなければ発射しない
+            if (player_->GetPlayerMode() != PlayerMode::YoYo) {
+                return;
+            }
+
             // プレイヤーがダメージ無敵時間内に攻撃しようとしたらすぐに無敵時間を終了させる
             if (player_->GetDamageInvincibilityTime() > 0.0f) {
                 player_->SetDamageInvincibilityTime(0.0f);
@@ -96,28 +99,11 @@ void BallController::Update() {
             ball_->GetTransform() = (anchorPos_ + newPos + ballVelocity_);
             player_->PlaySE("throw");
 
-        } else {// 球が出ていればプレイヤーと球の位置を変えてスイッチ
-            if (switchCooldown_ <= 0.0f && canSwitch_) {
-                player_->SetInvincibilityTimeAfterWarp(0.5f);
-                CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
-                CoreEngine::Vector3 playerPos = player_->GetWorldPosition();
-                // ボールとプレイヤーの位置を入れ替え
-                ball_->GetTransform() = playerPos;
-                player_->GetTransform() = ballPos;
-                // 引き戻し処理をリセット
-                anchorPos_ = ball_->GetWorldPosition();
-                isReturning_ = false;
-                hangTimeCounter_ = config_["HangTime"].get<float>();
+        } else {// 球が出ていれば引き戻し
+            if (canSwitch_ && switchCooldown_ <= 0.0f) {
+                isReturning_ = true;
                 switchCooldown_ = config_["SwitchCooldown"].get<float>();
-
-                player_->lookDir_.x = -CoreEngine::Math::Vector::Normalize((ballPos - playerPos)).z;
-                player_->lookDir_.z = -CoreEngine::Math::Vector::Normalize((ballPos - playerPos)).x;
-                CoreEngine::Vector3 playerLookDir = player_->lookDir_;
-                cartesianPos_.y = atan2f(playerLookDir.x, playerLookDir.z);
-                cartesianPos_.z = acosf(playerLookDir.y / 1.0f);
-
                 canSwitch_ = false;
-                player_->PlaySE("switch");
             }
         }
     }
@@ -172,29 +158,6 @@ void BallController::Update() {
             CoreEngine::Vector3 steer = desiredVel - currentVel;
             ball_->SetVelocity(currentVel + steer * deltaTime);
         }
-        
-        // --- ひも（String）制約の適用 ---
-        CoreEngine::Vector3 ballPos = ball_->GetWorldPosition();
-        CoreEngine::Vector3 playerPos = player_->GetWorldPosition();
-        CoreEngine::Vector3 offset = ballPos - playerPos;
-        float distance = CoreEngine::Math::Vector::Length(offset);
-
-        // 最大半径をわずかに超える遊びを持たせつつクランプ
-        float maxAllowedRadius = nowRadius_ + 0.1f; 
-        if (distance > maxAllowedRadius && distance > 0.0001f) {
-            CoreEngine::Vector3 normOffset = offset / distance;
-            
-            // 1. 位置の強制クランプ
-            ball_->GetTransform() = playerPos + normOffset * maxAllowedRadius;
-
-            // 2. 速度の補正（外向きの速度成分をカット）
-            CoreEngine::Vector3 currentVel = ball_->GetVelocity();
-            float dot = CoreEngine::Math::Vector::Dot(currentVel, normOffset);
-            if (dot > 0.0f) {
-                // 外向き速度を差し引く
-                ball_->SetVelocity(currentVel - normOffset * dot);
-            }
-        }
 
         wasReturning_ = isReturning_;
     } else {
@@ -215,8 +178,8 @@ void BallController::Update() {
     if (ball_->isHitEnemy_) {
         ball_->PlaySE("Hit");
         // ヒット時の衝撃を直接速度に加える（現在の速度を維持しつつ跳ね返る）
-        CoreEngine::Vector3 impulse = -ball_->GetMoveDir() * 40.0f; 
-        ball_->SetVelocity(ball_->GetVelocity() + impulse);
+        CoreEngine::Vector3 impulse = -ball_->GetMoveDir() * 40.0f;
+        ball_->SetVelocity(impulse);
 
         if (hitEffectFunc_) {
             CoreEngine::Vector3 direction = -ball_->GetMoveDir();
@@ -236,23 +199,15 @@ void BallController::Update() {
                 rotate,
                 CoreEngine::Vector3(5.0f, 0.1f, 50.0f));
         }
-
-        float dot = CoreEngine::Math::Vector::Dot(ball_->GetMoveDir(), player_->GetTransform() - ball_->GetTransform());
-        if (dot <= config_["ReturnThreshold"].get<float>()) {
-            // 引き戻し処理
-            isReturning_ = true;
-            hangTimeCounter_ = 0.0f;
-        } else {
-            // 反射処理
-            isReturning_ = false;
-            hangTimeCounter_ = config_["HangTime"].get<float>();
-        }
+        // 反射処理
+        isReturning_ = false;
+        hangTimeCounter_ = config_["HangTime"].get<float>();
         ball_->isHitEnemy_ = false;
         canSwitch_ = true;
     }
 }
 void BallController::Draw(const CoreEngine::ICamera* camera) {
-    (void)camera; 
+    (void)camera;
 }
 
 bool BallController::GetIsThrowing() {
@@ -261,4 +216,12 @@ bool BallController::GetIsThrowing() {
 
 bool BallController::GetIsCanSwitch() {
     return canSwitch_;
+}
+
+int BallController::GetBulletCount() {
+    return ball_->bulletCount_;
+}
+
+int BallController::GetMaxBulletCount() {
+    return ball_->maxBulletCount_;
 }

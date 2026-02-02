@@ -48,6 +48,9 @@ Ball::Ball() {
     soundResources_["Hit"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_BallHit.mp3");
 
     SetTag("PlayerAttack");
+
+    bulletCount_ = 0;
+    maxBulletCount_ = 4;
 }
 
 void Ball::Initialize() {
@@ -60,6 +63,8 @@ void Ball::Initialize() {
     LoadConfigFromFile("BallConfig.json");
     oldPosition_ = transform_.translate;
     velocity_ = { 0.0f, 0.0f, 0.0f };
+
+    bulletCount_ = 0;
 }
 
 void Ball::Update() {
@@ -102,6 +107,12 @@ void Ball::OnCollisionEnter(GameObject* other) {
         if (enemy->IsAlive()) {
             isHitEnemy_ = true;
             hitPos_ = other->GetWorldPosition();
+            bulletCount_++;
+            if (bulletCount_ > maxBulletCount_) {
+                bulletCount_ = maxBulletCount_;
+            } else {
+                bulletStateStack_.push(BulletState{ 1, speed_ });
+            }
         }
     }
 }
@@ -139,6 +150,26 @@ void Ball::PlaySE(const std::string& soundKey) {
     if (it != soundResources_.end()) {
         soundResources_[soundKey]->Play(false);
     }
+}
+
+BulletState Ball::PopBulletState() {
+    BulletState state;
+    state = bulletStateStack_.empty() ? BulletState() : bulletStateStack_.top();
+    if (!bulletStateStack_.empty()) {
+        bulletStateStack_.pop();
+    }
+    return state;
+}
+
+std::vector<BulletState> Ball::GetAllBulletStates() const {
+    std::vector<BulletState> states;
+    std::stack<BulletState> stackCopy = bulletStateStack_;
+    while (!stackCopy.empty()) {
+        states.push_back(stackCopy.top());
+        stackCopy.pop();
+    }
+    std::reverse(states.begin(), states.end());
+    return states;
 }
 
 #ifdef _DEBUG

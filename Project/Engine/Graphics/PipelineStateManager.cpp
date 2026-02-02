@@ -1,4 +1,4 @@
-﻿#include "PipelineStateManager.h"
+#include "PipelineStateManager.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -84,6 +84,19 @@ PipelineStateBuilder& PipelineStateBuilder::SetRasterizer(D3D12_CULL_MODE cullMo
 {
 	rasterizerDesc_.CullMode = cullMode;
 	rasterizerDesc_.FillMode = fillMode;
+	return *this;
+}
+
+PipelineStateBuilder& PipelineStateBuilder::SetRasterizerEx(
+	D3D12_CULL_MODE cullMode, 
+	D3D12_FILL_MODE fillMode,
+	BOOL frontCounterClockwise,
+	BOOL depthClipEnable)
+{
+	rasterizerDesc_.CullMode = cullMode;
+	rasterizerDesc_.FillMode = fillMode;
+	rasterizerDesc_.FrontCounterClockwise = frontCounterClockwise;
+	rasterizerDesc_.DepthClipEnable = depthClipEnable;
 	return *this;
 }
 

@@ -194,6 +194,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\ScreenUI\ScreenUI.cpp" />
     <ClCompile Include="Application\SceneObject\SkyDome\WhiteSkyDome.cpp" />
+    <ClCompile Include="Application\SceneObject\TitleUI\TitleUIManager.cpp" />
     <ClCompile Include="Application\SceneObject\UIFrame\UIFrameObject.cpp" />
     <ClCompile Include="Application\SceneObject\YoYo\YoYoObject.cpp" />
     <ClCompile Include="Application\Scene\GameScene\GameScene.cpp" />
@@ -237,6 +238,10 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\BlackHole.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Bloom.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\Dissolve.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\Neon.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\RetroGrid.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\Scanline.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\TransitionEffect.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\PostEffectPresetManager.cpp" />
     <ClCompile Include="Engine\Graphics\Primitive\CosmicTunnelGeometry.cpp" />
@@ -436,6 +441,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\ScreenUI\ScreenUI.h" />
     <ClInclude Include="Application\SceneObject\SkyDome\WhiteSkyDome.h" />
+    <ClInclude Include="Application\SceneObject\TitleUI\TitleUIManager.h" />
     <ClInclude Include="Application\SceneObject\UIFrame\UIFrameObject.h" />
     <ClInclude Include="Application\SceneObject\YoYo\YoYoObject.h" />
     <ClInclude Include="Application\Scene\GameScene\GameScene.h" />
@@ -494,6 +500,10 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\BlackHole.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\Bloom.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\Dissolve.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\Neon.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\RetroGrid.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\Scanline.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\TransitionEffect.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\PostEffectNames.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\PostEffectPresetManager.h" />
@@ -760,6 +770,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <None Include="docs\ParticleSystem_Refactoring_Final.md" />
     <None Include="docs\ParticleSystem_Refactoring_Progress.md" />
     <None Include="docs\ParticleSystem_Refactoring_Summary.md" />
+    <None Include="Docs\TitleScene_Effects.md" />
     <None Include="Engine\Graphics\Font\README.md" />
     <None Include="Engine\Particle\README.md" />
     <None Include="Engine\Utility\Debug\ImGui\README.md" />

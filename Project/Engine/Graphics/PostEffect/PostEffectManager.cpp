@@ -19,6 +19,10 @@
 #include "Effect/Dissolve.h"
 #include "Effect/BlackHole.h"
 #include "Effect/UIFrameEffect.h"
+#include "Effect/Neon.h"
+#include "Effect/RetroGrid.h"
+#include "Effect/TransitionEffect.h"
+#include "Effect/Scanline.h"
 #include "PostEffectPresetManager.h"
 #include "Engine/Utility/Debug/ImGui/ImguiManager.h"
 #include <cassert>
@@ -112,6 +116,29 @@ namespace CoreEngine
 
         RegisterAllEffects();
 
+        // デフォルトのエフェクトチェーンを設定
+        effectChain_ = {
+            PostEffectNames::RetroGrid,
+            PostEffectNames::FadeEffect,
+            PostEffectNames::GrayScale,
+            PostEffectNames::Blur,
+            PostEffectNames::RadialBlur,
+            PostEffectNames::Shockwave,
+            PostEffectNames::Vignette,
+            PostEffectNames::ColorGrading,
+            PostEffectNames::ChromaticAberration,
+            PostEffectNames::Sepia,
+            PostEffectNames::Scanline,
+            PostEffectNames::Invert,
+            PostEffectNames::RasterScroll,
+            PostEffectNames::Bloom,
+            PostEffectNames::Dissolve,
+            PostEffectNames::BlackHole,
+            PostEffectNames::UIFrame,
+            PostEffectNames::Neon,
+            PostEffectNames::TransitionEffect
+        };
+
         // 最終テクスチャハンドルの初期化
         finalDisplayHandle_ = directXCommon_->GetOffScreenSrvHandle();
     }
@@ -125,6 +152,7 @@ namespace CoreEngine
         RegisterEffect<FadeEffect>(PostEffectNames::FadeEffect, true);
 
         // その他のエフェクトはデフォルトで無効
+        RegisterEffect<RetroGrid>(PostEffectNames::RetroGrid, false);
         RegisterEffect<GrayScale>(PostEffectNames::GrayScale, false);
         RegisterEffect<Blur>(PostEffectNames::Blur, false);
         RegisterEffect<RadialBlur>(PostEffectNames::RadialBlur, false);
@@ -139,6 +167,9 @@ namespace CoreEngine
         RegisterEffect<Dissolve>(PostEffectNames::Dissolve, false);
         RegisterEffect<BlackHole>(PostEffectNames::BlackHole, false);
         RegisterEffect<UIFrameEffect>(PostEffectNames::UIFrame, false);
+        RegisterEffect<Neon>(PostEffectNames::Neon, false);
+        RegisterEffect<TransitionEffect>(PostEffectNames::TransitionEffect, false);
+        RegisterEffect<Scanline>(PostEffectNames::Scanline, false);
     }
 
     void PostEffectManager::RegisterEffectInternal(const std::string& name, std::unique_ptr<PostEffectBase> effect)

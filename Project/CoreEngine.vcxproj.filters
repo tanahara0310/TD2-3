@@ -325,8 +325,11 @@
     <ClCompile Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.cpp" />
     <ClCompile Include="Application\SceneObject\UIFrame\UIFrameObject.cpp" />
     <ClCompile Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.cpp" />
-    <ClCompile Include="Application\SceneObject\Bullet\SmallBullet.cpp" />
-    <ClCompile Include="Application\SceneObject\Player\BulletShotController.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\Neon.cpp" />
+    <ClCompile Include="Application\SceneObject\TitleUI\TitleUIManager.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\RetroGrid.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\TransitionEffect.cpp" />
+    <ClCompile Include="Engine\Graphics\PostEffect\Effect\Scanline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\WinApp\WinApp.h">
@@ -825,10 +828,11 @@
     <ClInclude Include="Engine\Graphics\Render\UIFrame\UIFrameRenderer.h" />
     <ClInclude Include="Application\SceneObject\UIFrame\UIFrameObject.h" />
     <ClInclude Include="Engine\Graphics\PostEffect\Effect\UIFrameEffect.h" />
-    <ClInclude Include="Application\SceneObject\Bullet\SmallBullet.h" />
-    <ClInclude Include="Application\SceneObject\Bullet\AllBullet.h" />
-    <ClInclude Include="Application\SceneObject\Player\BulletShotController.h" />
-    <ClInclude Include="Application\SceneObject\Bullet\BulletState.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\Neon.h" />
+    <ClInclude Include="Application\SceneObject\TitleUI\TitleUIManager.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\RetroGrid.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\TransitionEffect.h" />
+    <ClInclude Include="Engine\Graphics\PostEffect\Effect\Scanline.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Particle\README.md">
@@ -846,6 +850,7 @@
     <None Include="docs\ParticleSystem_Refactoring_Summary.md" />
     <None Include="docs\ParticleSystem_Refactoring_Final.md" />
     <None Include="Engine\Graphics\Font\README.md" />
+    <None Include="Docs\TitleScene_Effects.md" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

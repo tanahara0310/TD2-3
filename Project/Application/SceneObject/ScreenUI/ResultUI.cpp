@@ -54,11 +54,20 @@ void ResultUI::Initialize() {
 
     isAnimationStart_ = true;
     isAnimationEnd_ = false;
+    isSoundPlayed_ = false;
     animationTimer_ = 0.0f;
 
     currentScore_ = 0;
 
     scoreDefaultPos_ = { -270.0f, 200.0f };
+
+    CoreEngine::SoundManager* soundManager = baseScene_->GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    if (!soundManager) {
+        assert(false && "SoundManager not found");
+    }
+    soundResources_.clear();
+    soundResources_["Score"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_Score.mp3");
+    soundResources_["Stamp"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_Stamp.mp3");
 }
 
 void ResultUI::Update() {
@@ -69,17 +78,28 @@ void ResultUI::Update() {
             currentScore_ += (scoreCounter.GetScore() / 20) + 1;
             if (currentScore_ > scoreCounter.GetScore()) {
                 currentScore_ = scoreCounter.GetScore();
+            } else {
+
+                if (!soundResources_["Score"]->IsPlaying()) {
+                    soundResources_["Score"]->Play(false);
+                }
+
             }
         }
         animationTimer_ += 0.016f;
 
         if (animationTimer_ > 1.0f) {
+            if (!isSoundPlayed_) {
+                soundResources_["Stamp"]->Play();
+                isSoundPlayed_ = true;
+            }
+            
             // ランク表示
             if (scoreCounter.GetScore() >= ApplicationGlobalValue::SCORE_RANK_S) {
                 spriteObjects_["S"]->SetActive(true);
                 spriteObjects_["S"]->GetSpriteTransform().scale = MatsumotoUtility::SimpleEaseIn(
                     spriteObjects_["S"]->GetSpriteTransform().scale,
-                    CoreEngine::Vector3(1.0f,1.0f,1.0f),
+                    CoreEngine::Vector3(1.0f, 1.0f, 1.0f),
                     0.1f);
             } else if (scoreCounter.GetScore() >= ApplicationGlobalValue::SCORE_RANK_A) {
                 spriteObjects_["A"]->SetActive(true);
@@ -125,7 +145,7 @@ void ResultUI::Update() {
             }
         }
 
-        
+
     }
 
     // 入力取得

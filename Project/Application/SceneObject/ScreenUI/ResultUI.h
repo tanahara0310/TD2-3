@@ -29,5 +29,7 @@ private:
     std::unique_ptr<CoreEngine::NumberDisplayUtility> numberDisplay_;
     CoreEngine::Vector2 velocity_;
 
+    bool isSoundPlayed_ = false;
     CoreEngine::Vector2 scoreDefaultPos_;
+    std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };

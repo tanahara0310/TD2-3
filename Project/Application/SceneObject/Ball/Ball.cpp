@@ -40,6 +40,7 @@ Ball::Ball() {
     collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 1.6f);
     collider_->SetLayer(CoreEngine::CollisionLayer::Item);
 
+    
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
         assert(false && "SoundManager not found");

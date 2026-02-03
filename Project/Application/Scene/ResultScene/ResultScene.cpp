@@ -34,6 +34,14 @@ void ResultScene::Initialize(EngineSystem* engine)
     resultUI_ = std::make_unique<ResultUI>(this,&selectedSceneIndex_);
     resultUI_->Initialize();
     selectedSceneIndex_ = 0;
+
+    CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
+    if (!soundManager) {
+        assert(false && "SoundManager not found");
+    }
+    soundResources_.clear();
+    soundResources_["Decide"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/Title/SE_Decide.mp3");
+    soundResources_["Select"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_Throw.mp3");
 }
 
 void ResultScene::OnUpdate()
@@ -47,8 +55,15 @@ void ResultScene::OnUpdate()
     KeyBindConfig& keyBindConfig = KeyBindConfig::Instance();
     if (keyBindConfig.GetVerticalAxis() < 0.0) {
         selectedSceneIndex_ = 0;
+        if (!soundResources_["Select"]->IsPlaying()) {
+            soundResources_["Select"]->Play(false);
+        }
+        
     } else if (keyBindConfig.GetVerticalAxis() > 0.0) {
         selectedSceneIndex_ = 1;
+        if (!soundResources_["Select"]->IsPlaying()) {
+            soundResources_["Select"]->Play(false);
+        }
     }
 
     // "Start" キーが押されたらゲームシーンへ遷移
@@ -59,6 +74,8 @@ void ResultScene::OnUpdate()
         else {
             sceneCommandExecutor_.AddCommand(std::make_unique<SceneChangeCommand>("TitleScene", sceneManager_));
         }
+        // 決定音再生
+        soundResources_["Decide"]->Play(false);
     }
 
     // タイトルシーンの更新処理

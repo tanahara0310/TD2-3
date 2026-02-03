@@ -31,5 +31,6 @@ private:
 
     std::unique_ptr<ResultUI> resultUI_;
     int selectedSceneIndex_;
+    std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };
 }

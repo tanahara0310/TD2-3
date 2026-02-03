@@ -5,6 +5,7 @@
 
 // アプリ用システム
 #include "Application/Utility/KeyBindConfig.h"
+#include "Application/SceneObject/Score/ScoreCounter.h"
 
 /// @brief ゲーム固有のアプリケーションクラス
 /// Framework を継承し、シーン管理を統合する

@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <EngineSystem.h>
 class SceneCommandExecutor;
 
 // / メニューの選択肢を表す列挙型
@@ -12,7 +13,7 @@ enum class MenuOption {
 class MenuController final {
 public:
     MenuController() = delete;
-    explicit MenuController(SceneCommandExecutor& sceneCommandList);
+    explicit MenuController(SceneCommandExecutor& sceneCommandList, CoreEngine::SoundManager* soundManager);
     ~MenuController() = default;
 
     // 初期化
@@ -30,6 +31,9 @@ public:
 private:
     float closeTimer_;
     bool isMenuOpen_;
+    MenuOption oldSelectedOption_;
     MenuOption selectedOption_;
     SceneCommandExecutor& sceneCommandList_;
+    CoreEngine::SoundManager* soundManager_;
+    std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
 };

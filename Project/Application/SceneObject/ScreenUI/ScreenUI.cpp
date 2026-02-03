@@ -1,6 +1,7 @@
 #include "ScreenUI.h"
 #include "Application//Utility/MatsumotoUtility.h"
 #include "Application/Utility/KeyBindConfig.h"
+#include "Application/SceneObject/Score/ScoreCounter.h"
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/Utility/Stopwatch.h"
 #include "Application/SceneObject/Menu/MenuController.h"
@@ -9,7 +10,7 @@
 #include "Application/Utility/ApplicationGlobalValue.h"
 
 ScreenUI::ScreenUI(
-    CoreEngine::BaseScene* baseScene, 
+    CoreEngine::BaseScene* baseScene,
     Player* player, Stopwatch* stopwatch,
     BallController* ball, MenuController* menuController) {
     baseScene_ = baseScene;
@@ -78,11 +79,21 @@ void ScreenUI::Initialize() {
     spriteObjects_["Hand"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
     spriteObjects_["Hand"]->Initialize("Texture/hand.png", "HandUI");
 
+    // スコア
+    scoreDisplay_ = std::make_unique<CoreEngine::NumberDisplayUtility>();
+    scoreDisplay_->Initialize(
+        [this]() { return baseScene_->CreateObject<CoreEngine::SpriteObject>(); },
+        "Texture/Number/", 6);
+    scoreDefaultPos_ = { 0.0f, 300.0f };
+    scorePos_ = { 0.0f,500.0f };
 
     isOldActiveBall_ = ball_->GetIsThrowing();
     previousPlayerMode_ = player_->GetPlayerMode();
 
     frameTimer_ = 0.0f;
+    currentScore_ = 0;
+    isAnimationScore_ = false;
+    scoreViewTimer_ = 0;
 }
 
 void ScreenUI::Update() {
@@ -94,6 +105,34 @@ void ScreenUI::Update() {
         player_->GetMoveAxis().y;
 
     float velocity = CoreEngine::Math::Vector::Length(player_->GetVelocity()) * 10.0f;
+
+    ScoreCounter& scoreCounter = ScoreCounter::GetInstance();
+    if ((currentScore_ < scoreCounter.GetScore())) {
+        currentScore_ += (scoreCounter.GetScore() / 100) + 1;
+        scorePos_.y = MatsumotoUtility::SimpleEaseIn(
+            scorePos_.y,
+            0.0f,
+            0.2f);
+        scoreViewTimer_ = 60;
+    } else {
+
+        if (scoreViewTimer_ > 0) {
+            scoreViewTimer_--;
+            currentScore_ += (scoreCounter.GetScore() / 100) + 1;
+            scorePos_.y = MatsumotoUtility::SimpleEaseIn(
+                scorePos_.y,
+                0.0f,
+                0.2f);
+        } else {
+            scorePos_.y = MatsumotoUtility::SimpleEaseIn(
+                scorePos_.y,
+                500.0f,
+                0.1f);
+        }
+
+        currentScore_ = scoreCounter.GetScore();
+    }
+    scoreDisplay_->DisplayNumberWithDigits(currentScore_, scoreDefaultPos_ + scorePos_, 6, { 1.5f, 1.5f }, 10.0f);
 
     // shotとswapの入れ替え
     if (previousPlayerMode_ != player_->GetPlayerMode()) {
@@ -185,7 +224,7 @@ void ScreenUI::Update() {
     }
 
     // プレイヤーが移動操作をしている時はMoveガイドを少し下に移動
-    if (player_->GetPlayerMode() == PlayerMode::YoYo && !ball_->GetIsThrowing()){
+    if (player_->GetPlayerMode() == PlayerMode::YoYo && !ball_->GetIsThrowing()) {
         if (horizontalAxis != 0.0f || verticalAxis != 0.0f) {
             spriteObjects_["MoveGuide"]->GetSpriteTransform().translate.y =
                 MatsumotoUtility::SimpleEaseIn(
@@ -224,6 +263,7 @@ void ScreenUI::Update() {
 
     // デフォルト位置に戻す
     float timeRatio = static_cast<float>(stopwatch_->ElapsedMilliseconds() / ApplicationGlobalValue::GAME_CLEAR_TIME_MS);
+    if (timeRatio >= 1.0f) { timeRatio = 1.0f; }
     spriteObjects_["YoYo"]->GetSpriteTransform().translate = { -450.0f,MatsumotoUtility::Lerp(-250.0f,100.0f,timeRatio),0.0f };
     spriteObjects_["YoYoTargetPos"]->GetSpriteTransform().translate = { -450.0f,100.0f,0.0f };
     // 時間制限が1/10だったら点滅させる
@@ -279,6 +319,11 @@ void ScreenUI::Update() {
     spriteObjects_["Bullet2"]->GetSpriteTransform().rotate.z = spriteObjects_["YoYo"]->GetSpriteTransform().rotate.z + 3.14f * 0.5f;
     spriteObjects_["Bullet3"]->GetSpriteTransform().rotate.z = spriteObjects_["YoYo"]->GetSpriteTransform().rotate.z + 3.14f;
     spriteObjects_["Bullet4"]->GetSpriteTransform().rotate.z = spriteObjects_["YoYo"]->GetSpriteTransform().rotate.z + 3.14f * 1.5f;
+
+    // 数字表示の更新
+    if (scoreDisplay_) {
+        scoreDisplay_->Update();
+    }
 
     isOldActiveBall_ = ball_->GetIsThrowing();
     previousPlayerMode_ = player_->GetPlayerMode();

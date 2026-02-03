@@ -95,5 +95,7 @@ private:
     std::unique_ptr<CoreEngine::SoundManager::SoundResource> bgmSoundResource_;
     // SE
     std::unique_ptr<CoreEngine::SoundManager::SoundResource> shotSoundResources_;
+
+    bool isSpawnBoss_;
 };
 }

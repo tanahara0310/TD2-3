@@ -8,7 +8,12 @@ void EnemyContainer::Update() {
     for (auto& [typeName, enemyList] : enemyMap_) {
         for (auto& enemy : enemyList) {
             if (enemy->IsActive()) {
-                enemy->GetCollider()->SetEnabled(true);
+                // アクティブかつ生きている敵のみコライダーを有効化
+                if (enemy->IsAlive()) {
+                    enemy->GetCollider()->SetEnabled(true);
+                } else {
+                    enemy->GetCollider()->SetEnabled(false);
+                }
                 enemy->EnemyUpdate();
                 enemy->Update();
             } else {

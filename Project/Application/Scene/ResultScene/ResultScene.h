@@ -4,6 +4,9 @@
 
 #include "Application/Utility/Command/SceneCommandExecutor.h"
 
+#include <memory>
+#include "Application/SceneObject/ScreenUI/ResultUI.h"
+
 class WhiteSkyDome;
 namespace CoreEngine
 {
@@ -25,5 +28,8 @@ protected:
 private:
     SceneCommandExecutor sceneCommandExecutor_;
     WhiteSkyDome* skyDome_;
+
+    std::unique_ptr<ResultUI> resultUI_;
+    int selectedSceneIndex_;
 };
 }

@@ -177,12 +177,12 @@ namespace CoreEngine
             }
 
             bool isEnd = gameStopwatch_->ElapsedMilliseconds() >= ApplicationGlobalValue::GAME_CLEAR_TIME_MS;
-            if (!isSpawnBoss_ && isEnd && ScoreCounter::GetInstance().GetScore() >= 0) {
-                isSpawnBoss_ = true;
-                gameStopwatch_->Start(); // ボス戦用に時間をリセットして再スタート
-                return false;
-            }
-
+            //if (!isSpawnBoss_ && isEnd && ScoreCounter::GetInstance().GetScore() >= 0) {
+            //    isSpawnBoss_ = true;
+            //    gameStopwatch_->Start(); // ボス戦用に時間をリセットして再スタート
+            //    enemyManager_->SpawnEnemy<BossEnemy>(CoreEngine::Vector3(0.0f, 0.0f, 0.0f));
+            //    return false;
+            //}
             return isEnd;
             };
         gameResultManager_->AddGameClearCondition(timeUpCondition);
@@ -216,7 +216,7 @@ namespace CoreEngine
 #ifdef _DEBUG
         ImGui::Begin("Game Controller");
         ImGui::Text("Score : %d", ScoreCounter::GetInstance().GetScore());
-        
+
         // 時間の表示
         ImGui::Text("Elapsed Time: %.2f ms", gameStopwatch_->ElapsedMilliseconds());
         // バーで表示

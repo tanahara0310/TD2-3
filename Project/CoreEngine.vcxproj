@@ -179,6 +179,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Effect\HitEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\ShockWaveEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\SlashEffect.cpp" />
+    <ClCompile Include="Application\SceneObject\Enemy\BossEnemy.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\DummyEnemy.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\EnemyContainer.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\EnemyMapLoader.cpp" />
@@ -427,6 +428,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Effect\ShockWaveEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\SlashEffect.h" />
     <ClInclude Include="Application\SceneObject\Enemy\AllEnemy.h" />
+    <ClInclude Include="Application\SceneObject\Enemy\BossEnemy.h" />
     <ClInclude Include="Application\SceneObject\Enemy\DummyEnemy.h" />
     <ClInclude Include="Application\SceneObject\Enemy\EnemyContainer.h" />
     <ClInclude Include="Application\SceneObject\Enemy\EnemyMapLoader.h" />

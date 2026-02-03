@@ -8,6 +8,7 @@
 #include "Application/SceneObject/Ball/BallController.h"
 
 #include "Application/Utility/ApplicationGlobalValue.h"
+#include "Application/SceneObject/Player/PlayerStatus.h"
 
 ScreenUI::ScreenUI(
     CoreEngine::BaseScene* baseScene,
@@ -30,7 +31,7 @@ void ScreenUI::Initialize() {
     spriteObjects_["SubFrame"]->Initialize("Texture/UI_subframe.png", "SubUIFrame");
     spriteObjects_["SubFrame"]->GetSpriteTransform().scale = { 1.05f,1.05f,1.05f };
     spriteObjects_["HandFrame"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
-    spriteObjects_["HandFrame"]->Initialize("Texture/UI_handframe.png", "HandUIFrame");
+    spriteObjects_["HandFrame"]->Initialize("Texture/UI_Gage.png", "HandUIFrame");
     spriteObjects_["HandFrame"]->GetSpriteTransform().scale = { 1.05f,1.05f,1.05f };
     spriteObjects_["TimeLimit"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
     spriteObjects_["TimeLimit"]->Initialize("Texture/UI_timeLimit.png", "TimeLimitUI");
@@ -77,7 +78,7 @@ void ScreenUI::Initialize() {
 
     // 手
     spriteObjects_["Hand"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
-    spriteObjects_["Hand"]->Initialize("Texture/hand.png", "HandUI");
+    spriteObjects_["Hand"]->Initialize("Texture/UI_Cur.png", "HandUI");
 
     // スコア
     scoreDisplay_ = std::make_unique<CoreEngine::NumberDisplayUtility>();
@@ -285,7 +286,7 @@ void ScreenUI::Update() {
     }
 
 
-    spriteObjects_["Hand"]->GetSpriteTransform().translate = { -550.0f,280.0f,0.0f };
+    
 
     // UIをちょっと動かす
     float offsetAmount = 5.0f;
@@ -302,6 +303,10 @@ void ScreenUI::Update() {
                 0.1f);
         offsetAmount += 2.0f;
     }
+
+    spriteObjects_["Hand"]->GetSpriteTransform().translate =
+    { spriteObjects_["HandFrame"]->GetSpriteTransform().translate.x -608.0f + (70.0f * static_cast<float>(PlayerStatus::gunAttackPower))
+        ,spriteObjects_["HandFrame"]->GetSpriteTransform().translate.y + 340.0f,0.0f };
 
     // 弾丸表示
     int bulletCount = ball_->GetBulletCount();

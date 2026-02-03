@@ -45,7 +45,7 @@ namespace CoreEngine
         // ゲームシーンの初期化処理
         sceneCommandExecutor_.Initialize();
         // メニューコントローラーの生成
-        menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_);
+        menuController_ = std::make_unique<MenuController>(sceneCommandExecutor_, engine_->GetComponent<SoundManager>());
         menuController_->Initialize();
 
         cameraController_ = std::make_unique<CameraController>(cameraManager_.get());

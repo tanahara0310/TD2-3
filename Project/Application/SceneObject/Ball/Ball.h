@@ -20,6 +20,7 @@ public:
     CoreEngine::Vector3& GetTransform();
     CoreEngine::Vector3* GetPosPtr() { return &transform_.translate; }
     CoreEngine::SphereCollider* GetCollider() { return collider_.get(); }
+    void UpdateTransform() { transform_.TransferMatrix(); }
 
     void OnCollisionEnter(GameObject* other) override;
 

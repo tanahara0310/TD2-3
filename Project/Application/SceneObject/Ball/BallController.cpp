@@ -83,7 +83,6 @@ void BallController::Update() {
                 player_->SetDamageInvincibilityTime(0.0f);
             }
 
-            ball_->SetActive(true);
             anchorPos_ = player_->GetWorldPosition();
             isReturning_ = false;
             hangTimeCounter_ = config_["HangTime"].get<float>();
@@ -97,6 +96,9 @@ void BallController::Update() {
             cartesianPos_.z = acosf(playerLookDir.y / 1.0f); // 半径1で正規化されているので
             CoreEngine::Vector3 newPos = MatsumotoUtility::SphericalToCartesian(0.1f, cartesianPos_.y, cartesianPos_.z);
             ball_->GetTransform() = (anchorPos_ + newPos + ballVelocity_);
+            ball_->UpdateTransform();
+            // 位置設定後にアクティブ化
+            ball_->SetActive(true);
             player_->PlaySE("throw");
 
         } else {// 球が出ていれば引き戻し

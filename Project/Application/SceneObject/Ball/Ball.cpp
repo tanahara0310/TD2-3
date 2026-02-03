@@ -39,6 +39,7 @@ Ball::Ball() {
 
     collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 1.6f);
     collider_->SetLayer(CoreEngine::CollisionLayer::Item);
+    collider_->SetEnabled(false); // 初期状態では無効
 
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
@@ -59,25 +60,38 @@ void Ball::Initialize() {
     float size = 1.4f;
     transform_.scale = { size, size, size };
     collider_->SetRadius(size * 0.5f);
+    collider_->SetEnabled(false); // 初期化時は無効
 
     LoadConfigFromFile("BallConfig.json");
     oldPosition_ = transform_.translate;
     velocity_ = { 0.0f, 0.0f, 0.0f };
 
     bulletCount_ = 0;
+    
+    // トランスフォームをGPUに転送
+    transform_.TransferMatrix();
 }
 
 void Ball::Update() {
-    if (!IsActive() || !model_) {
-        return;
+if (!IsActive() || !model_) {
+    // 非アクティブなボールのコライダーを無効化
+    if (collider_) {
+        collider_->SetEnabled(false);
     }
+    return;
+}
+    
+// アクティブなボールのコライダーを有効化
+if (collider_) {
+    collider_->SetEnabled(true);
+}
 
-    float dt = 1.0f / 60.0f;
-    transform_.translate += velocity_ * dt;
+float dt = 1.0f / 60.0f;
+transform_.translate += velocity_ * dt;
 
-    // 移動方向の計算 (速度から求める)
-    if (CoreEngine::Math::Vector::Length(velocity_) > 0.0001f) {
-        moveDir = CoreEngine::Math::Vector::Normalize(velocity_);
+// 移動方向の計算 (速度から求める)
+if (CoreEngine::Math::Vector::Length(velocity_) > 0.0001f) {
+    moveDir = CoreEngine::Math::Vector::Normalize(velocity_);
     }
 
     oldPosition_ = transform_.translate;

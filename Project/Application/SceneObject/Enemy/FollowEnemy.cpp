@@ -1,4 +1,5 @@
 #include "FollowEnemy.h"
+#include "Application/SceneObject/Player/PlayerStatus.h"
 
 FollowEnemy::FollowEnemy(CoreEngine::Vector3* targetPos) :
     IEnemy("ApplicationAssets/Model/white1x1Box.obj", "Texture/white1x1.png"),
@@ -11,6 +12,8 @@ FollowEnemy::FollowEnemy(CoreEngine::Vector3* targetPos) :
     soundResources_["Die"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_EnemyDeath.mp3");
     collider_->SetRadius(1.5f);
     transform_.scale = { 2.0f,2.0f,2.0f };
+    damageIntervalCounter_ = 0;
+    maxDamageIntervalCounter_ = 15;
 }
 
 void FollowEnemy::Initialize() {
@@ -20,38 +23,39 @@ void FollowEnemy::Initialize() {
     collider_->SetRadius(1.5f);
     isActive_ = true;
     transform_.scale = { 2.0f,2.0f,2.0f };
+    damageIntervalCounter_ = 0;
 }
 
 void FollowEnemy::EnemyUpdate() {
     if (isAlive_) {
         CoreEngine::Vector3 direction = (*targetPos_) - transform_.translate;
         direction = CoreEngine::Math::Vector::Normalize(direction);
-        
+
         transform_.translate += direction * (2.0f / 60.0f);
         CoreEngine::Vector3 toTarget = (*targetPos_) - transform_.translate;
         toTarget.y = 0.0f; // 水平方向のみ考慮
         toTarget = CoreEngine::Math::Vector::Normalize(toTarget);
         float targetYaw = atan2f(toTarget.x, toTarget.z);
         transform_.rotate.y = targetYaw;
+
+        // ダメージエフェクト
+        if (damageIntervalCounter_ > 0) {
+            transform_.scale.x = 2.0f + sinf(static_cast<float>(damageIntervalCounter_));
+            transform_.scale.y = 2.0f + sinf(static_cast<float>(damageIntervalCounter_));
+            transform_.scale.z = 2.0f + sinf(static_cast<float>(damageIntervalCounter_));
+        } else {
+            transform_.scale = { 2.0f,2.0f,2.0f };
+        }
+
     } else {
         transform_.scale.x = 0.5f + sinf(transform_.scale.x) * 0.3f;
         transform_.scale.y = 0.5f + sinf(transform_.scale.y) * 0.3f;
         transform_.scale.z = 0.5f + sinf(transform_.scale.z) * 0.3f;
     }
-}
 
-void FollowEnemy::OnCollisionEnter(CoreEngine::GameObject* other) {
-    // 無効状態または非生存状態なら処理しない
-    if (!isActive_ || !isAlive_) {
-        return;
-    }
-    // ダメージ判定
-    if (other->GetTag() == std::string("PlayerAttack")) {
-        hp_--;
-        if (hp_ <= 0) {
-            isAlive_ = false;
-            collider_->SetEnabled(false);
-        }
+    // ダメージ無敵時間のカウントダウン
+    if (damageIntervalCounter_ > 0) {
+        damageIntervalCounter_--;
     }
 }
 

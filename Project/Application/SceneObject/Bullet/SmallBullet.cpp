@@ -9,7 +9,7 @@ SmallBullet::SmallBullet() :
     collider_ = std::make_unique<CoreEngine::SphereCollider>(this, 1.5f);
     collider_->SetLayer(CoreEngine::CollisionLayer::PlayerBullet);
     collider_->SetEnabled(false); // 初期状態では無効
-    SetTag("PlayerAttack");
+    SetTag("PlayerGunAttack");
 }
 
 void SmallBullet::Initialize() {

@@ -80,6 +80,10 @@ void ScreenUI::Initialize() {
     spriteObjects_["Hand"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
     spriteObjects_["Hand"]->Initialize("Texture/UI_Cur.png", "HandUI");
 
+    spriteObjects_["Hajime"] = baseScene_->CreateObject<CoreEngine::SpriteObject>();
+    spriteObjects_["Hajime"]->Initialize("Texture/UI_mokuhyou.png", "HajimeUI");
+    spriteObjects_["Hajime"]->GetSpriteTransform().translate.y = 500.0f;
+
     // スコア
     scoreDisplay_ = std::make_unique<CoreEngine::NumberDisplayUtility>();
     scoreDisplay_->Initialize(
@@ -95,9 +99,24 @@ void ScreenUI::Initialize() {
     currentScore_ = 0;
     isAnimationScore_ = false;
     scoreViewTimer_ = 0;
+
+    startTimer_ = 1.5f;
 }
 
 void ScreenUI::Update() {
+    if (startTimer_ > 0.0f) {
+        startTimer_ -= 1.0f / 60.0f;
+        spriteObjects_["Hajime"]->GetSpriteTransform().translate.y = MatsumotoUtility::SimpleEaseIn(
+            spriteObjects_["Hajime"]->GetSpriteTransform().translate.y,
+            0.0f,
+            0.2f);
+    } else {
+        spriteObjects_["Hajime"]->GetSpriteTransform().translate.y = MatsumotoUtility::SimpleEaseIn(
+            spriteObjects_["Hajime"]->GetSpriteTransform().translate.y,
+            -500.0f,
+            0.1f);
+    }
+
     frameTimer_ += 1.0f;
 
     float horizontalAxis =
@@ -285,12 +304,13 @@ void ScreenUI::Update() {
         spriteObjects_["YoYo"]->SetColor({ 1.0f,1.0f,1.0f,1.0f });
     }
 
-
-    
-
     // UIをちょっと動かす
     float offsetAmount = 5.0f;
     for (auto& [name, spriteObject] : spriteObjects_) {
+        if (name == "Hajime") {
+            continue;
+        }
+
         spriteObject->GetSpriteTransform().translate.x =
             MatsumotoUtility::SimpleEaseIn(
                 spriteObject->GetSpriteTransform().translate.x,

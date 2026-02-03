@@ -22,6 +22,8 @@ public:
         BallController*ball, MenuController* menuController);
     void Initialize();
     void Update();
+
+    bool isStarted() const {return startTimer_ <= 0.0f;}
 private:
     CoreEngine::BaseScene* baseScene_;
     Player* player_;
@@ -39,4 +41,6 @@ private:
 
     bool isOldActiveBall_;
     float frameTimer_;
+
+    float startTimer_;
 };

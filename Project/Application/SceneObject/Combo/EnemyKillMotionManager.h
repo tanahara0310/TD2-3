@@ -2,6 +2,10 @@
 #include <functional>
 #include <EngineSystem.h>
 
+namespace CoreEngine {
+    class ParticleSystem;
+}
+
 class EnemyKillComboCounter;
 class Player;
 class EnemyContainer;
@@ -35,6 +39,11 @@ public:
     // キル演出中かどうか
     bool isPlayingMotion_;
 
+    // パーティクルプールの設定
+    void SetEnemyDeathParticlePool(std::vector<CoreEngine::ParticleSystem*>* pool) {
+        enemyDeathParticlePool_ = pool;
+    }
+
 private:
     EnemyContainer* container_;
     EnemyKillComboCounter* comboCounter_;
@@ -48,4 +57,9 @@ private:
     float eraseCooldownFactor_;
 
     std::function<int(const CoreEngine::Vector3&, const CoreEngine::Vector3&, const CoreEngine::Vector3&)> killEffectFunc_;
+    
+    std::vector<CoreEngine::ParticleSystem*>* enemyDeathParticlePool_ = nullptr;
+
+    // パーティクルプールから使用可能なパーティクルを取得
+    CoreEngine::ParticleSystem* GetAvailableParticle();
 };

@@ -5,6 +5,7 @@
 #include "Application/SceneObject/CameraController/CameraController.h"
 #include "Application/SceneObject/Ball/BallController.h"
 #include "Application/Utility/Stopwatch.h"
+#include "Engine/Particle/ParticleSystem.h"
 
 #include "Application/SceneObject/CameraController/AllCameraWork.h"
 
@@ -25,6 +26,19 @@ EnemyKillMotionManager::EnemyKillMotionManager(
     eraseCooldown_ = 0.5f;
     currentEraseCooldown_ = 0.0f;
     eraseCooldownFactor_ = 1.0f;
+}
+
+CoreEngine::ParticleSystem* EnemyKillMotionManager::GetAvailableParticle() {
+    if (!enemyDeathParticlePool_) return nullptr;
+    
+    for (auto* particle : *enemyDeathParticlePool_) {
+        // 再生中でないか、または終了しているパーティクルを探す
+        if (!particle->IsPlaying() || particle->IsFinished()) {
+            return particle;
+        }
+    }
+    // 全て使用中の場合はnullptrを返す
+    return nullptr;
 }
 
 void EnemyKillMotionManager::Update() {
@@ -99,6 +113,12 @@ void EnemyKillMotionManager::Update() {
                         CoreEngine::Vector3(0.0f, 0.0f, 0.0f),
                         CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
                 }
+                // 敵死亡パーティクルを再生
+                auto* particle = GetAvailableParticle();
+                if (particle) {
+                    particle->SetEmitterPosition(furthestEnemy->GetTransform());
+                    particle->Play();
+                }
 
                 // 半径3.5の範囲内にいる敵を消す
                 for (auto enemy : enemyList) {
@@ -108,6 +128,12 @@ void EnemyKillMotionManager::Update() {
                     if (distance <= 3.5f) {
                         enemy->SetActive(false);
                         enemy->PlaySE("Die");
+                        // 敵死亡パーティクルを再生
+                        auto* particleInRange = GetAvailableParticle();
+                        if (particleInRange) {
+                            particleInRange->SetEmitterPosition(enemy->GetTransform());
+                            particleInRange->Play();
+                        }
                     }
                 }
 

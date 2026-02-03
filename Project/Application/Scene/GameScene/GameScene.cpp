@@ -24,6 +24,8 @@
 
 #include "Application/SceneObject/Bullet/AllBullet.h"
 
+#include "Engine/Graphics/Resource/ResourceFactory.h"
+
 namespace CoreEngine
 {
 void GameScene::Initialize(EngineSystem* engine)
@@ -33,8 +35,9 @@ void GameScene::Initialize(EngineSystem* engine)
 	// コンポーネントを直接取得
 	auto dxCommon = engine_->GetComponent<DirectXCommon>();
 	auto renderManager = engine_->GetComponent<RenderManager>();
+	auto resourceFactory = engine_->GetComponent<ResourceFactory>();
 
-	if (!dxCommon || !renderManager) {
+	if (!dxCommon || !renderManager || !resourceFactory) {
 		return;
 	}
 
@@ -70,6 +73,16 @@ void GameScene::Initialize(EngineSystem* engine)
     effectContainers_["SlashEffect"]->ApplyToScene<SlashEffect>(this);
     effectContainers_["PlayerBullet"] = std::make_unique<BulletObjectContainer>(50);
     effectContainers_["PlayerBullet"]->ApplyToScene<SmallBullet>(this);
+
+    // 敵死亡パーティクルのプール生成（同時に10個まで再生可能）
+    enemyDeathParticlePool_.clear();
+    const int particlePoolSize = 10;
+    for (int i = 0; i < particlePoolSize; ++i) {
+        auto enemyDeathParticle = CreateObject<ParticleSystem>();
+        enemyDeathParticle->Initialize(dxCommon, resourceFactory, "EnemyDeathParticle_" + std::to_string(i));
+        enemyDeathParticle->GetPresetManager().LoadPreset(enemyDeathParticle, "Assets/Presets/Particle/EnemyDeath.json");
+        enemyDeathParticlePool_.push_back(enemyDeathParticle);
+    }
 
     // ゲームオブジェクトの生成
     player_ = CreateObject<Player>();
@@ -135,6 +148,8 @@ void GameScene::Initialize(EngineSystem* engine)
             effectContainers_["HitEffect"].get(),
             std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
     );
+    // 敵死亡パーティクルプールの設定
+    enemyKillMotionManager_->SetEnemyDeathParticlePool(&enemyDeathParticlePool_);
 
     // 敵ウェーブマネージャーの生成
     enemyWaveManager_ = std::make_unique<EnemyWaveManager>(enemyMapLoader_.get());
@@ -370,6 +385,17 @@ void GameScene::NextWave() {
             collisionManager_->RegisterCollider(enemy->GetCollider());
         }
     }
+}
+
+CoreEngine::ParticleSystem* GameScene::GetAvailableEnemyDeathParticle() {
+    for (auto* particle : enemyDeathParticlePool_) {
+        // 再生中でないか、または終了しているパーティクルを探す
+        if (!particle->IsPlaying() || particle->IsFinished()) {
+            return particle;
+        }
+    }
+    // 全て使用中の場合はnullptrを返す
+    return nullptr;
 }
 
 void GameScene::Draw()

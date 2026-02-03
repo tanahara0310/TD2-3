@@ -1,4 +1,4 @@
-﻿#include "EmissionModule.h"
+#include "EmissionModule.h"
 #include "../ParticleSystem.h" // Particle構造体のために必要
 
 #ifdef _DEBUG
@@ -65,6 +65,13 @@ void EmissionModule::Play() {
 
 void EmissionModule::Stop() {
     isPlaying_ = false;
+}
+
+void EmissionModule::Restart() {
+    isPlaying_ = true;
+    elapsedTime_ = 0.0f;
+    hasBurst_ = false;
+    emissionAccumulator_ = 0.0f;
 }
 
 #ifdef _DEBUG

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -46,6 +46,9 @@ public:
 
 	/// @brief 停止
 	void Stop();
+
+	/// @brief 再起動（時間をリセットして再生）
+	void Restart();
 
 	/// @brief 再生中かどうか
 	/// @return 再生中の場合true

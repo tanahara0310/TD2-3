@@ -216,8 +216,15 @@ void ParticleSystem::Draw(const ICamera* camera)
 
 void ParticleSystem::Play()
 {
-	mainModule_->Play();
-	emissionModule_->Play();
+	// ワンショットパーティクルの場合、前回のパーティクルをクリア
+	if (!mainModule_->GetMainData().looping) {
+		Clear();
+		mainModule_->Restart();
+		emissionModule_->Restart();
+	} else {
+		mainModule_->Play();
+		emissionModule_->Play();
+	}
 }
 
 void ParticleSystem::Stop()

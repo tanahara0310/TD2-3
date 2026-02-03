@@ -61,6 +61,7 @@ Player::Player() {
     soundResources_["throw"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_throw.mp3");
     soundResources_["return"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_Pull.mp3");
     soundResources_["GunNoAmmo"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_Error.mp3");
+    soundResources_["Damage"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_PlayerDamage.mp3");
 
     shootingBullet_ = false;
 }
@@ -188,6 +189,7 @@ void Player::OnCollisionEnter(GameObject* other) {
         damageInvincibilityTimer_ = config_["DamageInterval"].get<float>();
         isDamaged_ = true;
         velocity_ = CoreEngine::Math::Vector::Normalize(transform_.translate - other->GetWorldPosition());
+        soundResources_["Damage"]->Play(false);
     }
 }
 

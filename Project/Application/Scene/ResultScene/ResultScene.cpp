@@ -42,6 +42,9 @@ void ResultScene::Initialize(EngineSystem* engine)
     soundResources_.clear();
     soundResources_["Decide"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/Title/SE_Decide.mp3");
     soundResources_["Select"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_Throw.mp3");
+    soundResources_["BGM"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/BGM_Result.mp3");
+    soundResources_["BGM"]->Play(true);
+    soundResources_["BGM"]->SetVolume(0.2f);
 }
 
 void ResultScene::OnUpdate()

@@ -54,7 +54,7 @@ public:
 private:
     // スプライトオブジェクト
     std::unique_ptr<CoreEngine::SpriteObject*> titleSprite_;
-    std::unique_ptr<CoreEngine::SpriteObject*> spaceStartSprite_;
+    std::unique_ptr<CoreEngine::SpriteObject*> startSprite_;
     std::unique_ptr<CoreEngine::SpriteObject*> titleFrameSprite_;
     std::unique_ptr<CoreEngine::SpriteObject*> leftHandSprite_;   // 左側の指スプライト
     std::unique_ptr<CoreEngine::SpriteObject*> rightHandSprite_;  // 右側の指スプライト

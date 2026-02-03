@@ -32,8 +32,11 @@ namespace CoreEngine
         void OnUpdate() override;
 
     private:
-        // パーティクルシステム
+        // パーティクルシステム（テスト用）
         ParticleSystem* particleSystem_ = nullptr;
+
+        // 敵死亡時パーティクルシステム
+        ParticleSystem* enemyDeathParticle_ = nullptr;
 
         // 数字表示（使用例）
         std::unique_ptr<NumberDisplayUtility> numberDisplay_;

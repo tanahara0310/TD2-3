@@ -59,6 +59,8 @@ Player::Player() {
     //soundResources_["DamageSound"] = soundManager->CreateSoundResource("ApplicationAssets/Sound/PlayerDamage.wav");
     soundResources_["switch"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_switch.mp3");
     soundResources_["throw"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_throw.mp3");
+    soundResources_["return"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_Pull.mp3");
+    soundResources_["GunNoAmmo"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_Error.mp3");
 
     shootingBullet_ = false;
 }

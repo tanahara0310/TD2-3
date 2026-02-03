@@ -209,6 +209,8 @@ namespace CoreEngine
         // 謎の音声リソース読み込めないバグ
         shotSoundResources_
             = soundManager->CreateSoundResource("ApplicationAssets/Sound/SE_BulletShot.mp3");
+
+        ScoreCounter::GetInstance().ResetScore();
     }
 
     void GameScene::OnUpdate() {
@@ -330,12 +332,11 @@ namespace CoreEngine
                             -CoreEngine::Math::Vector::Normalize(direction * 0.5f));
 
                         shotSoundResources_->Play(false);
+                    } 
+                } 
 
-                        // 発射音などの効果音を再生する場合はここで行う
-                        /*if (result != -1) {
-                            player_->PlaySE("gun_shot");
-                        }*/
-                    }
+                if (keyBindConfig.IsTrigger("Shot")&& canShoot&& ball_->bulletCount_ <= 0) {
+                    player_->PlaySE("GunNoAmmo");
                 }
 #pragma endregion
 

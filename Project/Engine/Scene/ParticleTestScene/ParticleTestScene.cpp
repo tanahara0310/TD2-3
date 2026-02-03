@@ -21,7 +21,7 @@ namespace CoreEngine
             return; // 必須コンポーネントがない場合は終了
         }
 
-        // ===== パーティクルシステムの初期化 =====
+        // ===== テスト用パーティクルシステムの初期化 =====
         auto particleSystem = CreateObject<ParticleSystem>();
         particleSystem->Initialize(dxCommon, resourceFactory, "TestParticle");
 
@@ -34,6 +34,21 @@ namespace CoreEngine
 
         // パーティクルを再生開始
         particleSystem_->Play();
+
+        // ===== 敵死亡時パーティクルシステムの初期化（プリセット読み込み） =====
+        auto enemyDeathParticle = CreateObject<ParticleSystem>();
+        enemyDeathParticle->Initialize(dxCommon, resourceFactory, "EnemyDeathParticle");
+
+        // プリセットマネージャーを使用してEnemyDeath.jsonを読み込み
+        enemyDeathParticle->GetPresetManager().LoadPreset(enemyDeathParticle, "Assets/Presets/Particle/EnemyDeath.json");
+
+        // エミッター位置を調整（右側に配置）
+        enemyDeathParticle->SetEmitterPosition({ 3.0f, 2.0f, 0.0f });
+
+        enemyDeathParticle_ = enemyDeathParticle;
+
+        // 敵死亡パーティクルを再生開始
+        enemyDeathParticle_->Play();
 
         // ===== 数字表示の初期化 =====
         numberDisplay_ = std::make_unique<NumberDisplayUtility>();

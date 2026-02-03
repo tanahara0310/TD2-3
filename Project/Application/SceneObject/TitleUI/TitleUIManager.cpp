@@ -17,7 +17,7 @@ void TitleUIManager::Initialize(std::function<SpriteObject* ()> createSpriteFunc
     // タイトル画像の作成（画面外上からスタート）
     auto* titleSprite = createSpriteFunc();
     titleSprite->Initialize("Assets/Texture/Title/title.png", "TitleLogo");
-    titleSprite->GetSpriteTransform().translate = { 0.0f, 800.0f, 0.0f };
+    titleSprite->GetSpriteTransform().translate = { 0.0f, 0.0f, 0.0f };
     titleSprite->SetAnchor({ 0.5f, 0.5f });
     titleSprite->GetSpriteTransform().scale = { 0.1f, 0.1f, 1.0f };
     titleSprite_ = std::make_unique<SpriteObject*>(titleSprite);
@@ -28,7 +28,7 @@ void TitleUIManager::Initialize(std::function<SpriteObject* ()> createSpriteFunc
     spaceStartSprite->GetSpriteTransform().translate = { 0.0f, -200.0f, 0.0f };
     spaceStartSprite->SetAnchor({ 0.5f, 0.5f });
     spaceStartSprite->GetSpriteTransform().scale = { 0.6f, 0.6f, 0.6f };
-    spaceStartSprite_ = std::make_unique<SpriteObject*>(spaceStartSprite);
+    startSprite_ = std::make_unique<SpriteObject*>(spaceStartSprite);
 
 
     // 左側の指スプライトの作成（タイトルロゴの左側）
@@ -54,7 +54,7 @@ void TitleUIManager::Initialize(std::function<SpriteObject* ()> createSpriteFunc
 
 void TitleUIManager::Update(float deltaTime)
 {
-    if (!titleSprite_ || !spaceStartSprite_) return;
+    if (!titleSprite_ || !startSprite_) return;
 
     // タイマー更新
     animationTimer_.Update(deltaTime);
@@ -135,7 +135,7 @@ void TitleUIManager::UpdateIntroAnimation()
     float overshootT = 1.0f + overshoot * std::pow(t - 1.0f, 3.0f) + overshoot * std::pow(t - 1.0f, 2.0f);
 
     // タイトルロゴが上から飛び込む + 回転しながら拡大（スケール0.8倍）
-    (*titleSprite_)->GetSpriteTransform().translate.y = MatsumotoUtility::Lerp(800.0f, 200.0f, overshootT);
+    (*titleSprite_)->GetSpriteTransform().translate.y = MatsumotoUtility::Lerp(800.0f, 160.0f, overshootT);
     (*titleSprite_)->GetSpriteTransform().scale.x = MatsumotoUtility::Lerp(0.1f, 0.8f, easeT);
     (*titleSprite_)->GetSpriteTransform().scale.y = MatsumotoUtility::Lerp(0.1f, 0.8f, easeT);
     (*titleSprite_)->GetSpriteTransform().rotate.z = MatsumotoUtility::Lerp(MatsumotoUtility::DegreesToRadians(720.0f), 0.0f, easeT);
@@ -174,17 +174,17 @@ void TitleUIManager::UpdateMainAnimation()
 
 void TitleUIManager::UpdateSpaceStartAnimation()
 {
-    if (!spaceStartSprite_) return;
+    if (!startSprite_) return;
 
     // スペーススタートの点滅（アーケード風）
     float blinkTime = blinkTimer_.GetElapsedTime();
     float blinkAlpha = (std::sin(blinkTime * 3.0f) + 1.0f) * 0.5f;
-    (*spaceStartSprite_)->SetColor({ 1.0f, 1.0f, 1.0f, blinkAlpha });
+    (*startSprite_)->SetColor({ 1.0f, 1.0f, 1.0f, blinkAlpha });
 
     // スペーススタートの上下振動
     float animTime = animationTimer_.GetElapsedTime();
     float floatOffset = std::sin(animTime * 2.0f) * 10.0f;
-    (*spaceStartSprite_)->GetSpriteTransform().translate.y = -200.0f + floatOffset;
+    (*startSprite_)->GetSpriteTransform().translate.y = -190.0f + floatOffset;
 }
 
 void TitleUIManager::UpdateHandAnimation()
@@ -215,7 +215,7 @@ void TitleUIManager::UpdateHandAnimation()
 
     float baseLeftX = -420.0f;   // 左側の指の基準位置（タイトルロゴから離す）
     float baseRightX = 420.0f;   // 右側の指の基準位置（タイトルロゴから離す）
-    float baseY = 200.0f;
+    float baseY = 160.0f;
 
     float leftX = baseLeftX;
     float rightX = baseRightX;
@@ -414,7 +414,7 @@ void TitleUIManager::StartExitAnimation()
 
 void TitleUIManager::UpdateExitAnimation()
 {
-    if (!spaceStartSprite_) return;
+    if (!startSprite_) return;
 
     float t = exitTimer_.GetProgress();
     const float baseY = -200.0f;  // 元のY座標
@@ -428,16 +428,16 @@ void TitleUIManager::UpdateExitAnimation()
 
         // 少し下に移動
         float currentY = MatsumotoUtility::Lerp(baseY, baseY - 30.0f, squashT);
-        (*spaceStartSprite_)->GetSpriteTransform().translate.y = currentY;
+        (*startSprite_)->GetSpriteTransform().translate.y = currentY;
 
         // スケールを少し小さく（押し込まれた感じ）
         float scaleX = MatsumotoUtility::Lerp(0.6f, 0.55f, squashT);
         float scaleY = MatsumotoUtility::Lerp(0.6f, 0.65f, squashT);  // Y方向は少し伸ばす
-        (*spaceStartSprite_)->GetSpriteTransform().scale.x = scaleX;
-        (*spaceStartSprite_)->GetSpriteTransform().scale.y = scaleY;
+        (*startSprite_)->GetSpriteTransform().scale.x = scaleX;
+        (*startSprite_)->GetSpriteTransform().scale.y = scaleY;
 
         // Y軸回転はまだ開始しない
-        (*spaceStartSprite_)->GetSpriteTransform().rotate.y = 0.0f;
+        (*startSprite_)->GetSpriteTransform().rotate.y = 0.0f;
 
     } else if (t < 0.45f) {
         // === Phase 1 (0.15-0.45s): ジャンプアップ + Y軸高速回転 ===
@@ -447,18 +447,18 @@ void TitleUIManager::UpdateExitAnimation()
         float jumpT = EasingUtil::Apply(phaseT, EasingUtil::Type::EaseOutQuad);
         float jumpHeight = 400.0f;  // ジャンプの高さ
         float currentY = MatsumotoUtility::Lerp(baseY - 30.0f, baseY + jumpHeight, jumpT);
-        (*spaceStartSprite_)->GetSpriteTransform().translate.y = currentY;
+        (*startSprite_)->GetSpriteTransform().translate.y = currentY;
 
         // Y軸回転のみ（高速回転）
         float rotationSpeedY = MatsumotoUtility::DegreesToRadians(1800.0f);  // 5回転/秒（高速化）
         float currentRotationY = rotationSpeedY * phaseT * 0.3f;  // 0.3秒分の回転
-        (*spaceStartSprite_)->GetSpriteTransform().rotate.y = currentRotationY;
+        (*startSprite_)->GetSpriteTransform().rotate.y = currentRotationY;
 
         // スケールを元に戻しながら少し大きく
         float scaleT = EasingUtil::Apply(phaseT, EasingUtil::Type::EaseOutCubic);
         float scale = MatsumotoUtility::Lerp(0.55f, 0.75f, scaleT);
-        (*spaceStartSprite_)->GetSpriteTransform().scale.x = scale;
-        (*spaceStartSprite_)->GetSpriteTransform().scale.y = scale;
+        (*startSprite_)->GetSpriteTransform().scale.x = scale;
+        (*startSprite_)->GetSpriteTransform().scale.y = scale;
 
     } else if (t < 0.7f) {
         // === Phase 2 (0.45-0.7s): 元の位置に戻る ===
@@ -467,24 +467,24 @@ void TitleUIManager::UpdateExitAnimation()
         // EaseInOutQuadで元の位置に戻る
         float returnT = EasingUtil::Apply(phaseT, EasingUtil::Type::EaseInOutQuad);
         float currentY = MatsumotoUtility::Lerp(baseY + 400.0f, baseY, returnT);
-        (*spaceStartSprite_)->GetSpriteTransform().translate.y = currentY;
+        (*startSprite_)->GetSpriteTransform().translate.y = currentY;
 
         // Y軸回転を継続（Phase 1の最終回転量を維持）
         float rotationSpeedY = MatsumotoUtility::DegreesToRadians(1800.0f);
         float phase1RotationY = rotationSpeedY * 0.3f;  // Phase 1の最終回転量
-        (*spaceStartSprite_)->GetSpriteTransform().rotate.y = phase1RotationY;
+        (*startSprite_)->GetSpriteTransform().rotate.y = phase1RotationY;
 
         // スケールを元に戻す
         float scale = MatsumotoUtility::Lerp(0.75f, 0.6f, returnT);
-        (*spaceStartSprite_)->GetSpriteTransform().scale.x = scale;
-        (*spaceStartSprite_)->GetSpriteTransform().scale.y = scale;
+        (*startSprite_)->GetSpriteTransform().scale.x = scale;
+        (*startSprite_)->GetSpriteTransform().scale.y = scale;
 
     } else {
         // === Phase 3 (0.7-1.0s): 回転を0度に収束 ===
         float phaseT = (t - 0.7f) / 0.3f;  // 0→1
 
         // 位置は元の位置で固定
-        (*spaceStartSprite_)->GetSpriteTransform().translate.y = baseY;
+        (*startSprite_)->GetSpriteTransform().translate.y = baseY;
 
         // Y軸回転をEaseOutQuadで0度に収束（正規化せずに直接0度へ）
         float rotationSpeedY = MatsumotoUtility::DegreesToRadians(1800.0f);
@@ -493,11 +493,11 @@ void TitleUIManager::UpdateExitAnimation()
         // EaseOutQuadで直接0度に向かって補間
         float easeT = EasingUtil::Apply(phaseT, EasingUtil::Type::EaseOutQuad);
         float currentRotationY = phase1RotationY * (1.0f - easeT);  // 直接0度に向かって減少
-        (*spaceStartSprite_)->GetSpriteTransform().rotate.y = currentRotationY;
+        (*startSprite_)->GetSpriteTransform().rotate.y = currentRotationY;
 
         // スケールは元のサイズで固定
-        (*spaceStartSprite_)->GetSpriteTransform().scale.x = 0.6f;
-        (*spaceStartSprite_)->GetSpriteTransform().scale.y = 0.6f;
+        (*startSprite_)->GetSpriteTransform().scale.x = 0.6f;
+        (*startSprite_)->GetSpriteTransform().scale.y = 0.6f;
     }
 }
 

@@ -25,6 +25,7 @@
 #include "Application/SceneObject/Bullet/AllBullet.h"
 
 #include "Application/SceneObject/Score/ScoreCounter.h"
+#include "Application/SceneObject/Player/PlayerStatus.h"
 
 namespace CoreEngine
 {
@@ -218,6 +219,8 @@ namespace CoreEngine
 #ifdef _DEBUG
         ImGui::Begin("Game Controller");
         ImGui::Text("Score : %d", ScoreCounter::GetInstance().GetScore());
+        ImGui::Text("GunAttack Power : %d", PlayerStatus::gunAttackPower);
+        ImGui::Text("MeleeAttack Power : %d", PlayerStatus::meleeAttackPower);
 
         // 時間の表示
         ImGui::Text("Elapsed Time: %.2f ms", gameStopwatch_->ElapsedMilliseconds());
@@ -332,6 +335,13 @@ namespace CoreEngine
                             -CoreEngine::Math::Vector::Normalize(direction * 0.5f));
 
                         shotSoundResources_->Play(false);
+
+                        PlayerStatus::meleeAttackPower += 1;
+                        PlayerStatus::gunAttackPower -= 1;
+
+                        const int totalPower = PlayerStatus::meleeAttackPower + PlayerStatus::gunAttackPower;
+                        PlayerStatus::gunAttackPower = std::clamp(PlayerStatus::gunAttackPower, 1, totalPower - 1);
+                        PlayerStatus::meleeAttackPower = totalPower - PlayerStatus::gunAttackPower;
                     } 
                 } 
 

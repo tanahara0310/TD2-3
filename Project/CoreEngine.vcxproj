@@ -192,6 +192,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Menu\MenuView.cpp" />
     <ClCompile Include="Application\SceneObject\Player\BulletShotController.cpp" />
     <ClCompile Include="Application\SceneObject\Player\Player.cpp" />
+    <ClCompile Include="Application\SceneObject\Player\PlayerStatus.cpp" />
     <ClCompile Include="Application\SceneObject\Presenters\GameClearSequence.cpp" />
     <ClCompile Include="Application\SceneObject\Score\ScoreCounter.cpp" />
     <ClCompile Include="Application\SceneObject\ScreenUI\ResultUI.cpp" />
@@ -442,6 +443,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Menu\MenuView.h" />
     <ClInclude Include="Application\SceneObject\Player\BulletShotController.h" />
     <ClInclude Include="Application\SceneObject\Player\Player.h" />
+    <ClInclude Include="Application\SceneObject\Player\PlayerStatus.h" />
     <ClInclude Include="Application\SceneObject\Presenters\GameClearSequence.h" />
     <ClInclude Include="Application\SceneObject\Score\ScoreCounter.h" />
     <ClInclude Include="Application\SceneObject\ScreenUI\ResultUI.h" />

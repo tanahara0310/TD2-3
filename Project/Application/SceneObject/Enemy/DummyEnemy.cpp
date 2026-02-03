@@ -1,5 +1,6 @@
 #include "DummyEnemy.h"
 
+
 DummyEnemy::DummyEnemy() :
     IEnemy("ApplicationAssets/Model/white1x1Box.obj", "Texture/white1x1.png") {
 
@@ -11,11 +12,13 @@ DummyEnemy::DummyEnemy() :
     soundResources_["Die"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_EnemyDeath.mp3");
 
     collider_->SetRadius(1.5f);
-    transform_.scale = { 2.0f,2.0f,2.0f };
+    transform_.scale = { 3.0f,3.0f,3.0f };
+    damageIntervalCounter_ = 0;
+    maxDamageIntervalCounter_ = 15;
 }
 
 void DummyEnemy::Initialize() {
-    hp_ = 2;
+    hp_ = 5;
     SetActive(true);
     collider_->SetEnabled(true);
     collider_->SetRadius(2.0f);
@@ -26,26 +29,24 @@ void DummyEnemy::Initialize() {
 void DummyEnemy::EnemyUpdate() {
     if (isAlive_) {
         transform_.rotate.y += 0.02f;
+        if (damageIntervalCounter_ > 0) {
+            transform_.scale.x = 1.0f + sinf(static_cast<float>(damageIntervalCounter_));
+            transform_.scale.y = 1.0f + sinf(static_cast<float>(damageIntervalCounter_));
+            transform_.scale.z = 1.0f + sinf(static_cast<float>(damageIntervalCounter_));
+        } else {
+            transform_.scale = { 3.0f,3.0f,3.0f };
+        }
+        
+
     } else {
         transform_.scale.x = 0.5f + sinf(transform_.scale.x) * 0.3f;
         transform_.scale.y = 0.5f + sinf(transform_.scale.y) * 0.3f;
         transform_.scale.z = 0.5f + sinf(transform_.scale.z) * 0.3f;
     }
-}
 
-void DummyEnemy::OnCollisionEnter(CoreEngine::GameObject* other) {
-    // 無効状態または非生存状態なら処理しない
-    if (!isActive_ || !isAlive_) {
-        return;
-    }
-
-    // ダメージ判定
-    if (other->GetTag() == std::string("PlayerAttack")) {
-        hp_--;
-        if (hp_ <= 0) {
-            isAlive_ = false;
-            collider_->SetEnabled(false);
-        }
+    // ダメージ無敵時間のカウントダウン
+    if (damageIntervalCounter_ > 0) {
+        damageIntervalCounter_--;
     }
 }
 

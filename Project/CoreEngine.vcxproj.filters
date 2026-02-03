@@ -207,6 +207,7 @@
     <ClCompile Include="Engine\Utility\Debug\ImGui\SceneViewport.cpp" />
     <ClCompile Include="Application\SceneObject\Enemy\BossEnemy.cpp" />
     <ClCompile Include="Application\SceneObject\ScreenUI\ResultUI.cpp" />
+    <ClCompile Include="Application\SceneObject\Player\PlayerStatus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\SceneObject\BackGround\Ground.h" />
@@ -563,6 +564,7 @@
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Application\SceneObject\Enemy\BossEnemy.h" />
     <ClInclude Include="Application\SceneObject\ScreenUI\ResultUI.h" />
+    <ClInclude Include="Application\SceneObject\Player\PlayerStatus.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\BulletHitParticle_Implementation.md" />

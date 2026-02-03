@@ -49,6 +49,10 @@ public:
 
     void NextWave();
 
+    /// @brief 使用可能な敵死亡パーティクルシステムを取得
+    /// @return 使用可能なパーティクルシステム（nullptr = 全て使用中）
+    CoreEngine::ParticleSystem* GetAvailableEnemyDeathParticle();
+
 protected:
 	/// @brief 更新処理（BaseSceneのOnUpdate()をオーバーライド）
 	void OnUpdate() override;
@@ -88,8 +92,12 @@ private:
     std::unique_ptr<TimeAndEnemyCountSpawnRule> gameRule_;
     std::unique_ptr<GameClearSequence> gameClearSequence_;
 
+
     // エフェクト
     std::map<std::string, std::unique_ptr<BulletObjectContainer>> effectContainers_;
+
+    // パーティクルシステムのプール
+    std::vector<CoreEngine::ParticleSystem*> enemyDeathParticlePool_;
 
     // BGM
     std::unique_ptr<CoreEngine::SoundManager::SoundResource> bgmSoundResource_;

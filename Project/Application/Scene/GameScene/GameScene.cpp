@@ -382,9 +382,21 @@ namespace CoreEngine
         }
     }
 
-    void GameScene::Draw() {
-        BaseScene::Draw();
+CoreEngine::ParticleSystem* GameScene::GetAvailableEnemyDeathParticle() {
+    for (auto* particle : enemyDeathParticlePool_) {
+        // 再生中でないか、または終了しているパーティクルを探す
+        if (!particle->IsPlaying() || particle->IsFinished()) {
+            return particle;
+        }
     }
+    // 全て使用中の場合はnullptrを返す
+    return nullptr;
+}
+
+void GameScene::Draw()
+{
+	BaseScene::Draw();
+}
 
     void GameScene::Finalize() {
         BaseScene::Finalize();

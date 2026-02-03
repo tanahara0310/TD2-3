@@ -48,6 +48,9 @@ namespace CoreEngine
             return gameObjectManager_.AddObject(std::move(obj));
         }
 
+        /// @brief エンジンシステムの取得
+        EngineSystem* GetEngineSystem() const { return engine_; }
+
     protected:
         /// @brief 派生クラスでオーバーライドする更新処理（GameObjectの更新前）
         virtual void OnUpdate() {}

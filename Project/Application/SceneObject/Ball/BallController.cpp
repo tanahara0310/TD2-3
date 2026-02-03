@@ -103,6 +103,7 @@ void BallController::Update() {
 
         } else {// 球が出ていれば引き戻し
             if (canSwitch_ && switchCooldown_ <= 0.0f) {
+                player_->PlaySE("return");
                 isReturning_ = true;
                 switchCooldown_ = config_["SwitchCooldown"].get<float>();
                 canSwitch_ = false;

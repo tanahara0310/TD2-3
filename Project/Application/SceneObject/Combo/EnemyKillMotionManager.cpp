@@ -9,6 +9,12 @@
 
 #include "Application/SceneObject/CameraController/AllCameraWork.h"
 
+#include "Application/SceneObject/Score/ScoreCounter.h"
+
+namespace {
+    const int POINTS_PER_KILL = 100;
+}
+
 EnemyKillMotionManager::EnemyKillMotionManager(
     EnemyKillComboCounter* comboCounter,
     Player* player,
@@ -21,7 +27,7 @@ EnemyKillMotionManager::EnemyKillMotionManager(
     player_(player),
     cameraController_(cameraController),
     ballController_(ballController),
-    gameTimer_(gameTimer){
+    gameTimer_(gameTimer) {
     isPlayingMotion_ = false;
     eraseCooldown_ = 0.5f;
     currentEraseCooldown_ = 0.0f;
@@ -62,20 +68,22 @@ void EnemyKillMotionManager::Update() {
             enemy->SetActive(false);
             if (killEffectFunc_) {
                 killEffectFunc_(
-                    enemy->GetTransform(), 
-                    CoreEngine::Vector3(0.0f,0.0f,0.0f),
+                    enemy->GetTransform(),
+                    CoreEngine::Vector3(0.0f, 0.0f, 0.0f),
                     CoreEngine::Vector3(0.3f, 0.3f, 0.3f));
             }
             enemy->PlaySE("Die");
+
+            ScoreCounter::GetInstance().AddScore(POINTS_PER_KILL); // スコア加算
         }
         return;
     }
-    
+
     // 死んだ敵がいる状態でプレイヤーがボールを回収した場合キル演出開始
     if (!enemyList.empty() && !ballController_->GetIsThrowing()) {
         if (!isPlayingMotion_) {
             isPlayingMotion_ = true;
-            currentEraseCooldown_ = static_cast<float>(enemyList.size())*0.05f; // 最初の消去までの猶予
+            currentEraseCooldown_ = static_cast<float>(enemyList.size()) * 0.05f; // 最初の消去までの猶予
             eraseCooldownFactor_ = 1.0f;
             gameTimer_->Pause();
         }
@@ -98,7 +106,7 @@ void EnemyKillMotionManager::Update() {
                 }
             }
             // カメラワーク設定
-            cameraController_->SetCameraWork<TowPointFramingCameraWork>(furthestEnemy->GetTransform() ,player_->GetTransform(), 0.1f);
+            cameraController_->SetCameraWork<TowPointFramingCameraWork>(furthestEnemy->GetTransform(), player_->GetTransform(), 0.1f);
 
             // 外側のやつから順番に消す
             if (currentEraseCooldown_ <= 0.0f) {
@@ -136,6 +144,8 @@ void EnemyKillMotionManager::Update() {
                         }
                     }
                 }
+                ScoreCounter::GetInstance().AddScore(
+                    static_cast<int>(static_cast<float>(POINTS_PER_KILL) * (5.0f * (1.0f - eraseCooldownFactor_)))); // スコア加算
 
             } else {
                 currentEraseCooldown_ -= 1.0f / 60.0f;

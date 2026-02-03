@@ -41,6 +41,7 @@ Ball::Ball() {
     collider_->SetLayer(CoreEngine::CollisionLayer::Item);
     collider_->SetEnabled(false); // 初期状態では無効
 
+    
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
         assert(false && "SoundManager not found");

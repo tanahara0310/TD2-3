@@ -25,9 +25,5 @@ void BulletShotController::Update(BulletObjectContainer* bulletContainer) {
                 MatsumotoUtility::DirectionToEulerAngle(shootDir),
                 CoreEngine::Vector3(1.0f, 1.0f, 1.0f));
         result;
-        // 発射音などの効果音を再生する場合はここで行う
-        /*if (result != -1) {
-            player_->PlaySE("gun_shot");
-        }*/
     }
 }

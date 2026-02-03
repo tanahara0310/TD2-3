@@ -46,6 +46,7 @@ void MyGame::Initialize()
 #endif
 
     KeyBindConfig::Instance().Initialize(GetEngineSystem());
+    ScoreCounter::GetInstance().Initialize();
 }
 
 void MyGame::Finalize()

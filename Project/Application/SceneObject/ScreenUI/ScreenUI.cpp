@@ -129,7 +129,7 @@ void ScreenUI::Update() {
                 500.0f,
                 0.1f);
         }
-        
+
         currentScore_ = scoreCounter.GetScore();
     }
     scoreDisplay_->DisplayNumberWithDigits(currentScore_, scoreDefaultPos_ + scorePos_, 6, { 1.5f, 1.5f }, 10.0f);
@@ -263,6 +263,7 @@ void ScreenUI::Update() {
 
     // デフォルト位置に戻す
     float timeRatio = static_cast<float>(stopwatch_->ElapsedMilliseconds() / ApplicationGlobalValue::GAME_CLEAR_TIME_MS);
+    if (timeRatio >= 1.0f) { timeRatio = 1.0f; }
     spriteObjects_["YoYo"]->GetSpriteTransform().translate = { -450.0f,MatsumotoUtility::Lerp(-250.0f,100.0f,timeRatio),0.0f };
     spriteObjects_["YoYoTargetPos"]->GetSpriteTransform().translate = { -450.0f,100.0f,0.0f };
     // 時間制限が1/10だったら点滅させる

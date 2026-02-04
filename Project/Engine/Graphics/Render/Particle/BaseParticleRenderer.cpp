@@ -1,4 +1,4 @@
-﻿#include "BaseParticleRenderer.h"
+#include "BaseParticleRenderer.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Camera/ICamera.h"
@@ -31,18 +31,44 @@ void BaseParticleRenderer::Initialize(ID3D12Device* device) {
 void BaseParticleRenderer::BeginPass(ID3D12GraphicsCommandList* cmdList, BlendMode blendMode) {
     cmdList_ = cmdList;
 
+#ifdef _DEBUG
+    char buffer[128];
+    sprintf_s(buffer, "[ParticleRenderer] BeginPass: BlendMode=%d\n", static_cast<int>(blendMode));
+    OutputDebugStringA(buffer);
+#endif
+
     // ルートシグネチャとパイプラインステートを設定
     cmdList_->SetGraphicsRootSignature(rootSignatureMg_->GetRootSignature());
     cmdList_->SetPipelineState(pipelineMg_->GetPipelineState(blendMode));
 
     // プリミティブトポロジを設定
     cmdList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    
+    // ビューポートとシザー矩形を明示的に設定（他のレンダラーの影響を防ぐ）
+    D3D12_VIEWPORT viewport = {};
+    viewport.Width = static_cast<FLOAT>(WinApp::kClientWidth);
+    viewport.Height = static_cast<FLOAT>(WinApp::kClientHeight);
+    viewport.TopLeftX = 0;
+    viewport.TopLeftY = 0;
+    viewport.MinDepth = 0.0f;
+    viewport.MaxDepth = 1.0f;
+    cmdList_->RSSetViewports(1, &viewport);
+    
+    D3D12_RECT scissorRect = {};
+    scissorRect.left = 0;
+    scissorRect.top = 0;
+    scissorRect.right = WinApp::kClientWidth;
+    scissorRect.bottom = WinApp::kClientHeight;
+    cmdList_->RSSetScissorRects(1, &scissorRect);
 
     // 派生クラスでの追加処理
     OnBeginPass();
 }
 
 void BaseParticleRenderer::EndPass() {
+#ifdef _DEBUG
+    OutputDebugStringA("[ParticleRenderer] EndPass\n");
+#endif
     cmdList_ = nullptr;
 }
 

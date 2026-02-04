@@ -579,5 +579,6 @@
     <None Include="Engine\Graphics\Font\README.md" />
     <None Include="Engine\Particle\README.md" />
     <None Include="Engine\Utility\Debug\ImGui\README.md" />
+    <None Include="Assets\Presets\Particle\EnemyRespawn.json" />
   </ItemGroup>
 </Project>

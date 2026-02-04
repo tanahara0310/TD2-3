@@ -104,6 +104,8 @@ bool ParticlePresetManager::SavePreset(const ParticleSystem* particleSystem, con
 	forceJson["areaMin"] = JsonManager::Vector3ToJson(forceData.area.min);
 	forceJson["areaMax"] = JsonManager::Vector3ToJson(forceData.area.max);
 	forceJson["useAccelerationField"] = forceData.useAccelerationField;
+	forceJson["attractorPoint"] = JsonManager::Vector3ToJson(forceData.attractorPoint);
+	forceJson["attractorStrength"] = forceData.attractorStrength;
 	presetData["force"] = forceJson;
 
 	// SizeModuleの保存
@@ -296,6 +298,8 @@ if (presetData.contains("version")) {
 		forceData.area.min = JsonManager::SafeGetVector3(forceJson, "areaMin", { -1.0f, -1.0f, -1.0f });
 		forceData.area.max = JsonManager::SafeGetVector3(forceJson, "areaMax", { 1.0f, 1.0f, 1.0f });
 		forceData.useAccelerationField = JsonManager::SafeGet(forceJson, "useAccelerationField", false);
+		forceData.attractorPoint = JsonManager::SafeGetVector3(forceJson, "attractorPoint", { 0.0f, 0.0f, 0.0f });
+		forceData.attractorStrength = JsonManager::SafeGet(forceJson, "attractorStrength", 0.0f);
 		particleSystem->GetForceModule().SetForceData(forceData);
 	}
 

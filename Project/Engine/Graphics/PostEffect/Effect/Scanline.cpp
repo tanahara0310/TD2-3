@@ -104,7 +104,7 @@ void Scanline::CreateConstantBuffer()
     resourceDesc.SampleDesc.Count = 1;
     resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-    HRESULT hr = dxCommon_->GetDevice()->CreateCommittedResource(
+    [[maybe_unused]] HRESULT hr = dxCommon_->GetDevice()->CreateCommittedResource(
         &heapProps,
         D3D12_HEAP_FLAG_NONE,
         &resourceDesc,

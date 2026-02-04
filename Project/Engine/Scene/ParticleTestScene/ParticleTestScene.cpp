@@ -50,6 +50,28 @@ namespace CoreEngine
         // 敵死亡パーティクルを再生開始
         enemyDeathParticle_->Play();
 
+        // ===== 敵リスポーン時パーティクルシステムの初期化（パーティクルが中心に集まる） =====
+        auto enemyRespawnParticle = CreateObject<ParticleSystem>();
+        enemyRespawnParticle->Initialize(dxCommon, resourceFactory, "EnemyRespawnParticle");
+
+        // プリセットマネージャーを使用してEnemyRespawn.jsonを読み込み
+        enemyRespawnParticle->GetPresetManager().LoadPreset(enemyRespawnParticle, "Assets/Presets/Particle/EnemyRespawn.json");
+
+        // エミッター位置を調整（左側に配置）
+        enemyRespawnParticle->SetEmitterPosition({ -3.0f, 2.0f, 0.0f });
+
+        // アトラクターポイントも同じ位置に設定（中心に向かう）
+        enemyRespawnParticle->GetForceModule().GetForceData().attractorPoint = { -3.0f, 2.0f, 0.0f };
+
+        enemyRespawnParticle_ = enemyRespawnParticle;
+
+        // リスポーンパーティクルを再生開始
+        enemyRespawnParticle_->Play();
+
+        // タイマーを初期化（リスポーンパーティクルを2.5秒後に開始）
+        deathParticleTimer_ = 0.0f;
+        respawnParticleTimer_ = kParticleInterval_ - 2.5f;  // 2.5秒後にスタート
+
         // ===== 数字表示の初期化 =====
         numberDisplay_ = std::make_unique<NumberDisplayUtility>();
         // CreateObjectを渡してスプライトを生成
@@ -70,6 +92,28 @@ namespace CoreEngine
     void ParticleTestScene::OnUpdate()
     {
         // パーティクルテストシーン固有の更新処理
+
+        // タイマーを更新
+        deathParticleTimer_ += 1.0f / 60.0f;  // 60FPS想定
+        respawnParticleTimer_ += 1.0f / 60.0f;
+
+        // 敵死亡パーティクル：一定間隔で再生
+        if (deathParticleTimer_ >= kParticleInterval_) {
+            if (enemyDeathParticle_ && enemyDeathParticle_->IsFinished()) {
+                enemyDeathParticle_->Clear();
+                enemyDeathParticle_->Play();
+                deathParticleTimer_ = 0.0f;
+            }
+        }
+
+        // 敵リスポーンパーティクル：一定間隔で再生（死亡パーティクルとずらす）
+        if (respawnParticleTimer_ >= kParticleInterval_) {
+            if (enemyRespawnParticle_ && enemyRespawnParticle_->IsFinished()) {
+                enemyRespawnParticle_->Clear();
+                enemyRespawnParticle_->Play();
+                respawnParticleTimer_ = 0.0f;
+            }
+        }
 
         // 数字表示の更新
         if (numberDisplay_) {

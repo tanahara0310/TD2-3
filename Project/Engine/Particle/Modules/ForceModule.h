@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ParticleModule.h"
 #include "MathCore.h"
@@ -21,6 +21,10 @@ public:
         Vector3 acceleration = { 0.0f, 0.0f, 0.0f };
         BoundingBox area = { {-1.0f, -1.0f, -1.0f}, {1.0f, 1.0f, 1.0f} };
         bool useAccelerationField = false;
+
+        // アトラクター（引き寄せ点）
+        Vector3 attractorPoint = { 0.0f, 0.0f, 0.0f };  // 引き寄せる中心点
+        float attractorStrength = 0.0f;                  // 引き寄せる力の強さ
     };
 
     ForceModule();
@@ -33,6 +37,10 @@ public:
     /// @brief 力データを取得
     /// @return 力データの参照
     const ForceData& GetForceData() const { return forceData_; }
+
+    /// @brief 力データを取得（非const版）
+    /// @return 力データの参照
+    ForceData& GetForceData() { return forceData_; }
 
     /// @brief パーティクルに力を適用（gravityModifier対応）
     /// @param particle 対象のパーティクル

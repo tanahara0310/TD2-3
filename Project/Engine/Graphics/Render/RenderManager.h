@@ -61,13 +61,14 @@ public:
     void ClearQueue();
     
 private:
-    struct DrawCommand {
-        CoreEngine::GameObject* object;
-        RenderPassType passType;
-        BlendMode blendMode;
-    };
+struct DrawCommand {
+    CoreEngine::GameObject* object;
+    RenderPassType passType;
+    BlendMode blendMode;
+    size_t registrationOrder;  // 登録順序（同一パス・ブレンドモード内での描画順を保証）
+};
     
-    std::vector<DrawCommand> drawQueue_;
+std::vector<DrawCommand> drawQueue_;
     std::unordered_map<RenderPassType, std::unique_ptr<IRenderer>> renderers_;
     
     // フレームごとに設定されるコンテキスト

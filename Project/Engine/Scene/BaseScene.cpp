@@ -96,10 +96,8 @@ namespace CoreEngine
         // 派生クラスの後処理（クリーンアップ前）
         OnLateUpdate();
 
-        // フレーム終了時に削除マークされたオブジェクトをクリーンアップ
-        // すべての更新処理が完了した後に実行することで、
-        // 派生クラスが保持する生ポインタが無効化される前に安全に処理できる
-        gameObjectManager_.CleanupDestroyed();
+        // ★CleanupDestroyed()は描画後に移動
+        // 理由：Update()内で削除すると、Draw()で無効なポインタを参照してしまう
     }
 
     void BaseScene::Draw()
@@ -122,12 +120,29 @@ namespace CoreEngine
         // 全てのゲームオブジェクトを描画キューに追加
         gameObjectManager_.RegisterAllToRender(renderManager);
 
+#ifdef _DEBUG
+        // デバッグ：登録されたオブジェクト数を確認
+        static int frameCount = 0;
+        frameCount++;
+        if (frameCount % 60 == 0) {
+            char buffer[256];
+            sprintf_s(buffer, "[BaseScene] Registered %zu objects to render queue\n", 
+                gameObjectManager_.GetObjectCount());
+            OutputDebugStringA(buffer);
+        }
+#endif
+
         // 一括描画（自動的にパスごとにソート・グループ化）
         // この中でGridRenderer、LineDrawable、ParticleSystemのデバッグラインが全て描画される
         renderManager->DrawAll();
 
         // フレーム終了時にキューをクリア
         renderManager->ClearQueue();
+
+        // ★描画完了後に削除マークされたオブジェクトをクリーンアップ
+        // すべての描画処理が完了した後に実行することで、
+        // 描画中にポインタが無効化されることを防ぐ
+        gameObjectManager_.CleanupDestroyed();
     }
 
     void BaseScene::Finalize()

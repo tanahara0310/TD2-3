@@ -103,11 +103,15 @@ void SpriteRenderer::Initialize(DirectXCommon* dxCommon, ResourceFactory* resour
 void SpriteRenderer::BeginPass(ID3D12GraphicsCommandList* cmdList, BlendMode blendMode) {
     UINT frameIndex = dxCommon_->GetSwapChain()->GetCurrentBackBufferIndex();
     
-    // フレームが変わった、または最初の呼び出しの場合のみリセット
-    if (frameIndex != currentFrameIndex_ || isFirstBeginPassThisFrame_) {
+    // フレームが切り替わったときのみリセット
+    if (frameIndex != currentFrameIndex_) {
         currentFrameIndex_ = frameIndex;
         currentBufferIndex_ = 0;
-        isFirstBeginPassThisFrame_ = false;
+#ifdef _DEBUG
+        char buffer[128];
+        sprintf_s(buffer, "[SpriteRenderer] Frame changed: %u, Buffer reset\n", frameIndex);
+        OutputDebugStringA(buffer);
+#endif
     }
     
 #ifdef _DEBUG
@@ -151,8 +155,7 @@ void SpriteRenderer::EndPass() {
     sprintf_s(buffer, "[SpriteRenderer] EndPass: Drew %zu sprites\n", currentBufferIndex_);
     OutputDebugStringA(buffer);
 #endif
-    // EndPassが呼ばれたら次のBeginPassは「最初の呼び出し」として扱う
-    isFirstBeginPassThisFrame_ = true;
+    // EndPassでは何もしない（フレーム切替時のみBeginPassでリセット）
 }
 
 void SpriteRenderer::SetCamera(const ICamera* camera) {

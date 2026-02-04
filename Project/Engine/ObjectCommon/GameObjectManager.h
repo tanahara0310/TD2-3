@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include <memory>
-#include <vector>
+#include <deque>  // vectorからdequeに変更（メモリ再配置を防ぐ）
 
 // Forward declaration
 namespace CoreEngine {
@@ -12,6 +12,7 @@ namespace CoreEngine {
 
 /// @brief すべてのGameObjectを一元管理するマネージャー
 /// @note 更新、描画、削除を自動化し、使用者は登録とDestroyのみを意識する
+/// @note std::dequeを使用してメモリ再配置によるポインタ無効化を防止
 namespace CoreEngine
 {
 	class GameObjectManager {
@@ -50,7 +51,7 @@ namespace CoreEngine
 
 		/// @brief 全オブジェクトのリストを取得（読み取り専用）
 		/// @return オブジェクトリストの const 参照
-		const std::vector<std::unique_ptr<GameObject>>& GetAllObjects() const { return objects_; }
+		const std::deque<std::unique_ptr<GameObject>>& GetAllObjects() const { return objects_; }
 
 #ifdef _DEBUG
 		/// @brief 全オブジェクトのImGuiデバッグUI表示
@@ -58,10 +59,10 @@ namespace CoreEngine
 #endif
 
 	private:
-		/// @brief 管理中のオブジェクトリスト
-		std::vector<std::unique_ptr<GameObject>> objects_;
+		/// @brief 管理中のオブジェクトリスト（dequeを使用してポインタの安定性を保証）
+		std::deque<std::unique_ptr<GameObject>> objects_;
 
 		/// @brief 削除待ちキュー（フレーム終了後に破棄）
-		std::vector<std::unique_ptr<GameObject>> destroyQueue_;
+		std::deque<std::unique_ptr<GameObject>> destroyQueue_;
 	};
 }

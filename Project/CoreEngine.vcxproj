@@ -176,6 +176,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClCompile Include="Application\SceneObject\Combo\EnemyKillComboCounter.cpp" />
     <ClCompile Include="Application\SceneObject\Combo\EnemyKillMotionManager.cpp" />
     <ClCompile Include="Application\SceneObject\CosmicTunnel\CosmicTunnelObject.cpp" />
+    <ClCompile Include="Application\SceneObject\Effect\EnemySpawnEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\HitEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\ShockWaveEffect.cpp" />
     <ClCompile Include="Application\SceneObject\Effect\SlashEffect.cpp" />
@@ -425,6 +426,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     <ClInclude Include="Application\SceneObject\Combo\EnemyKillMotionManager.h" />
     <ClInclude Include="Application\SceneObject\CosmicTunnel\CosmicTunnelObject.h" />
     <ClInclude Include="Application\SceneObject\Effect\AllEffect.h" />
+    <ClInclude Include="Application\SceneObject\Effect\EnemySpawnEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\ExplosionEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\HitEffect.h" />
     <ClInclude Include="Application\SceneObject\Effect\ShockWaveEffect.h" />

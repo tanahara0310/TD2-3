@@ -32,9 +32,6 @@ void GameClearSequence::Update() {
         animTimer_ -= 1.0f/60.0f;
         return;
     }
-
-    sceneCommandExecutor_->
-        AddCommand(std::make_unique<SceneChangeCommand>("ResultScene", sceneManager_));
 }
 
 void GameClearSequence::Finalize() {

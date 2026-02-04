@@ -105,5 +105,11 @@ private:
     std::unique_ptr<CoreEngine::SoundManager::SoundResource> shotSoundResources_;
 
     bool isSpawnBoss_;
+
+    // シーン遷移用
+    float transitionProgress_ = 0.0f;
+    float transitionDuration_ = 1.0f;  // トランジション時間（秒）
+    bool isTransitioning_ = false;
+    std::string nextSceneName_ = "";
 };
 }

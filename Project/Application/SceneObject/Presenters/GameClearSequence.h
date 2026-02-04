@@ -18,6 +18,9 @@ public:
     void Update();
     void Finalize();
 
+    /// @brief トランジション開始準備ができたかどうか
+    bool IsReadyForTransition() const { return animTimer_ <= 0.0f; }
+
 private:
     CoreEngine::BaseScene* baseScene_;
     CoreEngine::SceneManager* sceneManager_;

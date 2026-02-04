@@ -2,7 +2,7 @@
 #include "Application/SceneObject/Player/PlayerStatus.h"
 
 FollowEnemy::FollowEnemy(CoreEngine::Vector3* targetPos) :
-    IEnemy("ApplicationAssets/Model/white1x1Box.obj", "Texture/white1x1.png"),
+    IEnemy("ApplicationAssets/Model/NormalEnemy.obj", "Texture/NormalEnemy.png"),
     targetPos_(targetPos) {
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
@@ -11,7 +11,7 @@ FollowEnemy::FollowEnemy(CoreEngine::Vector3* targetPos) :
     soundResources_.clear();
     soundResources_["Die"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_EnemyDeath.mp3");
     collider_->SetRadius(1.5f);
-    transform_.scale = { 2.0f,2.0f,2.0f };
+    transform_.scale = { 0.5f,0.5f,0.5f };
     damageIntervalCounter_ = 0;
     maxDamageIntervalCounter_ = 15;
 }
@@ -22,7 +22,7 @@ void FollowEnemy::Initialize() {
     collider_->SetEnabled(true);
     collider_->SetRadius(1.5f);
     isActive_ = true;
-    transform_.scale = { 2.0f,2.0f,2.0f };
+    transform_.scale = { 1.0f,1.0f,1.0f };
     damageIntervalCounter_ = 0;
 }
 

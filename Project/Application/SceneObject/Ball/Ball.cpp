@@ -6,6 +6,7 @@
 
 #include "Application/Utility/KeyBindConfig.h"
 #include "Application/Utility/MatsumotoUtility.h"
+#include "Application/SceneObject/Player/PlayerStatus.h"
 
 #ifdef _DEBUG
 #include <imgui.h>
@@ -98,6 +99,10 @@ if (CoreEngine::Math::Vector::Length(velocity_) > 0.0001f) {
     oldPosition_ = transform_.translate;
 
     transform_.rotate.y += rotateSpeed_;
+
+    float size = 1.4f;
+    float t = static_cast<float>(PlayerStatus::meleeAttackPower) / 3.0f;
+    transform_.scale = { size * t,size * t, size * t };
 
     // トランスフォームの更新
     transform_.TransferMatrix();

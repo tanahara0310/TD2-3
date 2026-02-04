@@ -323,7 +323,7 @@ namespace CoreEngine
                         effectContainers_["SlashEffect"]->Spawn(
                             player_->GetWorldPosition() + CoreEngine::Math::Vector::Normalize(direction) * 25.0f,
                             MatsumotoUtility::DirectionToEulerAngle(direction),
-                            CoreEngine::Vector3(20.0f, 0.1f, 50.0f));
+                            CoreEngine::Vector3(static_cast<float>(PlayerStatus::gunAttackPower * PlayerStatus::gunAttackPower), 0.1f, 50.0f));
 
                         player_->SetVelocity(
                             -CoreEngine::Math::Vector::Normalize(direction * 0.5f));
@@ -336,10 +336,10 @@ namespace CoreEngine
                         const int totalPower = PlayerStatus::meleeAttackPower + PlayerStatus::gunAttackPower;
                         PlayerStatus::gunAttackPower = std::clamp(PlayerStatus::gunAttackPower, 1, totalPower - 1);
                         PlayerStatus::meleeAttackPower = totalPower - PlayerStatus::gunAttackPower;
-                    } 
-                } 
+                    }
+                }
 
-                if (keyBindConfig.IsTrigger("Shot")&& canShoot&& ball_->bulletCount_ <= 0) {
+                if (keyBindConfig.IsTrigger("Shot") && canShoot && ball_->bulletCount_ <= 0) {
                     player_->PlaySE("GunNoAmmo");
                 }
 #pragma endregion

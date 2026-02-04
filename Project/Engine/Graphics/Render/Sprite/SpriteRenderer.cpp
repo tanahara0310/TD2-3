@@ -101,9 +101,23 @@ void SpriteRenderer::Initialize(DirectXCommon* dxCommon, ResourceFactory* resour
 }
 
 void SpriteRenderer::BeginPass(ID3D12GraphicsCommandList* cmdList, BlendMode blendMode) {
-    currentBufferIndex_ = 0;
-    currentFrameIndex_ = dxCommon_->GetSwapChain()->GetCurrentBackBufferIndex();
+    UINT frameIndex = dxCommon_->GetSwapChain()->GetCurrentBackBufferIndex();
     
+    // フレームが変わった、または最初の呼び出しの場合のみリセット
+    if (frameIndex != currentFrameIndex_ || isFirstBeginPassThisFrame_) {
+        currentFrameIndex_ = frameIndex;
+        currentBufferIndex_ = 0;
+        isFirstBeginPassThisFrame_ = false;
+    }
+    
+#ifdef _DEBUG
+    char buffer[128];
+    sprintf_s(buffer, "[SpriteRenderer] BeginPass: BlendMode=%d, BufferIndex=%zu\n", 
+        static_cast<int>(blendMode), currentBufferIndex_);
+    OutputDebugStringA(buffer);
+#endif
+    
+    // ブレンドモードが変わった場合はパイプラインステートを更新
     if (blendMode != currentBlendMode_) {
         currentBlendMode_ = blendMode;
         pipelineState_ = psoMg_->GetPipelineState(blendMode);
@@ -112,10 +126,33 @@ void SpriteRenderer::BeginPass(ID3D12GraphicsCommandList* cmdList, BlendMode ble
     cmdList->SetGraphicsRootSignature(rootSignatureMg_->GetRootSignature());
     cmdList->SetPipelineState(pipelineState_);
     cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    
+    // ビューポートとシザー矩形を明示的に設定（他のレンダラーの影響を防ぐ）
+    D3D12_VIEWPORT viewport = {};
+    viewport.Width = static_cast<FLOAT>(WinApp::kClientWidth);
+    viewport.Height = static_cast<FLOAT>(WinApp::kClientHeight);
+    viewport.TopLeftX = 0;
+    viewport.TopLeftY = 0;
+    viewport.MinDepth = 0.0f;
+    viewport.MaxDepth = 1.0f;
+    cmdList->RSSetViewports(1, &viewport);
+    
+    D3D12_RECT scissorRect = {};
+    scissorRect.left = 0;
+    scissorRect.top = 0;
+    scissorRect.right = WinApp::kClientWidth;
+    scissorRect.bottom = WinApp::kClientHeight;
+    cmdList->RSSetScissorRects(1, &scissorRect);
 }
 
 void SpriteRenderer::EndPass() {
-    // 今は空
+#ifdef _DEBUG
+    char buffer[128];
+    sprintf_s(buffer, "[SpriteRenderer] EndPass: Drew %zu sprites\n", currentBufferIndex_);
+    OutputDebugStringA(buffer);
+#endif
+    // EndPassが呼ばれたら次のBeginPassは「最初の呼び出し」として扱う
+    isFirstBeginPassThisFrame_ = true;
 }
 
 void SpriteRenderer::SetCamera(const ICamera* camera) {

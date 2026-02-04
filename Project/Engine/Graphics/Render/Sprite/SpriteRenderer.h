@@ -112,5 +112,6 @@ private:
     // 現在のバッファインデックスとフレームインデックス
     size_t currentBufferIndex_ = 0;
     UINT currentFrameIndex_ = 0;
+    bool isFirstBeginPassThisFrame_ = true; // フレーム内で最初のBeginPassかどうか
 };
 }

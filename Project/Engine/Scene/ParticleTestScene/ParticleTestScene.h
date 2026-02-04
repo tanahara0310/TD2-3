@@ -38,8 +38,16 @@ namespace CoreEngine
         // 敵死亡時パーティクルシステム
         ParticleSystem* enemyDeathParticle_ = nullptr;
 
+        // 敵リスポーン時パーティクルシステム（パーティクルが中心に集まる）
+        ParticleSystem* enemyRespawnParticle_ = nullptr;
+
         // 数字表示（使用例）
         std::unique_ptr<NumberDisplayUtility> numberDisplay_;
         int testScore_ = 0;
+
+        // テスト用のタイマー（パーティクル再生制御用）
+        float deathParticleTimer_ = 0.0f;
+        float respawnParticleTimer_ = 0.0f;
+        const float kParticleInterval_ = 5.0f; // 5秒ごとに再生
     };
 }

@@ -1,4 +1,4 @@
-﻿#include "ParticleRenderer.h"
+#include "ParticleRenderer.h"
 #include "Engine/Particle/ParticleSystem.h"
 #include "Engine/Graphics/Resource/ResourceFactory.h"
 #include "Engine/Camera/ICamera.h"
@@ -16,6 +16,9 @@ void ParticleRenderer::Initialize(ID3D12Device* device) {
 }
 
 void ParticleRenderer::OnBeginPass() {
+#ifdef _DEBUG
+    OutputDebugStringA("[ParticleRenderer] OnBeginPass: Setting shared vertex buffer\n");
+#endif
     // 共有頂点バッファを設定
     cmdList_->IASetVertexBuffers(0, 1, &vertexBufferView_);
 }
@@ -27,6 +30,12 @@ void ParticleRenderer::Draw(ParticleSystem* particle) {
     }
 
     uint32_t instanceCount = particle->GetInstanceCount();
+
+#ifdef _DEBUG
+    char buffer[128];
+    sprintf_s(buffer, "[ParticleRenderer] Draw: InstanceCount=%u\n", instanceCount);
+    OutputDebugStringA(buffer);
+#endif
 
     // 共通リソースを設定
     SetupCommonResources(particle, particle->GetTextureHandle());

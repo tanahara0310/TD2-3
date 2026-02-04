@@ -194,14 +194,14 @@ void TransitionEffect::CreateConstantBuffer()
     resourceDesc.SampleDesc.Count = 1;
     resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-    HRESULT hr = dxCommon_->GetDevice()->CreateCommittedResource(
+    [[maybe_unused]] HRESULT hr = dxCommon_->GetDevice()->CreateCommittedResource(
         &heapProps,
         D3D12_HEAP_FLAG_NONE,
         &resourceDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ,
         nullptr,
         IID_PPV_ARGS(&constantBuffer_)
-    );
+    ); 
 
     assert(SUCCEEDED(hr));
     UpdateConstantBuffer();

@@ -772,6 +772,7 @@ xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets\" /E /I /Y /D</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Presets\Particle\EnemyRespawn.json" />
     <None Include="docs\BulletHitParticle_Implementation.md" />
     <None Include="docs\LineRenderer_Refactoring.md" />
     <None Include="docs\Logger_Usage.md" />

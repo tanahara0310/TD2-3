@@ -50,6 +50,7 @@ void RenderManager::AddDrawable(GameObject* obj) {
     cmd.object = obj;
     cmd.passType = obj->GetRenderPassType();
     cmd.blendMode = obj->GetBlendMode();
+    cmd.registrationOrder = drawQueue_.size();  // 登録順序を保存
 
     drawQueue_.push_back(cmd);
 }
@@ -220,8 +221,8 @@ void RenderManager::ClearQueue() {
 
 void RenderManager::SortDrawQueue() {
     // 描画コマンドを最適化してステート変更を最小化
-    // 優先順位: 1. パスタイプ > 2. ブレンドモード
-    std::sort(drawQueue_.begin(), drawQueue_.end(),
+    // 優先順位: 1. パスタイプ > 2. ブレンドモード > 3. 登録順序
+    std::stable_sort(drawQueue_.begin(), drawQueue_.end(),
         [](const DrawCommand& a, const DrawCommand& b) {
             // 1. パスタイプでソート（パイプライン切り替え最小化）
             if (a.passType != b.passType) {
@@ -233,8 +234,8 @@ void RenderManager::SortDrawQueue() {
                 return static_cast<int>(a.blendMode) < static_cast<int>(b.blendMode);
             }
             
-            // 3. その他の条件が同じ場合は順序を維持（安定ソート）
-            return false;
+            // 3. 同一パス・同一ブレンドモード内では登録順序を維持
+            return a.registrationOrder < b.registrationOrder;
         });
 }
 }

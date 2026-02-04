@@ -141,6 +141,23 @@ namespace CoreEngine
         effectContainers_["EnemySpawnEffect"] = std::make_unique<BulletObjectContainer>(20);
         effectContainers_["EnemySpawnEffect"]->ApplyToScene<EnemySpawnEffect>(this);
 
+        // 敵死亡パーティクルプールの作成（10個のパーティクルシステムを事前生成）
+        enemyDeathParticlePool_.clear();
+        // コンポーネントは既に上で取得済み（dxCommon, renderManager）
+        auto resourceFactory = engine_->GetComponent<CoreEngine::ResourceFactory>();
+        
+        constexpr size_t kParticlePoolSize = 10;  // プールサイズ
+        for (size_t i = 0; i < kParticlePoolSize; ++i) {
+            auto particle = CreateObject<CoreEngine::ParticleSystem>();
+            particle->Initialize(dxCommon, resourceFactory, "EnemyDeathParticle_" + std::to_string(i));
+            
+            // EnemyDeath.jsonプリセットを読み込み
+            particle->GetPresetManager().LoadPreset(particle, "Assets/Presets/Particle/EnemyDeath.json");
+            
+            // プールに追加
+            enemyDeathParticlePool_.push_back(particle);
+        }
+
         // ゲームオブジェクトの生成
         player_ = CreateObject<Player>();
         player_->SetAutoUpdate(false);
@@ -204,6 +221,8 @@ namespace CoreEngine
                 effectContainers_["HitEffect"].get(),
                 std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
         );
+        // 敵死亡パーティクルプールを設定
+        enemyKillMotionManager_->SetEnemyDeathParticlePool(&enemyDeathParticlePool_);
 
         // 敵ウェーブマネージャーの生成
         enemyWaveManager_ = std::make_unique<EnemyWaveManager>(enemyMapLoader_.get());

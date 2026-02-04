@@ -10,6 +10,7 @@ void EnemyWaveManager::StartNextWave() {
     currentWaveNumber_++;
     // 敵を出現させる
     enemyMapLoader_->SpawnEnemiesFromStack(currentWaveNumber_ % enemyMapLoader_->GetEnemyMapStackSize());
+    enemyMapLoader_->SpawnEffectFromStack((currentWaveNumber_ + 1) % enemyMapLoader_->GetEnemyMapStackSize());
 }
 
 int EnemyWaveManager::GetCurrentWaveNumber() const {

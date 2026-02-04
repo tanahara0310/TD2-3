@@ -2,6 +2,7 @@
 #include "Application/SceneObject/Player/Player.h"
 #include "Application/SceneObject/Enemy/EnemyContainer.h"
 #include "Application/SceneObject/Enemy/AllEnemy.h"
+#include "Application/Utility/BulletObject/BulletObjectContainer.h"
 #include <fstream>
 
 namespace {
@@ -9,9 +10,10 @@ namespace {
     const std::string kEnemyMapFilePath = "Assets/ApplicationAssets/EnemySpawnMapData/";
 }
 
-EnemyMapLoader::EnemyMapLoader(EnemyContainer* enemyManager, Player* player) :
+EnemyMapLoader::EnemyMapLoader(EnemyContainer* enemyManager, Player* player, BulletObjectContainer* spawnEffect) :
     enemyManager_(enemyManager),
-    player_(player) {
+    player_(player),
+    spawnEffect_(spawnEffect) {
     enemyMapStack_.clear();
 }
 
@@ -89,6 +91,33 @@ void EnemyMapLoader::SpawnEnemiesFromStack(int index) {
     }
     catch (const std::exception&)
     {
+    }
+}
+
+void EnemyMapLoader::SpawnEffectFromStack(int index) {
+    try
+    {
+        if (index < 0 || index >= static_cast<int>(enemyMapStack_.size())) {
+            return;
+        }
+        enemyMapData_ = enemyMapStack_[index];
+
+        for (const auto& enemyData : enemyMapData_[kEnemyKey]) {
+            CoreEngine::Vector3 position{
+                enemyData[1][0].get<float>(),
+                enemyData[1][1].get<float>(),
+                enemyData[1][2].get<float>()
+            };
+            // エフェクトの出現
+            spawnEffect_->Spawn(
+                position,
+                CoreEngine::Vector3{ 0.0f,0.0f,0.0f },
+                CoreEngine::Vector3{ 1.5f,1.5f,1.5f });
+        }
+    }
+    catch (const std::exception&)
+    {
+
     }
 }
 

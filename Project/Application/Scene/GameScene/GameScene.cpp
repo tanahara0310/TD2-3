@@ -72,6 +72,8 @@ namespace CoreEngine
         effectContainers_["SlashEffect"]->ApplyToScene<SlashEffect>(this);
         effectContainers_["PlayerBullet"] = std::make_unique<BulletObjectContainer>(50);
         effectContainers_["PlayerBullet"]->ApplyToScene<SmallBullet>(this);
+        effectContainers_["EnemySpawnEffect"] = std::make_unique<BulletObjectContainer>(20);
+        effectContainers_["EnemySpawnEffect"]->ApplyToScene<EnemySpawnEffect>(this);
 
         // ゲームオブジェクトの生成
         player_ = CreateObject<Player>();
@@ -84,7 +86,6 @@ namespace CoreEngine
             this, player_, gameStopwatch_.get(), ballController_.get(), menuController_.get());
         screenUI_->Initialize();
 
-        //cameraController_->SetCameraWork<FollowCamera>(player_->GetTransform(), CoreEngine::Vector3(0.0f, 50.0f, -14.0f), 0.1f);
         cameraController_->SetDefaultCameraWork<FollowCamera>(
             player_->GetTransform(), CoreEngine::Vector3(-7.5f, 60.0f, -21.0f), 0.1f);
         cameraController_->ResetDefaultCameraWork();
@@ -112,7 +113,7 @@ namespace CoreEngine
         );
 
         // 敵配置データのロード
-        enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get(), player_);
+        enemyMapLoader_ = std::make_unique<EnemyMapLoader>(enemyManager_.get(), player_, effectContainers_["EnemySpawnEffect"].get());
 
         enemyMapLoader_->LoadEnemyMap("testD.json");
         enemyMapLoader_->LoadEnemyMap("testA.json");
@@ -176,14 +177,7 @@ namespace CoreEngine
             if (enemyManager_->DeathEnemyList().size() > 0) {
                 return false;
             }
-
             bool isEnd = gameStopwatch_->ElapsedMilliseconds() >= ApplicationGlobalValue::GAME_CLEAR_TIME_MS;
-            //if (!isSpawnBoss_ && isEnd && ScoreCounter::GetInstance().GetScore() >= 0) {
-            //    isSpawnBoss_ = true;
-            //    gameStopwatch_->Start(); // ボス戦用に時間をリセットして再スタート
-            //    enemyManager_->SpawnEnemy<BossEnemy>(CoreEngine::Vector3(0.0f, 0.0f, 0.0f));
-            //    return false;
-            //}
             return isEnd;
             };
         gameResultManager_->AddGameClearCondition(timeUpCondition);
@@ -329,7 +323,7 @@ namespace CoreEngine
                         effectContainers_["SlashEffect"]->Spawn(
                             player_->GetWorldPosition() + CoreEngine::Math::Vector::Normalize(direction) * 25.0f,
                             MatsumotoUtility::DirectionToEulerAngle(direction),
-                            CoreEngine::Vector3(20.0f, 0.1f, 50.0f));
+                            CoreEngine::Vector3(static_cast<float>(PlayerStatus::gunAttackPower * PlayerStatus::gunAttackPower), 0.1f, 50.0f));
 
                         player_->SetVelocity(
                             -CoreEngine::Math::Vector::Normalize(direction * 0.5f));
@@ -342,10 +336,10 @@ namespace CoreEngine
                         const int totalPower = PlayerStatus::meleeAttackPower + PlayerStatus::gunAttackPower;
                         PlayerStatus::gunAttackPower = std::clamp(PlayerStatus::gunAttackPower, 1, totalPower - 1);
                         PlayerStatus::meleeAttackPower = totalPower - PlayerStatus::gunAttackPower;
-                    } 
-                } 
+                    }
+                }
 
-                if (keyBindConfig.IsTrigger("Shot")&& canShoot&& ball_->bulletCount_ <= 0) {
+                if (keyBindConfig.IsTrigger("Shot") && canShoot && ball_->bulletCount_ <= 0) {
                     player_->PlaySE("GunNoAmmo");
                 }
 #pragma endregion

@@ -32,5 +32,11 @@ private:
     std::unique_ptr<ResultUI> resultUI_;
     int selectedSceneIndex_;
     std::map<std::string, std::unique_ptr<CoreEngine::SoundManager::SoundResource>> soundResources_;
+
+    // シーン遷移用
+    float transitionProgress_ = 0.0f;
+    float transitionDuration_ = 1.0f;  // トランジション時間（秒）
+    bool isTransitioning_ = false;
+    std::string nextSceneName_ = "";
 };
 }

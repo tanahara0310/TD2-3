@@ -2,7 +2,7 @@
 
 
 DummyEnemy::DummyEnemy() :
-    IEnemy("ApplicationAssets/Model/white1x1Box.obj", "Texture/white1x1.png") {
+    IEnemy("ApplicationAssets/Model/NormalEnemy.obj", "Texture/NormalEnemy.png") {
 
     CoreEngine::SoundManager* soundManager = GetEngineSystem()->GetComponent<CoreEngine::SoundManager>();
     if (!soundManager) {
@@ -12,7 +12,7 @@ DummyEnemy::DummyEnemy() :
     soundResources_["Die"] = soundManager->CreateSoundResource("Assets/ApplicationAssets/Sound/SE_EnemyDeath.mp3");
 
     collider_->SetRadius(1.5f);
-    transform_.scale = { 3.0f,3.0f,3.0f };
+    transform_.scale = { 1.0f,1.0f,1.0f };
     damageIntervalCounter_ = 0;
     maxDamageIntervalCounter_ = 15;
 }
@@ -23,7 +23,7 @@ void DummyEnemy::Initialize() {
     collider_->SetEnabled(true);
     collider_->SetRadius(2.0f);
     isActive_ = true;
-    transform_.scale = { 3.0f,3.0f,3.0f };
+    transform_.scale = { 1.0f,1.0f,1.0f };
 }
 
 void DummyEnemy::EnemyUpdate() {
@@ -34,7 +34,7 @@ void DummyEnemy::EnemyUpdate() {
             transform_.scale.y = 1.0f + sinf(static_cast<float>(damageIntervalCounter_));
             transform_.scale.z = 1.0f + sinf(static_cast<float>(damageIntervalCounter_));
         } else {
-            transform_.scale = { 3.0f,3.0f,3.0f };
+            transform_.scale = { 1.0f,1.0f,1.0f };
         }
         
 
